@@ -59,7 +59,7 @@ class LoginScreenView extends StatelessWidget {
               CustomButtonLogin(
                 text: "Sign In",
                 onPressed: () {
-                  Get.offNamed('/ScanCompany');
+                  Get.offNamed('/AllDataTools');
                 },
               ),
             ],

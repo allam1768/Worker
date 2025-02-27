@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:worker/app/pages/Data%20Tools%20Screen/data_tools_binding.dart';
+import 'package:worker/app/pages/Data%20Tools%20Screen/data_tools_view.dart';
 import 'package:worker/app/pages/Login%20Screen/login_screen_binding.dart';
 import 'package:worker/app/pages/Login%20Screen/login_screen_view.dart';
 import 'package:worker/app/pages/Scan%20Company%20Screen/scan_company_binding.dart';
@@ -45,6 +47,11 @@ class MyApp extends StatelessWidget {
               name: '/ScanCompany',
               page: () => ScanCompanyView(),
               binding: QRScannerBinding(),
+            ),
+            GetPage(
+              name: '/AllDataTools',
+              page: () => DataToolsView(),
+              binding: DataToolsBinding(),
             ),
           ],
         );
