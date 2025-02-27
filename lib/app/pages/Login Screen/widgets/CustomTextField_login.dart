@@ -53,8 +53,8 @@ class _CustomTextFieldLoginState extends State<CustomTextFieldLogin> {
               },
               child: SvgPicture.asset(
                 isObscured ? 'assets/icons/eye_closed.svg' : 'assets/icons/eye_open.svg',
-                width: 24.w,
-                height: 24.h,
+                width: 20.w,
+                height: 20.h,
 
               ),
             ),
