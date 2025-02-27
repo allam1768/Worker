@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:worker/app/pages/Login%20Screen/login_screen_binding.dart';
+import 'package:worker/app/pages/Login%20Screen/login_screen_view.dart';
 import 'app/pages/Splash Screen/spalsh_screen_binding.dart';
 import 'app/pages/Splash Screen/spalsh_screen_view.dart';
 
@@ -31,6 +33,11 @@ class MyApp extends StatelessWidget {
               name: '/splash',
               page: () => SplashScreenView(),
               binding: SplashScreenBinding(),
+            ),
+            GetPage(
+              name: '/login',
+              page: () => LoginScreenView(),
+              binding: LoginScreenBinding(),
             ),
           ],
         );
