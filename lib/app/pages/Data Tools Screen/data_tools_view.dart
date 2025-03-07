@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:worker/app/pages/Data%20Tools%20Screen/widgets/Tool_Card.dart';
 
 class DataToolsView extends StatelessWidget {
@@ -27,7 +29,7 @@ class DataToolsView extends StatelessWidget {
             padding: EdgeInsets.only(right: 35.w), // 🔹 Jarak kanan ikon
             child: IconButton(
               onPressed: () {
-                // Tambahkan aksi jika diperlukan
+                Get.offNamed('');
               },
               icon: SvgPicture.asset(
                 "assets/icons/report_icon.svg", // 🔹 Ganti dengan path SVG lu
@@ -61,7 +63,7 @@ class DataToolsView extends StatelessWidget {
                       imagePath: tool["image"]!,
                       location: tool["location"]!,
                       onTap: () {
-                        print("Tool ${tool["location"]} diklik!");
+                        Get.offNamed('/HistoryTool');
                       },
                     ),
                   );
