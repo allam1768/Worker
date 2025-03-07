@@ -11,6 +11,8 @@ import 'package:worker/app/pages/Login%20Screen/login_screen_binding.dart';
 import 'package:worker/app/pages/Login%20Screen/login_screen_view.dart';
 import 'package:worker/app/pages/Scan%20Company%20Screen/scan_company_binding.dart';
 import 'package:worker/app/pages/Scan%20Company%20Screen/scan_company_view.dart';
+import 'package:worker/app/pages/Scan%20Tools%20Screen/scan_tools_binding.dart';
+import 'package:worker/app/pages/Scan%20Tools%20Screen/scan_tools_view.dart';
 import 'app/pages/Splash Screen/spalsh_screen_binding.dart';
 import 'app/pages/Splash Screen/spalsh_screen_view.dart';
 
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
             GetPage(
               name: '/ScanCompany',
               page: () => ScanCompanyView(),
-              binding: QRScannerBinding(),
+              binding: ScanCompanyBinding(),
             ),
             GetPage(
               name: '/AllDataTools',
@@ -59,6 +61,11 @@ class MyApp extends StatelessWidget {
               name: '/HistoryTool',
               page: () => HistoryScreen(),
               binding: HistoryBinding(),
+            ),
+            GetPage(
+              name: '/ScanTools',
+              page: () => ScanToolsView(),
+              binding: ScanToolsBinding(),
             ),
           ],
         );

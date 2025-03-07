@@ -52,7 +52,7 @@ class HistoryScreen extends StatelessWidget {
                   // QR Button
                   GestureDetector(
                     onTap: () {
-                      Get.offNamed('');
+                      Get.offNamed('ScanTools');
                     },
                     child: Container(
                       padding: EdgeInsets.all(10.w),
