@@ -22,11 +22,16 @@ class _GroupedHistoryCardState extends State<GroupedHistoryCard> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: Card(
-        color: isExpanded ? const Color(0xFFBBD4C3) : const Color(0xFF9CBE9D), // Warna berubah saat diklik
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        decoration: BoxDecoration(
+          color: isExpanded ? const Color(0xFFBBD4C3) : const Color(0xFF9CBE9D),
+          borderRadius: BorderRadius.circular(12.r),
+        ),
         child: Column(
           children: [
+            // Header Group yang Bisa Diklik
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -34,7 +39,7 @@ class _GroupedHistoryCardState extends State<GroupedHistoryCard> {
                 });
               },
               child: Container(
-                height: 84.h, // Tinggi untuk header grup
+                height: 84.h,
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 alignment: Alignment.centerLeft,
                 child: Row(
@@ -44,18 +49,25 @@ class _GroupedHistoryCardState extends State<GroupedHistoryCard> {
                       controller.getMonthName(widget.month),
                       style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                     ),
-                    Icon(
-                      isExpanded ? Icons.expand_less : Icons.expand_more,
-                      size: 24.sp,
+                    AnimatedRotation(
+                      turns: isExpanded ? 0.5 : 0,
+                      duration: const Duration(milliseconds: 300),
+                      child: Icon(Icons.expand_more, size: 24.sp),
                     ),
                   ],
                 ),
               ),
             ),
-            if (isExpanded)
-              Column(
+
+            AnimatedCrossFade(
+              firstChild: const SizedBox.shrink(),
+              secondChild: Column(
                 children: widget.items.map((item) => SingleHistoryCard(item: item)).toList(),
               ),
+              crossFadeState:
+              isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: const Duration(milliseconds: 300),
+            ),
           ],
         ),
       ),
