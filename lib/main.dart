@@ -7,6 +7,8 @@ import 'package:worker/app/pages/Data%20Tools%20Screen/data_tools_binding.dart';
 import 'package:worker/app/pages/Data%20Tools%20Screen/data_tools_view.dart';
 import 'package:worker/app/pages/History%20Tools%20Screen/history_tools_binding.dart';
 import 'package:worker/app/pages/History%20Tools%20Screen/history_tools_view.dart';
+import 'package:worker/app/pages/Input%20Detail%20Screen/input_detail_binding.dart';
+import 'package:worker/app/pages/Input%20Detail%20Screen/input_detail_view.dart';
 import 'package:worker/app/pages/Login%20Screen/login_screen_binding.dart';
 import 'package:worker/app/pages/Login%20Screen/login_screen_view.dart';
 import 'package:worker/app/pages/Scan%20Company%20Screen/scan_company_binding.dart';
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             textTheme: GoogleFonts.nunitoTextTheme(),
           ),
-          initialRoute: '/splash',
+          initialRoute: '/InputDetail',
           getPages: [
             GetPage(
               name: '/splash',
@@ -66,6 +68,11 @@ class MyApp extends StatelessWidget {
               name: '/ScanTools',
               page: () => ScanToolsView(),
               binding: ScanToolsBinding(),
+            ),
+            GetPage(
+              name: '/InputDetail',
+              page: () => InputDetailView(),
+              binding: InputDetailBinding(),
             ),
           ],
         );
