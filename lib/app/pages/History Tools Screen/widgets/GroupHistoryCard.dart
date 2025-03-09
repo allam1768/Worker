@@ -61,10 +61,10 @@ class _GroupedHistoryCardState extends State<GroupedHistoryCard> {
 
             // Daftar History dengan Animasi
             AnimatedCrossFade(
-              firstChild: const SizedBox.shrink(), // Saat tertutup
+              firstChild: const SizedBox.shrink(),
               secondChild: Column(
                 children: widget.items.map((item) => SingleHistoryCard(item: item)).toList(),
-              ), // Saat terbuka
+              ),
               crossFadeState:
               isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
               duration: const Duration(milliseconds: 300),
