@@ -59,7 +59,6 @@ class _GroupedHistoryCardState extends State<GroupedHistoryCard> {
               ),
             ),
 
-            // Daftar History dengan Animasi
             AnimatedCrossFade(
               firstChild: const SizedBox.shrink(),
               secondChild: Column(
