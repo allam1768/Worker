@@ -50,7 +50,9 @@ class _GroupedHistoryCardState extends State<GroupedHistoryCard> {
                       style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                     ),
                     AnimatedRotation(
+
                       turns: isExpanded ? 0.5 : 0, // Animasi rotasi ikon
+
                       duration: const Duration(milliseconds: 300),
                       child: Icon(Icons.expand_more, size: 24.sp),
                     ),
