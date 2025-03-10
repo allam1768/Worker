@@ -54,12 +54,13 @@ class _CustomTextFieldInputState extends State<CustomTextFieldInput> {
           ),
         ),
         SizedBox(
-          height: 48.h,
           child: TextField(
             controller: _controller,
             focusNode: _focusNode,
             obscureText: widget.isPassword,
             style: TextStyle(fontSize: 15.sp, color: Colors.black),
+            maxLines: widget.isPassword ? 1 : null, // Password tetap 1 baris, lainnya multi-line
+            keyboardType: widget.isPassword ? TextInputType.text : TextInputType.multiline,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,

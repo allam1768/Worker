@@ -7,7 +7,7 @@ import 'package:worker/app/pages/History%20Tools%20Screen/widgets/GroupHistoryCa
 import 'package:worker/app/pages/History%20Tools%20Screen/widgets/SingleHistoryCard.dart';
 
 
-class HistoryScreen extends StatelessWidget {
+class HistoryView extends StatelessWidget {
   final HistoryController controller = Get.put(HistoryController());
 
   @override
