@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomButtonInput extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final Color color;
   final double fontSize;
 
-  const CustomButtonInput({
+  const CustomButton({
     super.key,
     required this.text,
     required this.onPressed,

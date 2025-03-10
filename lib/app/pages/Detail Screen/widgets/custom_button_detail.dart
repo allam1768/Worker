@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class CustomButton extends StatelessWidget {
-  final String label;
-  final IconData icon;
+class CustomButtonDetail extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
   final Color color;
-  final VoidCallback onTap;
+  final String? svgIcon;
+  final IconData? icon;
 
-  const CustomButton({
+  const CustomButtonDetail({
     super.key,
-    required this.label,
-    required this.icon,
+    required this.text,
+    required this.onPressed,
     required this.color,
-    required this.onTap,
+    this.svgIcon,
+    this.icon,
   });
 
   @override
@@ -20,14 +23,18 @@ class CustomButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: onTap,
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           padding: EdgeInsets.symmetric(vertical: 14.h),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
         ),
-        icon: Icon(icon, color: Colors.white),
-        label: Text(label, style: TextStyle(fontSize: 18.sp, color: Colors.white)),
+        icon: svgIcon != null
+            ? SvgPicture.asset(svgIcon!, width: 20.w, height: 20.h, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn))
+            : icon != null
+            ? Icon(icon, color: Colors.white)
+            : const SizedBox.shrink(),
+        label: Text(text, style: TextStyle(fontSize: 18.sp, color: Colors.white)),
       ),
     );
   }

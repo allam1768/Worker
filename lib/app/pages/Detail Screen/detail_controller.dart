@@ -7,13 +7,13 @@ class DetailController extends GetxController {
   var tanggalJam = "10.02.2024   09.00".obs;
   var kondisi = "Baik".obs;
   var jumlah = "1000".obs;
-  var informasi = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.".obs;
+  var informasi = "Lorem ipsum dolor sit amet.".obs;
+  var imagePath = "".obs;
 
-  void editData() {
-    print("Edit Clicked");
-  }
-
-  void deleteData() {
-    print("Delete Clicked");
+  void updateDetailData(String newCondition, String newAmount, String newInformation, String newImage) {
+    kondisi.value = newCondition;
+    jumlah.value = newAmount;
+    informasi.value = newInformation;
+    imagePath.value = newImage;
   }
 }
