@@ -23,8 +23,6 @@ class ScanCompanyView extends GetView<ScanCompanyController> {
       body: Column(
         children: [
           const Spacer(),
-
-          // Scanner
           Container(
             width: 300.w,
             height: 300.w,
@@ -49,7 +47,7 @@ class ScanCompanyView extends GetView<ScanCompanyController> {
 
           const Spacer(),
 
-          // Tombol Flash & Rotate (Pakai SVG)
+
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -64,9 +62,9 @@ class ScanCompanyView extends GetView<ScanCompanyController> {
               )),
               SizedBox(width: 24.w),
               Obx(() => AnimatedRotation(
-                turns: controller.isFrontCamera.value ? 0.5 : 0, // 1 putaran saat berubah
-                duration: const Duration(milliseconds: 300), // Durasi animasi
-                curve: Curves.easeInOut, // Efek animasi smooth
+                turns: controller.isFrontCamera.value ? 0.5 : 0,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
                 child: IconButton(
                   icon: SvgPicture.asset(
                     controller.isFrontCamera.value
@@ -77,10 +75,8 @@ class ScanCompanyView extends GetView<ScanCompanyController> {
                   onPressed: controller.switchCamera,
                 ),
               )),
-
             ],
           ),
-
           SizedBox(height: 32.h),
         ],
       ),

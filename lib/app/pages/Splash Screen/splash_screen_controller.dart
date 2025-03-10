@@ -12,12 +12,12 @@ class SplashScreenController extends GetxController {
     final prefs = await SharedPreferences.getInstance();
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
-    await Future.delayed(const Duration(seconds: 2)); // Simulasi splash screen
+    await Future.delayed(const Duration(seconds: 2));
 
     if (isLoggedIn) {
-      Get.offNamed('/home'); // Arahkan ke home jika sudah login
+      Get.offNamed('/home');
     } else {
-      Get.offNamed('/login'); // Arahkan ke login jika belum login
+      Get.offNamed('/login');
     }
   }
 }

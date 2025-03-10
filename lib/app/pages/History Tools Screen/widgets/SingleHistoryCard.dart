@@ -10,20 +10,20 @@ class SingleHistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h), // Sama dengan GroupedHistoryCard
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       child: Card(
         color: const Color(0xFF9CBE9D),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-        child: InkWell( // Tambahkan InkWell untuk efek klik
+        child: InkWell(
           borderRadius: BorderRadius.circular(12.r),
           onTap: () {
             Get.offNamed('/detail');
           },
           child: SizedBox(
-            height: 84.h, // Tinggi card tetap
-            width: double.infinity, // Lebar penuh
+            height: 84.h,
+            width: double.infinity,
             child: ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w), // Padding dalam ListTile
+              contentPadding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
               title: Text(
                 item["name"],
                 style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),

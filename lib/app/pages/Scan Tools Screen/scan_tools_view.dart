@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:worker/app/global-component/app_bar.dart';
 import 'package:worker/app/pages/Scan%20Tools%20Screen/scan_tools_controller.dart';
 
 class ScanToolsView extends GetView<ScanToolsController> {
@@ -15,39 +16,7 @@ class ScanToolsView extends GetView<ScanToolsController> {
       body: SafeArea(
         child: Column(
           children: [
-            // AppBar Custom
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 10.h),
-              child: Row(
-                children: [
-                  // Back Button
-                  GestureDetector(
-                    onTap: () {
-                      Get.offNamed('/HistoryTool');
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10.w),
-                      child: SvgPicture.asset(
-                        "assets/icons/back_btn.svg",
-                        width: 44.w,
-                        height: 44.h,
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(width: 10.w),
-
-                  // Title
-                  Expanded(
-                    child: Text(
-                      "Add Data",
-                      style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
+            CustomAppBar(title: "Add Data"),
             const Spacer(),
 
             // Scanner
@@ -75,7 +44,6 @@ class ScanToolsView extends GetView<ScanToolsController> {
 
             const Spacer(),
 
-            // Tombol Flash & Rotate
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -105,7 +73,6 @@ class ScanToolsView extends GetView<ScanToolsController> {
                 )),
               ],
             ),
-
             SizedBox(height: 32.h),
           ],
         ),
