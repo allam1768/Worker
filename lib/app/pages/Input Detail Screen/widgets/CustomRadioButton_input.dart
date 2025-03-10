@@ -29,8 +29,6 @@ class CustomRadioButtonGroup extends StatelessWidget {
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.black),
           ),
         ),
-
-        // Radio Button List
         Row(
           children: options
               .map(
@@ -39,7 +37,7 @@ class CustomRadioButtonGroup extends StatelessWidget {
                 Radio(
                   value: option,
                   groupValue: selectedValue.value,
-                  activeColor: const Color(0xFFFFA726), // Warna saat dipilih
+                  activeColor: const Color(0xFFFFA726),
                   onChanged: (value) {
                     selectedValue.value = value.toString();
                   },
@@ -48,8 +46,8 @@ class CustomRadioButtonGroup extends StatelessWidget {
                   option,
                   style: TextStyle(
                     fontSize: 14.sp,
-                    color:  Colors.black, // Warna teks berubah
-                    fontWeight: FontWeight.normal, // Biar lebih tegas
+                    color:  Colors.black,
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
               ],
@@ -57,8 +55,6 @@ class CustomRadioButtonGroup extends StatelessWidget {
           )
               .toList(),
         ),
-
-        // Error Message
         Obx(() => showError.value && selectedValue.value.isEmpty
             ? Padding(
           padding: EdgeInsets.only(top: 5.h),

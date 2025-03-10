@@ -20,7 +20,7 @@ class HistoryController extends GetxController {
     "10": "October", "11": "November", "12": "December"
   };
 
-  // Fungsi untuk mengelompokkan berdasarkan bulan
+
   Map<String, List<Map<String, dynamic>>> groupByMonth() {
     Map<String, List<Map<String, dynamic>>> groupedData = {};
 
@@ -36,13 +36,13 @@ class HistoryController extends GetxController {
     return groupedData;
   }
 
-  // Ambil bulan dan tahun dari tanggal
+
   String getMonthYearKey(String date) {
     List<String> splitDate = date.split(".");
     return "${splitDate[1]}.${splitDate[2]}"; // Format MM.YYYY
   }
 
-  // Ambil nama bulan berdasarkan key
+
   String getMonthName(String monthKey) {
     String month = monthKey.split(".")[0];
     return monthNames[month] ?? "Unknown";

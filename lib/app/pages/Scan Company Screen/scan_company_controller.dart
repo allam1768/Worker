@@ -20,7 +20,7 @@ class ScanCompanyController extends GetxController {
     String scanResult = result ?? "Tidak terbaca";
     Get.snackbar("Scan Result", scanResult, snackPosition: SnackPosition.BOTTOM);
 
-    // Timer 5 detik untuk pindah halaman meskipun tidak ada hasil scan
+
     Future.delayed(const Duration(seconds: 5), () {
       Get.offNamed("/AllDataTools", arguments: {"result": scanResult});
     });

@@ -18,7 +18,7 @@ class CustomButtonLogin extends StatelessWidget {
       height: 56.h,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF234E35), // Warna hijau gelap
+          backgroundColor: const Color(0xFF234E35),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.r),
           ),

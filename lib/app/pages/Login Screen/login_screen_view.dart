@@ -12,15 +12,14 @@ class LoginScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFCCD7CD), // Warna soft hijau
+      backgroundColor: const Color(0xFFCCD7CD),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w), // Margin kiri & kanan responsif
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Pusatkan secara vertikal
-            crossAxisAlignment: CrossAxisAlignment.start, // Rata kiri
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Gambar SVG Ilustrasi
               Center(
                 child: SvgPicture.asset(
                   'assets/images/login_illustration.svg',
@@ -28,8 +27,6 @@ class LoginScreenView extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 130.h),
-
-              // Bagian teks Login
               Text(
                 "Login",
                 style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
@@ -40,15 +37,11 @@ class LoginScreenView extends StatelessWidget {
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500),
               ),
               SizedBox(height: 24.h),
-
-              // Input Username
               CustomTextFieldLogin(
                 hintText: "Username",
                 iconPath: "assets/icons/username.svg",
               ),
               SizedBox(height: 16.h),
-
-              // Input Password
               CustomTextFieldLogin(
                 hintText: "Password",
                 iconPath: "assets/icons/password.svg",

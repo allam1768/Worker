@@ -20,7 +20,7 @@ class CustomTextFieldInput extends StatefulWidget {
 class _CustomTextFieldInputState extends State<CustomTextFieldInput> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  bool _isEmpty = false; // Cek apakah field kosong
+  bool _isEmpty = false;
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _CustomTextFieldInputState extends State<CustomTextFieldInput> {
             focusNode: _focusNode,
             obscureText: widget.isPassword,
             style: TextStyle(fontSize: 15.sp, color: Colors.black),
-            maxLines: widget.isPassword ? 1 : null, // Password tetap 1 baris, lainnya multi-line
+            maxLines: widget.isPassword ? 1 : null,
             keyboardType: widget.isPassword ? TextInputType.text : TextInputType.multiline,
             decoration: InputDecoration(
               filled: true,
@@ -68,28 +68,28 @@ class _CustomTextFieldInputState extends State<CustomTextFieldInput> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.r),
                 borderSide: BorderSide(
-                  color: Colors.black, // Default hitam
+                  color: Colors.black,
                   width: 1.w,
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.r),
                 borderSide: BorderSide(
-                  color: Colors.black, // Default hitam
+                  color: Colors.black,
                   width: 1.w,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.r),
                 borderSide: BorderSide(
-                  color: Colors.black, // Fokus tetap hitam
+                  color: Colors.black,
                   width: 1.5.w,
                 ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.r),
                 borderSide: BorderSide(
-                  color: Colors.red, // Error merah
+                  color: Colors.red,
                   width: 1.w,
                 ),
               ),

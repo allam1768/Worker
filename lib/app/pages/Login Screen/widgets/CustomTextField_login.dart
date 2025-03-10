@@ -24,10 +24,10 @@ class _CustomTextFieldLoginState extends State<CustomTextFieldLogin> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48.h, // Tinggi box input field (default)
+      height: 48.h,
       child: TextField(
         obscureText: widget.isPassword ? isObscured : false,
-        style: TextStyle(fontSize: 15.sp, color: Colors.black), // Ukuran teks default
+        style: TextStyle(fontSize: 15.sp, color: Colors.black),
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: TextStyle(fontSize: 15.sp, color: Colors.grey),
@@ -44,7 +44,7 @@ class _CustomTextFieldLoginState extends State<CustomTextFieldLogin> {
           ),
           suffixIcon: widget.isPassword
               ? Padding(
-            padding: EdgeInsets.only(right: 26.w), // Menambahkan jarak ke kanan
+            padding: EdgeInsets.only(right: 26.w),
             child: GestureDetector(
               onTap: () {
                 setState(() {

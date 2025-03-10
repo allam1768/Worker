@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
+import 'package:worker/app/global-component/app_bar.dart';
 import 'package:worker/app/pages/Detail%20Screen/widgets/custom_button_detail.dart';
 import 'package:worker/app/pages/Detail%20Screen/widgets/info_card.dart';
 import 'package:worker/app/pages/Detail%20Screen/widgets/info_container.dart';
@@ -17,31 +16,7 @@ class DetailView extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 10.h),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Get.back(),
-                    child: Container(
-                      padding: EdgeInsets.all(10.w),
-                      child: SvgPicture.asset(
-                        "assets/icons/back_btn.svg",
-                        width: 44.w,
-                        height: 44.h,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                    child: Text(
-                      "Detail",
-                      style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            CustomAppBar(title: "Detail"),
             const Spacer(),
             Container(
               width: double.infinity,
@@ -49,7 +24,7 @@ class DetailView extends StatelessWidget {
                 color: Color(0xFFBBD4C3),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+              padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 20.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -77,9 +52,9 @@ class DetailView extends StatelessWidget {
                   SizedBox(height: 12.h),
                   const Row(
                     children: [
-                      InfoCard(title: "Condition", value: "Baik"),
+                      Expanded(child: InfoCard(title: "Condition", value: "Baik")),
                       SizedBox(width: 12),
-                      InfoCard(title: "Amount", value: "1000"),
+                      Expanded(child: InfoCard(title: "Amount", value: "1000")),
                     ],
                   ),
                   SizedBox(height: 12.h),

@@ -10,14 +10,14 @@ class SplashScreenView extends GetView<SplashScreenController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFDCE5D8), // Warna soft hijau
+      backgroundColor: const Color(0xFFDCE5D8),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
               'assets/icons/logo.svg',
-              width: 140.w, // Ukuran logo responsif
+              width: 140.w,
             ),
           ],
         ),
