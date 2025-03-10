@@ -1,30 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomTextFieldInput extends StatefulWidget {
+class CustomTextField extends StatefulWidget {
   final String label;
+  final String? initialValue;
   final bool isPassword;
   final Function(String)? onChanged;
 
-  const CustomTextFieldInput({
+  const CustomTextField({
     super.key,
     required this.label,
+    this.initialValue,
     this.isPassword = false,
     this.onChanged,
   });
 
   @override
-  _CustomTextFieldInputState createState() => _CustomTextFieldInputState();
+  _CustomTextFieldState createState() => _CustomTextFieldState();
 }
 
-class _CustomTextFieldInputState extends State<CustomTextFieldInput> {
-  final TextEditingController _controller = TextEditingController();
+class _CustomTextFieldState extends State<CustomTextField> {
+  late final TextEditingController _controller;
   final FocusNode _focusNode = FocusNode();
   bool _isEmpty = false;
+  bool _isExternalController = false;
 
   @override
   void initState() {
     super.initState();
+
+    // Cek apakah initialValue diberikan, jika iya gunakan itu
+    if (widget.initialValue != null) {
+      _controller = TextEditingController(text: widget.initialValue);
+    } else {
+      _controller = TextEditingController();
+    }
+
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
         setState(() {
@@ -36,7 +47,9 @@ class _CustomTextFieldInputState extends State<CustomTextFieldInput> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (!_isExternalController) {
+      _controller.dispose();
+    }
     _focusNode.dispose();
     super.dispose();
   }

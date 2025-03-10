@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:worker/app/global-component/app_bar.dart';
+
 import 'package:worker/app/pages/Detail%20Screen/widgets/custom_button_detail.dart';
+
+
 import 'package:worker/app/pages/Detail%20Screen/widgets/info_card.dart';
 import 'package:worker/app/pages/Detail%20Screen/widgets/info_container.dart';
 import 'package:worker/app/pages/Detail%20Screen/widgets/karyawan_card.dart';
@@ -66,20 +72,20 @@ class DetailView extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: CustomButton(
-                          label: "Edit",
+                        child: CustomButtonDetail(
                           icon: Icons.edit,
                           color: Color(0xFF275637),
-                          onTap: () => print("Edit Clicked"),
+                          text: 'Edit',
+                          onPressed: () => Get.offNamed('EditData'),
                         ),
                       ),
                       SizedBox(width: 12.w),
                       Expanded(
-                        child: CustomButton(
-                          label: "Delete",
+                        child: CustomButtonDetail(
+                          text: "Delete",
                           icon: Icons.delete,
                           color: Colors.red.shade700,
-                          onTap: () => print("Delete Clicked"),
+                          onPressed: () => print("Delete Clicked"),
                         ),
                       ),
                     ],

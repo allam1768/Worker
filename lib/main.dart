@@ -7,6 +7,8 @@ import 'package:worker/app/pages/Data%20Tools%20Screen/data_tools_binding.dart';
 import 'package:worker/app/pages/Data%20Tools%20Screen/data_tools_view.dart';
 import 'package:worker/app/pages/Detail%20Screen/detail_binding.dart';
 import 'package:worker/app/pages/Detail%20Screen/detail_view.dart';
+import 'package:worker/app/pages/Edit%20Data%20Screen/edit_data_binding.dart';
+import 'package:worker/app/pages/Edit%20Data%20Screen/edit_data_view.dart';
 import 'package:worker/app/pages/History%20Tools%20Screen/history_tools_binding.dart';
 import 'package:worker/app/pages/History%20Tools%20Screen/history_tools_view.dart';
 import 'package:worker/app/pages/Input%20Detail%20Screen/input_detail_binding.dart';
@@ -80,6 +82,11 @@ class MyApp extends StatelessWidget {
               name: '/Detail',
               page: () => DetailView(),
               binding: DetailBinding(),
+            ),
+            GetPage(
+              name: '/EditData',
+              page: () => EditDataView(),
+              binding: EditDataBinding(),
             ),
           ],
         );

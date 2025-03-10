@@ -9,8 +9,8 @@ import 'package:worker/app/pages/Input%20Detail%20Screen/input_detail_controller
 import 'package:worker/app/pages/Input%20Detail%20Screen/widgets/CustomImageUpload_input.dart';
 import 'package:worker/app/pages/Input%20Detail%20Screen/widgets/CustomRadioButton_input.dart';
 
-class InputDetailView extends StatelessWidget {
-  InputDetailView({super.key});
+class EditDataView extends StatelessWidget {
+  EditDataView({super.key});
 
   final InputDetailController controller = Get.put(InputDetailController());
 
@@ -22,7 +22,7 @@ class InputDetailView extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: CustomAppBar(title: "Input Detail"),
+              child: CustomAppBar(title: "Edit Data"),
             ),
 
             SliverToBoxAdapter(
