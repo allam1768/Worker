@@ -5,6 +5,8 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:worker/app/pages/Data%20Tools%20Screen/data_tools_binding.dart';
 import 'package:worker/app/pages/Data%20Tools%20Screen/data_tools_view.dart';
+import 'package:worker/app/pages/Detail%20Screen/detail_binding.dart';
+import 'package:worker/app/pages/Detail%20Screen/detail_view.dart';
 import 'package:worker/app/pages/History%20Tools%20Screen/history_tools_binding.dart';
 import 'package:worker/app/pages/History%20Tools%20Screen/history_tools_view.dart';
 import 'package:worker/app/pages/Input%20Detail%20Screen/input_detail_binding.dart';
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             textTheme: GoogleFonts.nunitoTextTheme(),
           ),
-          initialRoute: '/InputDetail',
+          initialRoute: '/Detail',
           getPages: [
             GetPage(
               name: '/splash',
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
             ),
             GetPage(
               name: '/HistoryTool',
-              page: () => HistoryScreen(),
+              page: () => HistoryView(),
               binding: HistoryBinding(),
             ),
             GetPage(
@@ -73,6 +75,11 @@ class MyApp extends StatelessWidget {
               name: '/InputDetail',
               page: () => InputDetailView(),
               binding: InputDetailBinding(),
+            ),
+            GetPage(
+              name: '/Detail',
+              page: () => DetailView(),
+              binding: DetailBinding(),
             ),
           ],
         );
