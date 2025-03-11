@@ -17,6 +17,8 @@ import 'package:worker/app/pages/Input%20Detail%20Screen/input_detail_binding.da
 import 'package:worker/app/pages/Input%20Detail%20Screen/input_detail_view.dart';
 import 'package:worker/app/pages/Login%20Screen/login_screen_binding.dart';
 import 'package:worker/app/pages/Login%20Screen/login_screen_view.dart';
+import 'package:worker/app/pages/Report%20Detail%20Screen/report_detail_binding.dart';
+import 'package:worker/app/pages/Report%20Detail%20Screen/report_detail_view.dart';
 import 'package:worker/app/pages/Scan%20Company%20Screen/scan_company_binding.dart';
 import 'package:worker/app/pages/Scan%20Company%20Screen/scan_company_view.dart';
 import 'package:worker/app/pages/Scan%20Tools%20Screen/scan_tools_binding.dart';
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             textTheme: GoogleFonts.nunitoTextTheme(),
           ),
-          initialRoute: '/AllDataTools',
+          initialRoute: '/ReportDetail',
           getPages: [
             GetPage(
               name: '/splash',
@@ -94,6 +96,11 @@ class MyApp extends StatelessWidget {
               name: '/HistoryReport',
               page: () => HistoryReportView(),
               binding: HistoryReportBinding(),
+            ),
+            GetPage(
+              name: '/ReportDetail',
+              page: () => ReportDetailView(),
+              binding: ReportDetailBinding(),
             ),
           ],
         );
