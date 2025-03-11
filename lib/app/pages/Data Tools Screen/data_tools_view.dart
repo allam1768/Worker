@@ -13,52 +13,58 @@ class DataToolsView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFD7DDCC),
-      body: Column(
-        children: [
-          CustomAppBar(
-            title: "Name company",
-            rightIcon: "assets/icons/report_icon.svg",
-            rightOnTap: () {
-              Get.offNamed('');
-            },
-            showBackButton: false,
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 35.w),
-              child: Column(
-                children: [
-                  SizedBox(height: 40.h),
-                  Expanded(
-                    child: tools.isEmpty
-                        ? Center(
-                      child: Text(
-                        "Belum ada alat yg terdaftar",
-                        style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: Colors.black54),
-                      ),
-                    )
-                        : ListView.builder(
-                      itemCount: tools.length,
-                      itemBuilder: (context, index) {
-                        final tool = tools[index];
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 16.h),
-                          child: ToolCard(
-                            imagePath: tool["image"]!,
-                            location: tool["location"]!,
-                            onTap: () {
-                              Get.offNamed('/HistoryTool');
-                            },
+      body: SafeArea(
+        child: Column(
+          children: [
+            CustomAppBar(
+              title: "Name company",
+              rightIcon: "assets/icons/report_icon.svg",
+              rightOnTap: () {
+                Get.offNamed('HistoryReport');
+              },
+              showBackButton: false,
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 35.w),
+                child: Column(
+                  children: [
+                    SizedBox(height: 40.h),
+                    Expanded(
+                      child: tools.isEmpty
+                          ? Center(
+                        child: Text(
+                          "Belum ada alat yg terdaftar",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54,
                           ),
-                        );
-                      },
+                        ),
+                      )
+                          : ListView.builder(
+                        itemCount: tools.length,
+                        itemBuilder: (context, index) {
+                          final tool = tools[index];
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 16.h),
+                            child: ToolCard(
+                              imagePath: tool["image"]!,
+                              location: tool["location"]!,
+                              onTap: () {
+                                Get.offNamed('/HistoryTool');
+                              },
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
