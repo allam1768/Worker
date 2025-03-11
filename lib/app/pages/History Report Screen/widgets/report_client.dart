@@ -20,7 +20,7 @@ class ReportClient extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          color: Color(0xFFA5C3A8),
+          color: Color(0xFFAFC9AF),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15.r),
             topRight: Radius.circular(15.r),
