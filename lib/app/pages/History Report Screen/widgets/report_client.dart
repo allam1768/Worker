@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class ReportClient extends StatelessWidget {
   final String name;
@@ -15,43 +16,51 @@ class ReportClient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 12.h),
-      child: Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: Color(0xFFAFC9AF),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15.r),
-            topRight: Radius.circular(15.r),
-            bottomRight: Radius.circular(15.r),
+    return GestureDetector(
+      onTap: () => Get.toNamed('/detail', arguments: {
+        "name": name,
+        "date": date,
+        "time": time,
+        "role": "client"
+      }),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 12.h),
+        child: Container(
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            color: Color(0xFFAFC9AF),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.r),
+              topRight: Radius.circular(15.r),
+              bottomRight: Radius.circular(15.r),
+            ),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              name,
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(height: 5.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  date,
-                  style: TextStyle(fontSize: 14.sp),
-                ),
-                Text(
-                  time,
-                  style: TextStyle(fontSize: 14.sp),
-                ),
-              ],
-            ),
-          ],
+              SizedBox(height: 5.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    date,
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
+                  Text(
+                    time,
+                    style: TextStyle(fontSize: 14.sp),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
