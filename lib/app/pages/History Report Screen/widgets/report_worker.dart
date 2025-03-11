@@ -20,7 +20,7 @@ class ReportWorker extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
-          color: Color(0xFFA5C3A8),
+          color: Color(0xFF97B999),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15.r),
             topRight: Radius.circular(15.r),
@@ -28,7 +28,7 @@ class ReportWorker extends StatelessWidget {
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
               name,
@@ -42,11 +42,11 @@ class ReportWorker extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  date,
+                  time,
                   style: TextStyle(fontSize: 14.sp),
                 ),
                 Text(
-                  time,
+                  date,
                   style: TextStyle(fontSize: 14.sp),
                 ),
               ],

@@ -46,7 +46,6 @@ class HistoryReportView extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final report = controller.reports[index];
                         final isWorker = report["role"] == "worker";
-
                         return isWorker
                             ? ReportWorker(
                           name: report["name"]!,
@@ -58,6 +57,7 @@ class HistoryReportView extends StatelessWidget {
                           date: report["date"]!,
                           time: report["time"]!,
                         );
+
                       },
                     ),
                   );
