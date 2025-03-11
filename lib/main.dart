@@ -9,6 +9,8 @@ import 'package:worker/app/pages/Detail%20Screen/detail_binding.dart';
 import 'package:worker/app/pages/Detail%20Screen/detail_view.dart';
 import 'package:worker/app/pages/Edit%20Data%20Screen/edit_data_binding.dart';
 import 'package:worker/app/pages/Edit%20Data%20Screen/edit_data_view.dart';
+import 'package:worker/app/pages/History%20Report%20Screen/history_report_binding.dart';
+import 'package:worker/app/pages/History%20Report%20Screen/history_report_view.dart';
 import 'package:worker/app/pages/History%20Tools%20Screen/history_tools_binding.dart';
 import 'package:worker/app/pages/History%20Tools%20Screen/history_tools_view.dart';
 import 'package:worker/app/pages/Input%20Detail%20Screen/input_detail_binding.dart';
@@ -41,7 +43,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             textTheme: GoogleFonts.nunitoTextTheme(),
           ),
-          initialRoute: '/Detail',
+          initialRoute: '/AllDataTools',
           getPages: [
             GetPage(
               name: '/splash',
@@ -87,6 +89,11 @@ class MyApp extends StatelessWidget {
               name: '/EditData',
               page: () => EditDataView(),
               binding: EditDataBinding(),
+            ),
+            GetPage(
+              name: '/HistoryReport',
+              page: () => HistoryReportView(),
+              binding: HistoryReportBinding(),
             ),
           ],
         );
