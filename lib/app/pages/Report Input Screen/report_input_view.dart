@@ -6,7 +6,8 @@ import 'package:worker/app/global-component/CustomButton.dart';
 import 'package:worker/app/global-component/CustomTextField.dart';
 import 'package:worker/app/global-component/app_bar.dart';
 import 'package:worker/app/pages/Input%20Detail%20Screen/input_detail_controller.dart';
-import 'package:worker/app/pages/Input%20Detail%20Screen/widgets/CustomImageUpload_input.dart';
+
+import '../../global-component/ImageUpload.dart';
 
 class ReportInputView extends StatelessWidget {
   ReportInputView({super.key});
