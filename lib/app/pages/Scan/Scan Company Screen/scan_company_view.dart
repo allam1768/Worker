@@ -5,16 +5,18 @@ import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'scan_company_controller.dart';
 
-class ScanCompanyView extends GetView<ScanCompanyController> {
+class ScanCompanyView extends StatelessWidget {
   const ScanCompanyView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ScanCompanyController controller = Get.find();
+
     return Scaffold(
       backgroundColor: const Color(0xFFDCE7DA),
       appBar: AppBar(
         title: Text(
-          "Scan Qr",
+          "Scan QR",
           style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
@@ -35,19 +37,11 @@ class ScanCompanyView extends GetView<ScanCompanyController> {
               borderRadius: BorderRadius.circular(12.r),
               child: MobileScanner(
                 controller: controller.scannerController,
-                onDetect: (capture) {
-                  final List<Barcode> barcodes = capture.barcodes;
-                  if (barcodes.isNotEmpty) {
-                    controller.onScanResult(barcodes.first.rawValue ?? "Tidak terbaca");
-                  }
-                },
+                onDetect: controller.handleScanResult,
               ),
             ),
           ),
-
           const Spacer(),
-
-
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
