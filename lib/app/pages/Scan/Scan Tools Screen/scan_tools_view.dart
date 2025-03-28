@@ -4,13 +4,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:worker/app/global-component/app_bar.dart';
-import 'package:worker/app/pages/Scan%20Tools%20Screen/scan_tools_controller.dart';
+import 'scan_tools_controller.dart';
 
-class ScanToolsView extends GetView<ScanToolsController> {
+class ScanToolsView extends StatelessWidget {
   const ScanToolsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ScanToolsController controller = Get.put(ScanToolsController());
+
     return Scaffold(
       backgroundColor: const Color(0xFFDCE7DA),
       body: SafeArea(
@@ -32,12 +34,7 @@ class ScanToolsView extends GetView<ScanToolsController> {
                 borderRadius: BorderRadius.circular(12.r),
                 child: MobileScanner(
                   controller: controller.scannerController,
-                  onDetect: (capture) {
-                    final List<Barcode> barcodes = capture.barcodes;
-                    if (barcodes.isNotEmpty) {
-                      controller.onScanResult(barcodes.first.rawValue ?? "Tidak terbaca");
-                    }
-                  },
+                  onDetect: controller.handleScanResult,
                 ),
               ),
             ),
