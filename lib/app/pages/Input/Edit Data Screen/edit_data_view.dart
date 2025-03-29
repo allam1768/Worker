@@ -123,7 +123,7 @@ class EditDataView extends StatelessWidget {
                             text: "Save",
                             color: Color(0xFF275637),
                             onPressed: controller.validateForm,
-                            fontSize: 20,
+                            fontSize: 16,
                           ),
 
                           SizedBox(height: 50.h),

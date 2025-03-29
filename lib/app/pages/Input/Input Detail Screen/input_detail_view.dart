@@ -38,7 +38,7 @@ class InputDetailView extends StatelessWidget {
                   ),
                   SliverToBoxAdapter(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 16.h),
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                       color: const Color(0xFFCCD7CD),
                       child: Text(
                         "Fly 01 Utara",
@@ -50,7 +50,7 @@ class InputDetailView extends StatelessWidget {
                     hasScrollBody: false,
                     child: Container(
                       color: const Color(0xFFBBD4C3),
-                      padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 16.h),
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -93,6 +93,7 @@ class InputDetailView extends StatelessWidget {
                           SizedBox(height: 15.h),
                           CustomTextField(
                             label: "Amount",
+                            isNumber: true,
                             onChanged: controller.setAmount,
                           ),
                           Obx(() => controller.showError.value && controller.amount.value.isEmpty
@@ -130,7 +131,7 @@ class InputDetailView extends StatelessWidget {
                             text: "Save",
                             color: Color(0xFF275637),
                             onPressed: controller.validateForm,
-                            fontSize: 20,
+                            fontSize: 16,
                           ),
                           SizedBox(height: 50.h),
                         ],
