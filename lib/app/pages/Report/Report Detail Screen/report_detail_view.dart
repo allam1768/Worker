@@ -60,7 +60,7 @@ class ReportDetailView extends StatelessWidget {
 
                     Text(
                       "Documentation",
-                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8.h),
 

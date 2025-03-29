@@ -58,7 +58,7 @@ class ImageUploadComponent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Upload Image", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
+        Text("Upload Image", style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
         SizedBox(height: 10.h),
 
         GestureDetector(
@@ -99,7 +99,7 @@ class ImageUploadComponent extends StatelessWidget {
           text: "Take Photo",
           color: const Color(0xFFFFA726),
           onPressed: pickImage,
-          fontSize: 20.sp,
+          fontSize: 16.sp,
         ),
       ],
     );

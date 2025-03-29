@@ -40,7 +40,7 @@ class ReportInputView extends StatelessWidget {
                     hasScrollBody: false,
                     child: Container(
                       color: const Color(0xFFBBD4C3),
-                      padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 16.h),
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -86,7 +86,7 @@ class ReportInputView extends StatelessWidget {
                             onPressed: () {
                               controller.validateForm();
                             },
-                            fontSize: 20,
+                            fontSize: 16,
                           ),
 
                           SizedBox(height: 50.h),

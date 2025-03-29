@@ -31,7 +31,7 @@ class ScanCompanyController extends GetxController {
   }
 
   bool isValidHamatechQR(String data) {
-    return data.startsWith("Hamatech"); // Sesuaikan formatnya jika berbeda
+    return data.startsWith("Company"); // Sesuaikan formatnya jika berbeda
   }
 
 
