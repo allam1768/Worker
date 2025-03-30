@@ -16,18 +16,18 @@ class ReportInputView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFCCD7CD),
+      backgroundColor: const Color(0xFFDDDDDD),
       body: SafeArea(
         child: Column(
           children: [
             CustomAppBar(title: "Report Input"),
             Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Container(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(bottom: 20.h),
+                child: Column(
+                  children: [
+                    Container(
                       height: 250.h,
-                      color: const Color(0xFFCCD7CD),
                       child: Center(
                         child: SvgPicture.asset(
                           'assets/images/report_illustration.svg',
@@ -35,16 +35,12 @@ class ReportInputView extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Container(
+                    Container(
                       color: const Color(0xFFBBD4C3),
                       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-
                           CustomTextField(
                             label: "Area",
                             onChanged: (value) => controller.amount.value = value,
@@ -93,8 +89,8 @@ class ReportInputView extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

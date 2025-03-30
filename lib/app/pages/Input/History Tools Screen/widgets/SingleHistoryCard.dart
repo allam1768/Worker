@@ -10,7 +10,7 @@ class SingleHistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric( vertical: 8.h),
       child: Card(
         color: const Color(0xFF97B999),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),

@@ -12,7 +12,7 @@ class HistoryReportView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFD7DDCC),
+      backgroundColor: const Color(0xFFDDDDDD),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,47 +22,38 @@ class HistoryReportView extends StatelessWidget {
               rightIcon: "assets/icons/add_btn.svg",
               rightOnTap: () => Get.toNamed('ReportInput'),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.h), // Padding di bawah app bar
-                  Obx(() {
-                    if (controller.reports.isEmpty) {
-                      return Center(
-                        child: Text(
-                          "Belum ada data",
-                          style: TextStyle(fontSize: 18.sp),
-                        ),
-                      );
-                    }
+            SizedBox(height: 10.h), // Jarak setelah AppBar
+            Expanded( // Tambahin Expanded biar ListView bisa scroll
+              child: Obx(() {
+                if (controller.reports.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "Belum ada data",
+                      style: TextStyle(fontSize: 18.sp),
+                    ),
+                  );
+                }
 
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w), // Padding kiri & kanan list
-                      child: ListView.builder(
-                        shrinkWrap: true, // Agar ListView bisa mengukur ukuran yang tepat
-                        itemCount: controller.reports.length,
-                        itemBuilder: (context, index) {
-                          final report = controller.reports[index];
-                          final isWorker = report["role"] == "worker";
-                          return isWorker
-                              ? ReportWorker(
-                            name: report["name"]!,
-                            date: report["date"]!,
-                            time: report["time"]!,
-                          )
-                              : ReportClient(
-                            name: report["name"]!,
-                            date: report["date"]!,
-                            time: report["time"]!,
-                          );
-                        },
-                      ),
+                return ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w), // Biar rapi
+                  itemCount: controller.reports.length,
+                  itemBuilder: (context, index) {
+                    final report = controller.reports[index];
+                    final isWorker = report["role"] == "worker";
+                    return isWorker
+                        ? ReportWorker(
+                      name: report["name"]!,
+                      date: report["date"]!,
+                      time: report["time"]!,
+                    )
+                        : ReportClient(
+                      name: report["name"]!,
+                      date: report["date"]!,
+                      time: report["time"]!,
                     );
-                  }),
-                ],
-              ),
+                  },
+                );
+              }),
             ),
           ],
         ),
