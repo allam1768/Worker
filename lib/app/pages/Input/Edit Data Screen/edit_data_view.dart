@@ -16,41 +16,38 @@ class EditDataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFCCD7CD),
+      backgroundColor: const Color(0xFFDDDDDD),
       body: SafeArea(
         child: Column(
           children: [
             CustomAppBar(title: "Edit Data"),
             Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
                       height: 250.h,
-                      color: const Color(0xFFCCD7CD),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'assets/images/input_illustration.svg',
-                          width: 310.w,
+                      alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        'assets/images/input_illustration.svg',
+                        width: 310.w,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                      width: double.infinity,
+                      child: Text(
+                        "Fly 01 Utara",
+                        style: TextStyle(
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
                       ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 16.h),
-                      color: const Color(0xFFCCD7CD),
-                      child: Text(
-                        "Fly 01 Utara",
-                        style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold, color: Colors.black),
-                      ),
-                    ),
-                  ),
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Container(
+                    Container(
                       color: const Color(0xFFBBD4C3),
-                      padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 16.h),
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -130,8 +127,8 @@ class EditDataView extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

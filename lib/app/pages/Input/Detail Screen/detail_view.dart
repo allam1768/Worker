@@ -16,7 +16,7 @@ class DetailView extends StatelessWidget {
     final DetailController controller = Get.put(DetailController());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFCCD7CD),
+      backgroundColor: const Color(0xFFDDDDDD),
       body: SafeArea(
         child: Column(
           children: [

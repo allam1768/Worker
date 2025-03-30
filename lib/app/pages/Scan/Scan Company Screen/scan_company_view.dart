@@ -13,7 +13,7 @@ class ScanCompanyView extends StatelessWidget {
     final ScanCompanyController controller = Get.find();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFDCE7DA),
+      backgroundColor: const Color(0xFFDDDDDD),
       appBar: AppBar(
         title: Text(
           "Scan QR",

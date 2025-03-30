@@ -13,7 +13,7 @@ class DataToolsView extends StatelessWidget {
     final DataToolsController controller = Get.put(DataToolsController());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFD7DDCC),
+      backgroundColor: const Color(0xFFDDDDDD),
       body: SafeArea(
         child: Column(
           children: [

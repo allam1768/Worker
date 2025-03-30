@@ -15,53 +15,51 @@ class GroupedHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: Obx(
-            () => AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          decoration: BoxDecoration(
-            color: const Color(0xFF9CB1A3),
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  isExpanded.value = !isExpanded.value;
-                },
-                child: Container(
-                  height: 84.h,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        controller.getMonthName(month),
-                        style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-                      ),
-                      AnimatedRotation(
-                        turns: isExpanded.value ? 0.5 : 0,
-                        duration: const Duration(milliseconds: 300),
-                        child: Icon(Icons.expand_more, size: 24.sp),
-                      ),
-                    ],
-                  ),
+    return Obx(
+          () => AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        decoration: BoxDecoration(
+          color: const Color(0xFF9CB1A3),
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        margin: EdgeInsets.symmetric(vertical: 8.h), // Biar ada jarak antar card
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                isExpanded.value = !isExpanded.value;
+              },
+              child: Container(
+                height: 84.h,
+                padding: EdgeInsets.symmetric(horizontal: 16.w), // Padding dalam card
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      controller.getMonthName(month),
+                      style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    ),
+                    AnimatedRotation(
+                      turns: isExpanded.value ? 0.5 : 0,
+                      duration: const Duration(milliseconds: 300),
+                      child: Icon(Icons.expand_more, size: 24.sp),
+                    ),
+                  ],
                 ),
               ),
-              AnimatedCrossFade(
-                firstChild: const SizedBox.shrink(),
-                secondChild: Column(
-                  children: items.map((item) => SingleHistoryCard(item: item)).toList(),
-                ),
-                crossFadeState:
-                isExpanded.value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                duration: const Duration(milliseconds: 300),
+            ),
+            AnimatedCrossFade(
+              firstChild: const SizedBox.shrink(),
+              secondChild: Column(
+                children: items.map((item) => SingleHistoryCard(item: item)).toList(),
               ),
-            ],
-          ),
+              crossFadeState:
+              isExpanded.value ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+              duration: const Duration(milliseconds: 300),
+            ),
+          ],
         ),
       ),
     );

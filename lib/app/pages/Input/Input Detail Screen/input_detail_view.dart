@@ -16,18 +16,21 @@ class InputDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFCCD7CD),
+      backgroundColor: const Color(0xFFDDDDDD),
       body: SafeArea(
         child: Column(
           children: [
             CustomAppBar(title: "Input Detail"),
+
             Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Container(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(bottom: 20.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    Container(
                       height: 250.h,
-                      color: const Color(0xFFCCD7CD),
                       child: Center(
                         child: SvgPicture.asset(
                           'assets/images/input_illustration.svg',
@@ -35,20 +38,16 @@ class InputDetailView extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
+
+                    Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-                      color: const Color(0xFFCCD7CD),
                       child: Text(
                         "Fly 01 Utara",
                         style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                     ),
-                  ),
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Container(
+
+                    Container(
                       color: const Color(0xFFBBD4C3),
                       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                       child: Column(
@@ -91,6 +90,7 @@ class InputDetailView extends StatelessWidget {
                           )
                               : SizedBox()),
                           SizedBox(height: 15.h),
+
                           CustomTextField(
                             label: "Amount",
                             isNumber: true,
@@ -106,6 +106,7 @@ class InputDetailView extends StatelessWidget {
                           )
                               : SizedBox()),
                           SizedBox(height: 15.h),
+
                           CustomTextField(
                             label: "Information",
                             onChanged: controller.setInformation,
@@ -137,8 +138,8 @@ class InputDetailView extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

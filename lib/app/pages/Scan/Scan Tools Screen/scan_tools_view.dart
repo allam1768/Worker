@@ -14,7 +14,7 @@ class ScanToolsView extends StatelessWidget {
     final ScanToolsController controller = Get.put(ScanToolsController());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFDCE7DA),
+      backgroundColor: const Color(0xFFDDDDDD),
       body: SafeArea(
         child: Column(
           children: [
