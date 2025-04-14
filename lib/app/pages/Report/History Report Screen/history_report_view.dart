@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:worker/app/global-component/app_bar.dart';
 import 'package:worker/app/pages/Report/History%20Report%20Screen/widgets/report_client.dart';
 import 'package:worker/app/pages/Report/History%20Report%20Screen/widgets/report_worker.dart';
+import '../../../../values/app_color.dart';
+import '../../../global-component/CustomAppBar.dart';
 import 'history_report_controller.dart';
 
 class HistoryReportView extends StatelessWidget {
@@ -12,13 +13,14 @@ class HistoryReportView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFDDDDDD),
+      backgroundColor: AppColor.background,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomAppBar(
               title: "Report",
+              showBackButton: false,
               rightIcon: "assets/icons/add_btn.svg",
               rightOnTap: () => Get.toNamed('ReportInput'),
             ),

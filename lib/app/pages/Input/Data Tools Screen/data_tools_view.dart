@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:worker/app/global-component/app_bar.dart';
 import 'package:worker/app/pages/Input/Data%20Tools%20Screen/widgets/Tool_Card.dart';
+import 'package:worker/values/app_color.dart';
+import '../../../global-component/CustomAppBar.dart';
 import 'data_tools_controller.dart';
 
 class DataToolsView extends StatelessWidget {
@@ -13,14 +14,14 @@ class DataToolsView extends StatelessWidget {
     final DataToolsController controller = Get.put(DataToolsController());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFDDDDDD),
+      backgroundColor: AppColor.background,
       body: SafeArea(
         child: Column(
           children: [
             CustomAppBar(
               title: "Name company",
-              rightIcon: "assets/icons/report_icon.svg",
-              rightOnTap: controller.goToHistoryReport,
+              rightIcon: "",
+              rightOnTap: (){},
               showBackButton: false,
             ),
             Expanded(
@@ -28,7 +29,6 @@ class DataToolsView extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Column(
                   children: [
-                    SizedBox(height: 40.h),
                     Expanded(
                       child: Obx(
                             () => controller.tools.isEmpty
@@ -47,7 +47,7 @@ class DataToolsView extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final tool = controller.tools[index];
                             return Padding(
-                              padding: EdgeInsets.only(bottom: 16.h),
+                              padding: EdgeInsets.only(bottom: 10.h),
                               child: ToolCard(
                                 imagePath: tool["image"]!,
                                 location: tool["location"]!,

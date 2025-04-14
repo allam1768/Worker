@@ -10,6 +10,7 @@ class ReportInputController extends GetxController {
   RxBool showError = false.obs;
 
   Rx<File?> imageFile = Rx<File?>(null);
+  RxBool imageError = false.obs;
 
   Future<void> takePicture() async {
     final picker = ImagePicker();
@@ -17,17 +18,30 @@ class ReportInputController extends GetxController {
 
     if (pickedFile != null) {
       imageFile.value = File(pickedFile.path);
+      imageError.value = false; // reset error kalau udah ambil foto
     }
   }
 
   void validateForm() {
-    if (selectedCondition.value.isEmpty || amount.value.isEmpty || information.value.isEmpty) {
-      showError.value = true;
+    bool isFormEmpty = selectedCondition.value.isEmpty || amount.value.isEmpty || information.value.isEmpty;
+    bool isImageEmpty = imageFile.value == null;
+
+    if (isFormEmpty || isImageEmpty) {
+      showError.value = isFormEmpty;
+      imageError.value = isImageEmpty;
     } else {
       showError.value = false;
-      Get.snackbar("Success", "Data berhasil disimpan",
-          backgroundColor: Colors.green, colorText: Colors.white);
+      imageError.value = false;
+
+      Get.rawSnackbar(
+        message: "Data berhasil disimpan",
+        backgroundColor: Colors.green,
+        snackPosition: SnackPosition.TOP,
+        duration: Duration(seconds: 2),
+      );
+
       // TODO: Simpan data ke database atau API
     }
   }
+
 }

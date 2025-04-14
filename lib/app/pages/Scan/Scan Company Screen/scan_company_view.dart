@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import '../../../../values/app_color.dart';
 import 'scan_company_controller.dart';
 
 class ScanCompanyView extends StatelessWidget {
@@ -13,7 +14,7 @@ class ScanCompanyView extends StatelessWidget {
     final ScanCompanyController controller = Get.find();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFDDDDDD),
+      backgroundColor: AppColor.background,
       appBar: AppBar(
         title: Text(
           "Scan QR",
@@ -29,9 +30,9 @@ class ScanCompanyView extends StatelessWidget {
             width: 300.w,
             height: 300.w,
             decoration: BoxDecoration(
-              color: Colors.grey[400],
+              color: Colors.white,
               borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(color: Colors.orange, width: 4.w),
+              border: Border.all(color: Color(0xFFF59E0B), width: 4.w),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12.r),

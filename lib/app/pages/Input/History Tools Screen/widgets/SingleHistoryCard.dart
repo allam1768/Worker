@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:worker/values/app_color.dart';
 
 class SingleHistoryCard extends StatelessWidget {
   final Map<String, dynamic> item;
@@ -12,7 +13,7 @@ class SingleHistoryCard extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric( vertical: 8.h),
       child: Card(
-        color: const Color(0xFF97B999),
+        color: AppColor.backgroundsetengah,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         child: InkWell(
           borderRadius: BorderRadius.circular(12.r),

@@ -3,8 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:worker/app/global-component/CustomTextField.dart';
-import 'package:worker/app/global-component/ImagePreviewDialog.dart';
-import 'package:worker/app/global-component/app_bar.dart';
+import '../../../../values/app_color.dart';
+import '../../../global-component/CustomAppBar.dart';
+import '../../../global-component/ImagePreview.dart';
 import 'report_detail_controller.dart';
 
 class ReportDetailView extends StatelessWidget {
@@ -13,7 +14,7 @@ class ReportDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFDDDDDD),
+      backgroundColor: AppColor.background,
       body: SafeArea(
         child: Stack(
           children: [
@@ -38,8 +39,7 @@ class ReportDetailView extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color(0xFFBBD4C3),
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+                  color: AppColor.backgroundsetengah,
                 ),
                 padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 35.w),
                 child: Column(
@@ -66,7 +66,7 @@ class ReportDetailView extends StatelessWidget {
 
                     GestureDetector(
                       onTap: () {
-                        showImageDialog(context, "assets/images/example.png");
+                        ImagePreview(context, "assets/images/example.png");
                       },
                       child: Container(
                         width: double.infinity,

@@ -23,7 +23,7 @@ class ToolCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(color: Color(0xFF9BBB9C), width: 2.w),
+          border: Border.all(color: Colors.black, width: 2.w),
         ),
         child: Stack(
           children: [

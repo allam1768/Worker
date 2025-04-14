@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showImageDialog(BuildContext context, String imagePath) {
+void ImagePreview(BuildContext context, String imagePath) {
   showDialog(
     context: context,
     builder: (context) {
