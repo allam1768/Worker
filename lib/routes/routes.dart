@@ -1,4 +1,8 @@
 import 'package:get/get.dart';
+import 'package:worker/app/pages/Bottom%20Nav/bottomnav_binding.dart';
+import 'package:worker/app/pages/Bottom%20Nav/bottomnav_view.dart';
+import 'package:worker/app/pages/Splash%20screen/splash_binding.dart';
+import 'package:worker/app/pages/Splash%20screen/splash_view.dart';
 import '../app/pages/Input/Data Tools Screen/data_tools_binding.dart';
 import '../app/pages/Input/Data Tools Screen/data_tools_view.dart';
 import '../app/pages/Input/Detail Screen/detail_binding.dart';
@@ -9,8 +13,8 @@ import '../app/pages/Input/History Tools Screen/history_tools_binding.dart';
 import '../app/pages/Input/History Tools Screen/history_tools_view.dart';
 import '../app/pages/Input/Input Detail Screen/input_detail_binding.dart';
 import '../app/pages/Input/Input Detail Screen/input_detail_view.dart';
-import '../app/pages/Login Screen/login_screen_binding.dart';
-import '../app/pages/Login Screen/login_screen_view.dart';
+import '../app/pages/Login screen/login_binding.dart';
+import '../app/pages/Login screen/login_view.dart';
 import '../app/pages/Report/History Report Screen/history_report_binding.dart';
 import '../app/pages/Report/History Report Screen/history_report_view.dart';
 import '../app/pages/Report/Report Detail Screen/report_detail_binding.dart';
@@ -21,13 +25,13 @@ import '../app/pages/Scan/Scan Company Screen/scan_company_binding.dart';
 import '../app/pages/Scan/Scan Company Screen/scan_company_view.dart';
 import '../app/pages/Scan/Scan Tools Screen/scan_tools_binding.dart';
 import '../app/pages/Scan/Scan Tools Screen/scan_tools_view.dart';
-import '../app/pages/Splash Screen/spalsh_screen_binding.dart';
-import '../app/pages/Splash Screen/spalsh_screen_view.dart';
+
 
 class Routes {
   static const splash = '/splash';
   static const login = '/login';
   static const scanCompany = '/ScanCompany';
+  static const bottomnav = '/Bottomnav';
   static const allDataTools = '/AllDataTools';
   static const historyTool = '/HistoryTool';
   static const scanTools = '/ScanTools';
@@ -41,18 +45,23 @@ class Routes {
   static final pages = [
     GetPage(
       name: Routes.splash,
-      page: () => SplashScreenView(),
-      binding: SplashScreenBinding(),
+      page: () => SplashView(),
+      binding: SplashBinding(),
     ),
     GetPage(
       name: Routes.login,
-      page: () => LoginScreenView(),
-      binding: LoginScreenBinding(),
+      page: () => LoginView(),
+      binding: LoginBinding(),
     ),
     GetPage(
       name: Routes.scanCompany,
       page: () => ScanCompanyView(),
       binding: ScanCompanyBinding(),
+    ),
+    GetPage(
+      name: Routes.bottomnav,
+      page: () => BottomNavView(),
+      binding: BottomNavBinding(),
     ),
     GetPage(
       name: Routes.allDataTools,
@@ -61,7 +70,7 @@ class Routes {
     ),
     GetPage(
       name: Routes.historyTool,
-      page: () => HistoryView(),
+      page: () => HistoryToolView(),
       binding: HistoryBinding(),
     ),
     GetPage(

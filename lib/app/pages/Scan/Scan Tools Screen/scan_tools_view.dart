@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:worker/app/global-component/app_bar.dart';
+import '../../../../values/app_color.dart';
+import '../../../global-component/CustomAppBar.dart';
 import 'scan_tools_controller.dart';
 
 class ScanToolsView extends StatelessWidget {
@@ -14,7 +15,7 @@ class ScanToolsView extends StatelessWidget {
     final ScanToolsController controller = Get.put(ScanToolsController());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFDDDDDD),
+      backgroundColor: AppColor.background,
       body: SafeArea(
         child: Column(
           children: [
@@ -26,9 +27,9 @@ class ScanToolsView extends StatelessWidget {
               width: 300.w,
               height: 300.w,
               decoration: BoxDecoration(
-                color: Colors.grey[400],
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(16.r),
-                border: Border.all(color: Colors.orange, width: 4.w),
+                border: Border.all(color: Color(0xFFF59E0B), width: 4.w),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12.r),

@@ -25,7 +25,7 @@ class ScanCompanyController extends GetxController {
         showScanResult(scanResult);
       } else {
         Get.snackbar("Invalid QR", "QR Code ini bukan dari Hamatech.",
-            snackPosition: SnackPosition.BOTTOM);
+            snackPosition: SnackPosition.TOP);
       }
     }
   }
@@ -37,7 +37,7 @@ class ScanCompanyController extends GetxController {
 
   void showScanResult(String result) {
     Future.delayed(const Duration(seconds: 0), () {
-      Get.offNamed("/AllDataTools");
+      Get.offNamed("/Bottomnav");
     });
   }
 }
