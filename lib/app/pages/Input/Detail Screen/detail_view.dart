@@ -8,6 +8,7 @@ import 'package:worker/app/pages/Input/Detail%20Screen/widgets/karyawan_card.dar
 import 'package:worker/app/pages/Input/Detail%20Screen/detail_controller.dart';
 
 import '../../../../values/app_color.dart';
+import '../../../dialogs/ConfirmDeleteDialog.dart';
 import '../../../global-component/CustomAppBar.dart';
 import '../../../global-component/ImagePreview.dart';
 
@@ -66,35 +67,50 @@ class DetailView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 12.h),
-                  Obx(
-                        () => Row(
-                      children: [
-                        Expanded(child: InfoCard(title: "Condition", value: controller.kondisi.value)),
-                        SizedBox(width: 12.w),
-                        Expanded(child: InfoCard(title: "Amount", value: controller.jumlah.value)),
-                      ],
-                    ),
-                  ),
+                  Obx(() => Row(
+                    children: [
+                      Expanded(
+                          child: InfoCard(title: "Condition", value: controller.kondisi.value)),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                          child: InfoCard(title: "Amount", value: controller.jumlah.value)),
+                    ],
+                  )),
                   SizedBox(height: 12.h),
                   Obx(() => InfoContainer(title: "Information", content: controller.informasi.value)),
                   SizedBox(height: 20.h),
                   Row(
                     children: [
-                      Expanded(
+                      // TOMBOL EDIT MUNCUL KALAU BOLEH EDIT
+                      Obx(() => controller.canEdit.value
+                          ? Expanded(
                         child: CustomButtonDetail(
                           icon: Icons.edit,
                           color: AppColor.btnijo,
                           text: 'Edit',
                           onPressed: controller.editData,
                         ),
-                      ),
-                      SizedBox(width: 12.w),
+                      )
+                          : const SizedBox()),
                       Expanded(
                         child: CustomButtonDetail(
                           text: "Delete",
                           icon: Icons.delete,
                           color: Colors.red.shade700,
-                          onPressed: controller.deleteData,
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) => ConfirmDeleteDialog(
+                                onCancelTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                                onDeleteTap: () {
+                                  Navigator.of(context).pop();
+                                  controller.deleteData();
+                                },
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
