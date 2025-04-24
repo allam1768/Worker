@@ -25,41 +25,47 @@ class ReportClient extends StatelessWidget {
       }),
       child: Padding(
         padding: EdgeInsets.only(bottom: 12.h),
-        child: Container(
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: Color(0xFFAFC9AF),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15.r),
-              topRight: Radius.circular(15.r),
-              bottomRight: Radius.circular(15.r),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: FractionallySizedBox(
+            widthFactor: 0.9, // Lebar 90% dari layar
+            child: Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: Color(0xFFAFC9AF),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15.r),
+                  topRight: Radius.circular(15.r),
+                  bottomRight: Radius.circular(15.r),
                 ),
               ),
-              SizedBox(height: 5.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    date,
-                    style: TextStyle(fontSize: 14.sp),
+                    name,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Text(
-                    time,
-                    style: TextStyle(fontSize: 14.sp),
+                  SizedBox(height: 5.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        date,
+                        style: TextStyle(fontSize: 14.sp),
+                      ),
+                      Text(
+                        time,
+                        style: TextStyle(fontSize: 14.sp),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),

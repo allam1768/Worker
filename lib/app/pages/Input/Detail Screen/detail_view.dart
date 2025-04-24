@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:worker/app/pages/Input/Detail%20Screen/widgets/ImagePreviewCard.dart';
 import 'package:worker/app/pages/Input/Detail%20Screen/widgets/custom_button_detail.dart';
 import 'package:worker/app/pages/Input/Detail%20Screen/widgets/info_card.dart';
 import 'package:worker/app/pages/Input/Detail%20Screen/widgets/info_container.dart';
@@ -17,6 +18,7 @@ class DetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Mengambil instance dari DetailController
     final DetailController controller = Get.put(DetailController());
 
     return Scaffold(
@@ -35,6 +37,7 @@ class DetailView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Menampilkan judul berdasarkan nilai dari controller
                   Obx(() => Text(
                     controller.title.value,
                     style: TextStyle(
@@ -44,29 +47,19 @@ class DetailView extends StatelessWidget {
                     ),
                   )),
                   SizedBox(height: 12.h),
+                  // Menampilkan informasi karyawan berdasarkan controller
                   Obx(() => EmployeeCard(
                     name: controller.namaKaryawan.value,
                     employeeNumber: controller.nomorKaryawan.value,
                     date: controller.tanggalJam.value,
                   )),
                   SizedBox(height: 12.h),
-                  GestureDetector(
-                    onTap: () {
-                      ImagePreview(context, "assets/images/example.png");
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 204.h,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[700],
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: Center(
-                        child: Icon(Icons.image, color: Colors.white, size: 50.w),
-                      ),
-                    ),
+                  // Menampilkan gambar berdasarkan path dari controller
+                  ImagePreviewCard(
+                    imageUrl: controller.imagePath.value, imageTitle: '',  // Mengambil path gambar dari controller
                   ),
                   SizedBox(height: 12.h),
+                  // Menampilkan informasi lainnya
                   Obx(() => Row(
                     children: [
                       Expanded(
@@ -77,6 +70,7 @@ class DetailView extends StatelessWidget {
                     ],
                   )),
                   SizedBox(height: 12.h),
+                  // Menampilkan konten informasi lainnya
                   Obx(() => InfoContainer(title: "Information", content: controller.informasi.value)),
                   SizedBox(height: 20.h),
                   Row(

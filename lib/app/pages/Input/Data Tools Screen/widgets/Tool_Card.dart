@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../values/app_color.dart';
+
 class ToolCard extends StatelessWidget {
   final String imagePath;
   final String location;
+  final String subLocation;
   final VoidCallback? onTap;
 
   const ToolCard({
     super.key,
     required this.imagePath,
     required this.location,
+    required this.subLocation,
     this.onTap,
   });
 
@@ -17,37 +21,55 @@ class ToolCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        height: 172.h,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8.r),
-          border: Border.all(color: Colors.black, width: 2.w),
-        ),
-        child: Stack(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.r),
+        child: Column(
           children: [
-            // Gambar
+            // Bagian atas: Gambar
             ClipRRect(
-              borderRadius: BorderRadius.circular(6.r),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.r),
+                topRight: Radius.circular(20.r),
+              ),
               child: Image.asset(
                 imagePath,
-                fit: BoxFit.cover,
                 width: double.infinity,
-                height: double.infinity,
+                height: 172.h,
+                fit: BoxFit.cover,
               ),
             ),
 
-            Positioned(
-              left: 8.w,
-              bottom: 8.h,
-              child: Text(
-                location,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+            // Bagian bawah: Teks lokasi dan sublokasi
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(12.w),
+              decoration: BoxDecoration(
+                color: Colors.white70,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20.r),
+                  bottomRight: Radius.circular(20.r),
                 ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    location,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    subLocation,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

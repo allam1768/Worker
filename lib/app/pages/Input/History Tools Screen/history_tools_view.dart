@@ -37,7 +37,7 @@ class HistoryToolView extends StatelessWidget {
                   ),
                 )
                     : ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  padding: EdgeInsets.symmetric(horizontal: 30.w),
                   children: sortedKeys.map((month) {
                     var items = groupedHistory[month]!;
 

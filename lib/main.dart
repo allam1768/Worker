@@ -7,12 +7,6 @@ import 'package:worker/routes/routes.dart';
 
 
 void main() {
-
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-    ),
-  );
   runApp(const MyApp());
 }
 

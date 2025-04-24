@@ -37,7 +37,7 @@ class HistoryReportView extends StatelessWidget {
                 }
 
                 return ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w), // Biar rapi
+                  padding: EdgeInsets.symmetric(horizontal: 30.w), // Biar rapi
                   itemCount: controller.reports.length,
                   itemBuilder: (context, index) {
                     final report = controller.reports[index];

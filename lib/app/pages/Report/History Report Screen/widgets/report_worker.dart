@@ -25,41 +25,47 @@ class ReportWorker extends StatelessWidget {
       }),
       child: Padding(
         padding: EdgeInsets.only(bottom: 12.h),
-        child: Container(
-          padding: EdgeInsets.all(16.w),
-          decoration: BoxDecoration(
-            color: Color(0xFF97B999),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15.r),
-              topRight: Radius.circular(15.r),
-              bottomLeft: Radius.circular(15.r),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                name,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: FractionallySizedBox(
+            widthFactor: 0.9, // Ubah lebar jadi 90% dari layar
+            child: Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: Color(0xFF97B999),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15.r),
+                  topRight: Radius.circular(15.r),
+                  bottomLeft: Radius.circular(15.r),
                 ),
               ),
-              SizedBox(height: 5.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    time,
-                    style: TextStyle(fontSize: 14.sp),
+                    name,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Text(
-                    date,
-                    style: TextStyle(fontSize: 14.sp),
+                  SizedBox(height: 5.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        time,
+                        style: TextStyle(fontSize: 14.sp),
+                      ),
+                      Text(
+                        date,
+                        style: TextStyle(fontSize: 14.sp),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
