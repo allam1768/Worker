@@ -3,14 +3,14 @@ import 'package:worker/app/pages/Input/History%20Tools%20Screen/history_tools_vi
 
 class DataToolsController extends GetxController {
   final tools = <Map<String, String>>[
-    {"image": "assets/images/example.png", "location": "Utara"},
-    {"image": "assets/images/example.png", "location": "sd"},
-    {"image": "assets/images/example.png", "location": "asd"},
-    {"image": "assets/images/example.png", "location": "dfsa"},
-    {"image": "assets/images/example.png", "location": "fsa"},
-    {"image": "assets/images/example.png", "location": "fsd"},
-    {"image": "assets/images/example.png", "location": "vsd"},
-    {"image": "assets/images/example.png", "location": "sdgs"},
+    {"image": "assets/images/example.png", "location": "Utara","sub": "sqwqweqwwqrwq"},
+    {"image": "assets/images/example.png", "location": "sd","sub": "s"},
+    {"image": "assets/images/example.png", "location": "asd","sub": "s"},
+    {"image": "assets/images/example.png", "location": "dfsa","sub": "s"},
+    {"image": "assets/images/example.png", "location": "fsa","sub": "s"},
+    {"image": "assets/images/example.png", "location": "fsd","sub": "s"},
+    {"image": "assets/images/example.png", "location": "vsd","sub": "s"},
+    {"image": "assets/images/example.png", "location": "sdgs","sub": "s"},
 
 
 

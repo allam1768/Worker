@@ -8,7 +8,7 @@ class DetailController extends GetxController {
   var kondisi = "Baik".obs;
   var jumlah = "1000".obs;
   var informasi = "Lorem ipsum dolor sit amet.".obs;
-  var imagePath = "".obs;
+  var imagePath = "assets/images/example.png".obs; // Default image
 
   var canEdit = true.obs;
 
@@ -45,7 +45,7 @@ class DetailController extends GetxController {
     kondisi.value = newCondition;
     jumlah.value = newAmount;
     informasi.value = newInformation;
-    imagePath.value = newImage;
+    imagePath.value = newImage; // Update image path
   }
 
   void deleteData() {

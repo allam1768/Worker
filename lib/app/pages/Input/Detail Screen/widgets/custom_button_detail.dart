@@ -27,7 +27,7 @@ class CustomButtonDetail extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: color,
           padding: EdgeInsets.symmetric(vertical: 14.h),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
         ),
         icon: svgIcon != null
             ? SvgPicture.asset(svgIcon!, width: 20.w, height: 20.h, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn))

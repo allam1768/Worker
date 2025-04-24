@@ -24,26 +24,29 @@ class BottomNavView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColor.background,
-
+      resizeToAvoidBottomInset: true,
       body: Obx(() => IndexedStack(
         index: controller.currentIndex.value,
         children: controller.screens,
       )),
-
       bottomNavigationBar: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
         children: [
+          // Bottom Nav yang ngambang
           Container(
-            width: double.infinity,
-            height: 75.h,
+            margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 16.h),
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
             decoration: BoxDecoration(
               color: AppColor.btomnav,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.r),
-                topRight: Radius.circular(20.r),
-              ),
+              borderRadius: BorderRadius.circular(20.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 40,
+                  offset: Offset(0, 4),
+                ),
+              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -61,14 +64,14 @@ class BottomNavView extends StatelessWidget {
                       width: 55.r,
                       decoration: BoxDecoration(
                         color: isActive
-                            ? AppColor.btnoren
+                            ? AppColor.btnijo
                             : const Color(0xFFD6D6D6),
                         shape: BoxShape.circle,
                       ),
                       child: Center(
                         child: SvgPicture.asset(
                           controller.icons[index],
-                          color: isActive ? Colors.black : Colors.grey,
+                          color: isActive ? Colors.white70 : Colors.grey,
                           width: 22.w,
                         ),
                       ),
@@ -79,9 +82,9 @@ class BottomNavView extends StatelessWidget {
             ),
           ),
 
-          // Tombol Tengah
+          // Tombol Tengah Scan
           Positioned(
-            bottom: 15.h,
+            bottom: 38.h, // Naikin dikit biar di atas bottom nav
             child: GestureDetector(
               onTap: () {
                 Get.to(
@@ -91,17 +94,24 @@ class BottomNavView extends StatelessWidget {
                 );
               },
               child: Container(
-                height: 85.r,
-                width: 85.r,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFD6D6D6),
+                height: 68.r,
+                width: 68.r,
+                decoration: BoxDecoration(
+                  color: AppColor.oren,
                   shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
                 ),
                 child: Center(
                   child: SvgPicture.asset(
                     controller.icons[1],
-                    color: Colors.black,
-                    width: 30.w,
+                    color: Colors.white,
+                    width: 28.w,
                   ),
                 ),
               ),

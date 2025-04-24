@@ -20,57 +20,60 @@ class GroupedHistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-          () => AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
+          () => Container(
+        // Menggunakan SizedBox.expand untuk membuat lebar infinity
+        width: double.infinity,
+        margin: EdgeInsets.symmetric(vertical: 8.h),  // Menghilangkan margin horizontal
         decoration: BoxDecoration(
-          color: AppColor.btomnav,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(color: Colors.grey.shade200),
         ),
-        margin: EdgeInsets.symmetric(vertical: 8.h),
         child: Column(
           children: [
-            GestureDetector(
-              onTap: () {
-                isExpanded.value = !isExpanded.value;
-              },
-              child: Container(
-                height: 84.h,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                alignment: Alignment.centerLeft,
+            InkWell(
+              onTap: () => isExpanded.toggle(),
+              borderRadius: BorderRadius.circular(12.r),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       controller.getMonthName(month),
                       style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
                       ),
                     ),
                     AnimatedRotation(
                       turns: isExpanded.value ? 0.5 : 0,
-                      duration: const Duration(milliseconds: 300),
+                      duration: Duration(milliseconds: 300),
                       child: Icon(
-                        Icons.expand_more,
-                        size: 24.sp,
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 28.sp,
+                        color: Colors.grey.shade600,
                       ),
                     ),
                   ],
                 ),
               ),
             ),
+            Divider(
+              height: 1,
+              thickness: 1,
+              color: Colors.grey.shade200,
+            ),
             AnimatedCrossFade(
-              firstChild: const SizedBox.shrink(),
+              firstChild: SizedBox.shrink(),
               secondChild: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
                 child: Column(
                   children: List.generate(
                     items.length,
                         (index) => Padding(
-                      padding: EdgeInsets.only(
-                        bottom: index == items.length - 1 ? 0 : 8.h,
-                      ),
+                      padding: EdgeInsets.only(bottom: 10.h),
                       child: SingleHistoryCard(item: items[index]),
                     ),
                   ),
@@ -79,7 +82,7 @@ class GroupedHistoryCard extends StatelessWidget {
               crossFadeState: isExpanded.value
                   ? CrossFadeState.showSecond
                   : CrossFadeState.showFirst,
-              duration: const Duration(milliseconds: 100),
+              duration: Duration(milliseconds: 250),
             ),
           ],
         ),

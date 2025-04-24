@@ -23,6 +23,8 @@ dependencies:
   mobile_scanner: ^6.0.6
   image_picker: ^1.0.7
   intl: ^0.18.1
+  photo_view: ^0.14.0
+
 
 dev_dependencies:
   flutter_test:

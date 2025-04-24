@@ -26,7 +26,7 @@ class DataToolsView extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Column(
                   children: [
                     Expanded(
@@ -47,12 +47,14 @@ class DataToolsView extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final tool = controller.tools[index];
                             return Padding(
-                              padding: EdgeInsets.only(bottom: 10.h),
+                              padding: EdgeInsets.only(bottom: 20.h),
                               child: ToolCard(
                                 imagePath: tool["image"]!,
                                 location: tool["location"]!,
+                                subLocation: tool["sub"]!, // << ini
                                 onTap: controller.goToHistoryTool,
                               ),
+
                             );
                           },
                         ),
