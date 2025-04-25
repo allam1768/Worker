@@ -55,7 +55,7 @@ class LoginView extends StatelessWidget {
                 CustomTextField(
                   hintText: 'Username',
                   svgIcon: 'assets/icons/username.svg',
-                  controller: controller.usernameController,
+                  controller: controller.nameController,
                 ),
                 SizedBox(height: 16.h),
 
