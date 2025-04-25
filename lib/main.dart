@@ -5,7 +5,6 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:worker/routes/routes.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             textTheme: GoogleFonts.nunitoTextTheme(),
           ),
-          initialRoute: Routes.bottomnav,
+          initialRoute: Routes.splash,
           getPages: Routes.pages,
         );
       },
