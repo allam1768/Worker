@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../../../values/app_color.dart';
+import '../../../global-component/CustomAppBar.dart';
 import 'scan_company_controller.dart';
 
 class ScanCompanyView extends StatelessWidget {
@@ -11,69 +11,97 @@ class ScanCompanyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScanCompanyController controller = Get.find();
+    final ScanCompanyController controller = Get.put(ScanCompanyController());
+    final double scannerSize = MediaQuery.of(context).size.width * 0.8;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: AppColor.background,
-      appBar: AppBar(
-        title: Text(
-          "Scan QR",
-          style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          const Spacer(),
-          Container(
-            width: 300.w,
-            height: 300.w,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16.r),
-              border: Border.all(color: Color(0xFFF59E0B), width: 4.w),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomAppBar(
+              title: "Scan QR",
+              showBackButton: false,
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12.r),
-              child: MobileScanner(
-                controller: controller.scannerController,
-                onDetect: controller.handleScanResult,
+            Container(
+              width: scannerSize,
+              height: scannerSize,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Color(0xFFF59E0B), width: 4),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: MobileScanner(
+                  controller: controller.scannerController,
+                  onDetect: controller.handleScanResult,
+                ),
               ),
             ),
-          ),
-          const Spacer(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Obx(() => IconButton(
-                icon: SvgPicture.asset(
-                  controller.isFlashOn.value
-                      ? "assets/icons/flash_on.svg"
-                      : "assets/icons/flash_off.svg",
-                  width: 36.w,
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Obx(() => IconButton(
+                          icon: SvgPicture.asset(
+                            controller.isFlashOn.value
+                                ? "assets/icons/flash_on.svg"
+                                : "assets/icons/flash_off.svg",
+                            width: 36,
+                          ),
+                          onPressed: controller.toggleFlash,
+                        )),
+                    const SizedBox(width: 24),
+                    Obx(() => Stack(
+                          children: [
+                            AnimatedOpacity(
+                              opacity:
+                                  controller.isFrontCamera.value ? 0.0 : 1.0,
+                              duration: const Duration(milliseconds: 300),
+                              child: AnimatedRotation(
+                                turns: controller.isFrontCamera.value ? 0.5 : 0,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeInOutCubic,
+                                child: IconButton(
+                                  icon: SvgPicture.asset(
+                                    "assets/icons/rotate_off.svg",
+                                    width: 36,
+                                  ),
+                                  onPressed: controller.switchCamera,
+                                ),
+                              ),
+                            ),
+                            AnimatedOpacity(
+                              opacity:
+                                  controller.isFrontCamera.value ? 1.0 : 0.0,
+                              duration: const Duration(milliseconds: 300),
+                              child: AnimatedRotation(
+                                turns: controller.isFrontCamera.value ? 0.5 : 0,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeInOutCubic,
+                                child: IconButton(
+                                  icon: SvgPicture.asset(
+                                    "assets/icons/rotate_on.svg",
+                                    width: 36,
+                                  ),
+                                  onPressed: controller.switchCamera,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                  ],
                 ),
-                onPressed: controller.toggleFlash,
-              )),
-              SizedBox(width: 24.w),
-              Obx(() => AnimatedRotation(
-                turns: controller.isFrontCamera.value ? 0.5 : 0,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                child: IconButton(
-                  icon: SvgPicture.asset(
-                    controller.isFrontCamera.value
-                        ? "assets/icons/rotate_on.svg"
-                        : "assets/icons/rotate_off.svg",
-                    width: 36.w,
-                  ),
-                  onPressed: controller.switchCamera,
-                ),
-              )),
-            ],
-          ),
-          SizedBox(height: 32.h),
-        ],
+                const SizedBox(height: 32),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

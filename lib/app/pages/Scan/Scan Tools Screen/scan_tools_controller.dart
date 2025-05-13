@@ -31,7 +31,7 @@ class ScanToolsController extends GetxController {
   }
 
   bool isValidHamatechQR(String data) {
-    return data.startsWith("Hamatech"); // Sesuaikan formatnya jika berbeda
+    return data.startsWith("Hmt-Tool"); // Sesuaikan formatnya jika berbeda
   }
 
   void showScanResult(String result) {

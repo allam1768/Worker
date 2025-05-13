@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   cupertino_icons: ^1.0.8
   get: ^4.6.6
   flutter_screenutil: ^5.9.0
@@ -24,6 +23,7 @@ dependencies:
   image_picker: ^1.0.7
   intl: ^0.18.1
   photo_view: ^0.14.0
+  flutter_native_splash: ^2.4.6
 
 
 dev_dependencies:
@@ -39,3 +39,6 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/images/example.png
+
+
+

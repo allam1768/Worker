@@ -1,43 +1,63 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
-import 'CustomButton.dart'; // tombol custom lu
-import '../../values/app_color.dart'; // warna project lu
 
 class ImageUpload extends StatelessWidget {
   final Rx<File?> imageFile;
   final RxBool imageError;
-  final String title; // Biar bisa custom text judulnya
+  final String title;
+  final bool showButton;
+  final bool useBottomSheet;
+  final ImageSource defaultSource;
 
   ImageUpload({
     required this.imageFile,
     required this.imageError,
     this.title = "Upload Image",
+    this.showButton = true,
+    this.useBottomSheet = true,
+    this.defaultSource = ImageSource.camera,
   });
 
   Future<void> pickImage() async {
     final picker = ImagePicker();
 
+    if (!useBottomSheet) {
+      final pickedFile = await picker.pickImage(source: defaultSource);
+      if (pickedFile != null) {
+        imageFile.value = File(pickedFile.path);
+        imageError.value = false;
+      }
+      return;
+    }
+
     await Get.bottomSheet(
       Container(
-        padding: EdgeInsets.all(20.w),
+        padding: EdgeInsets.all(MediaQuery.of(Get.context!).size.width * 0.05),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(MediaQuery.of(Get.context!).size.width * 0.05),
+          ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Pilih Gambar", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
-            SizedBox(height: 10.h),
+            Text(
+              "Pilih Gambar",
+              style: TextStyle(
+                fontSize: MediaQuery.of(Get.context!).size.width * 0.04,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: MediaQuery.of(Get.context!).size.height * 0.015),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildPickButton(Icons.camera_alt, "Camera", () async {
-                  final pickedFile = await picker.pickImage(source: ImageSource.camera);
+                  final pickedFile =
+                      await picker.pickImage(source: ImageSource.camera);
                   if (pickedFile != null) {
                     imageFile.value = File(pickedFile.path);
                     imageError.value = false;
@@ -45,7 +65,8 @@ class ImageUpload extends StatelessWidget {
                   }
                 }),
                 _buildPickButton(Icons.image, "Gallery", () async {
-                  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+                  final pickedFile =
+                      await picker.pickImage(source: ImageSource.gallery);
                   if (pickedFile != null) {
                     imageFile.value = File(pickedFile.path);
                     imageError.value = false;
@@ -66,12 +87,16 @@ class ImageUpload extends StatelessWidget {
       child: Column(
         children: [
           CircleAvatar(
-            radius: 30.r,
+            radius: MediaQuery.of(Get.context!).size.width * 0.075,
             backgroundColor: Colors.grey.shade200,
-            child: Icon(icon, size: 30.sp, color: Colors.black54),
+            child: Icon(icon,
+                size: MediaQuery.of(Get.context!).size.width * 0.075,
+                color: Colors.black54),
           ),
-          SizedBox(height: 5.h),
-          Text(label, style: TextStyle(fontSize: 14.sp)),
+          SizedBox(height: MediaQuery.of(Get.context!).size.height * 0.008),
+          Text(label,
+              style: TextStyle(
+                  fontSize: MediaQuery.of(Get.context!).size.width * 0.035)),
         ],
       ),
     );
@@ -94,10 +119,11 @@ class ImageUpload extends StatelessWidget {
               minScale: 1,
               maxScale: 4,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(
+                    MediaQuery.of(Get.context!).size.width * 0.03),
                 child: Image.file(
                   imageFile.value!,
-                  width: 300,
+                  width: MediaQuery.of(Get.context!).size.width * 0.75,
                   fit: BoxFit.contain,
                 ),
               ),
@@ -114,46 +140,47 @@ class ImageUpload extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
-        SizedBox(height: 10.h),
-
+        Text(title,
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * 0.035,
+                fontWeight: FontWeight.bold)),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.015),
         GestureDetector(
-          onTap: () => imageFile.value != null ? showPreview() : pickImage(),
+          onTap: () => pickImage(),
           child: Obx(() => Container(
-            height: 150.h,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(
-                color: imageError.value ? Colors.red : Colors.grey.shade400,
-                width: 2,
-              ),
-            ),
-            child: imageFile.value != null
-                ? ClipRRect(
-              borderRadius: BorderRadius.circular(12.r),
-              child: Image.file(imageFile.value!, fit: BoxFit.cover),
-            )
-                : Icon(Icons.camera_alt, size: 50, color: Colors.grey),
-          )),
+                height: MediaQuery.of(context).size.height * 0.19,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width * 0.03),
+                  border: Border.all(
+                    color: imageError.value ? Colors.red : Colors.grey.shade400,
+                    width: 2,
+                  ),
+                ),
+                child: imageFile.value != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            MediaQuery.of(context).size.width * 0.03),
+                        child: Image.file(imageFile.value!, fit: BoxFit.cover),
+                      )
+                    : Icon(Icons.camera_alt, size: 50, color: Colors.grey),
+              )),
         ),
-
         Obx(() => imageError.value
             ? Padding(
-          padding: EdgeInsets.only(top: 4.h,left: 4.w),
-          child: Text("Image harus diisi!", style: TextStyle(fontSize: 12.sp, color: Colors.red)),
-        )
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.005,
+                    left: MediaQuery.of(context).size.width * 0.01),
+                child: Text(
+                  "Image harus diisi!",
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.03,
+                      color: Colors.red),
+                ),
+              )
             : SizedBox()),
-
-        SizedBox(height: 10.h),
-
-        CustomButton(
-          text: "Upload Gambar",
-          backgroundColor: AppColor.btnoren,
-          onPressed: pickImage,
-          fontSize: 16.sp,
-        ),
       ],
     );
   }

@@ -5,6 +5,11 @@ import 'package:worker/app/pages/Report/History%20Report%20Screen/history_report
 
 class BottomNavController extends GetxController {
   var currentIndex = 0.obs;
+  var centerButtonScale = 1.0.obs;
+
+  void updateCenterButtonScale(double scale) {
+    centerButtonScale.value = scale;
+  }
 
   List<String> icons = [
     "assets/icons/data.svg",
@@ -13,9 +18,9 @@ class BottomNavController extends GetxController {
   ];
 
   List<Widget> get screens => [
-    DataToolsView(),
-    HistoryReportView(),
-  ];
+        DataToolsView(),
+        HistoryReportView(),
+      ];
 
   void changeTab(int index) {
     if (index == 1) return;

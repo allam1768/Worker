@@ -23,7 +23,6 @@ class ReportDetailView extends StatelessWidget {
               children: [
                 CustomAppBar(title: "Report Detail"),
                 SizedBox(height: 22.h),
-
                 Center(
                   child: SvgPicture.asset(
                     "assets/images/report_illustration.svg",
@@ -33,7 +32,6 @@ class ReportDetailView extends StatelessWidget {
                 ),
               ],
             ),
-
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -60,7 +58,8 @@ class ReportDetailView extends StatelessWidget {
 
                     Text(
                       "Documentation",
-                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 16.sp, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8.h),
 
@@ -76,7 +75,8 @@ class ReportDetailView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Center(
-                          child: Icon(Icons.image, color: Colors.white, size: 50.w),
+                          child: Icon(Icons.image,
+                              color: Colors.white, size: 50.w),
                         ),
                       ),
                     ),

@@ -31,9 +31,8 @@ class ScanCompanyController extends GetxController {
   }
 
   bool isValidHamatechQR(String data) {
-    return data.startsWith("Company"); // Sesuaikan formatnya jika berbeda
+    return data.startsWith("Hmt-Tool"); // Sesuaikan formatnya jika berbeda
   }
-
 
   void showScanResult(String result) {
     Future.delayed(const Duration(seconds: 0), () {

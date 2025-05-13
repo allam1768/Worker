@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:worker/app/global-component/CustomButton.dart';
@@ -16,210 +15,225 @@ class InputDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: AppColor.background,
       body: SafeArea(
         child: Column(
           children: [
-            CustomAppBar(title: "Input Data"),
+            CustomAppBar(title: "Nama Tools"),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     Container(
-                      height: 250.h,
+                      height: screenHeight * 0.3,
                       alignment: Alignment.center,
                       child: SvgPicture.asset(
                         'assets/images/input_illustration.svg',
-                        width: 310.w,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-                      width: double.infinity,
-                      child: Text(
-                        "Fly 01 Utara",
-                        style: TextStyle(
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                        width: screenWidth * 0.75,
                       ),
                     ),
                     Container(
                       color: AppColor.backgroundsetengah,
-                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenWidth * 0.05,
+                          vertical: screenHeight * 0.02),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "Condition",
                             style: TextStyle(
-                              fontSize: 14.sp,
+                              fontSize: screenWidth * 0.035,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
                           ),
-
                           Obx(() => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    child: Container(
-                                      margin: EdgeInsets.only(right: 6.w),
-                                      padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
-                                      decoration: BoxDecoration(
-                                        color: controller.selectedCondition.value == "Baik"
-                                            ? AppColor.oren.withOpacity(0.08)
-                                            : Colors.white,
-                                        border: Border.all(
-                                          color: controller.showError.value && controller.selectedCondition.value.isEmpty
-                                              ? Colors.red
-                                              : (controller.selectedCondition.value == "Baik"
-                                              ? AppColor.oren
-                                              : Colors.grey.shade300),
-                                          width: 1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(10.r),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            blurRadius: 4,
-                                            offset: Offset(0, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Radio<String>(
-                                            value: "Baik",
-                                            groupValue: controller.selectedCondition.value,
-                                            onChanged: controller.setCondition,
-                                            activeColor: AppColor.oren,
-                                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                            visualDensity: VisualDensity.compact,
-                                          ),
-                                          SizedBox(width: 4.w),
-                                          Text(
-                                            "Baik",
-                                            style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black87,
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                              right: screenWidth * 0.015),
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: screenHeight * 0.008,
+                                              horizontal: screenWidth * 0.015),
+                                          decoration: BoxDecoration(
+                                            color: controller.selectedCondition
+                                                        .value ==
+                                                    "Baik"
+                                                ? AppColor.oren
+                                                    .withOpacity(0.08)
+                                                : Colors.white,
+                                            border: Border.all(
+                                              color: controller
+                                                          .showError.value &&
+                                                      controller
+                                                          .selectedCondition
+                                                          .value
+                                                          .isEmpty
+                                                  ? Colors.red
+                                                  : (controller
+                                                              .selectedCondition
+                                                              .value ==
+                                                          "Baik"
+                                                      ? AppColor.oren
+                                                      : Colors.grey.shade300),
+                                              width: 1,
                                             ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                        ],
+                                          child: Row(
+                                            children: [
+                                              Radio<String>(
+                                                value: "Baik",
+                                                groupValue: controller
+                                                    .selectedCondition.value,
+                                                onChanged:
+                                                    controller.setCondition,
+                                                activeColor: AppColor.oren,
+                                                materialTapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .shrinkWrap,
+                                                visualDensity:
+                                                    VisualDensity.compact,
+                                              ),
+                                              SizedBox(
+                                                  width: screenWidth * 0.01),
+                                              Text(
+                                                "Baik",
+                                                style: TextStyle(
+                                                  fontSize: screenWidth * 0.035,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                              left: screenWidth * 0.015),
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: screenHeight * 0.008,
+                                              horizontal: screenWidth * 0.015),
+                                          decoration: BoxDecoration(
+                                            color: controller.selectedCondition
+                                                        .value ==
+                                                    "Rusak"
+                                                ? AppColor.oren
+                                                    .withOpacity(0.08)
+                                                : Colors.white,
+                                            border: Border.all(
+                                              color: controller
+                                                          .showError.value &&
+                                                      controller
+                                                          .selectedCondition
+                                                          .value
+                                                          .isEmpty
+                                                  ? Colors.red
+                                                  : (controller
+                                                              .selectedCondition
+                                                              .value ==
+                                                          "Rusak"
+                                                      ? AppColor.oren
+                                                      : Colors.grey.shade300),
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Radio<String>(
+                                                value: "Rusak",
+                                                groupValue: controller
+                                                    .selectedCondition.value,
+                                                onChanged:
+                                                    controller.setCondition,
+                                                activeColor: AppColor.oren,
+                                                materialTapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .shrinkWrap,
+                                                visualDensity:
+                                                    VisualDensity.compact,
+                                              ),
+                                              SizedBox(
+                                                  width: screenWidth * 0.01),
+                                              Text(
+                                                "Rusak",
+                                                style: TextStyle(
+                                                  fontSize: screenWidth * 0.035,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  if (controller.showError.value &&
+                                      controller
+                                          .selectedCondition.value.isEmpty)
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: screenWidth * 0.02,
+                                          top: screenHeight * 0.008),
+                                      child: Text(
+                                        "Kondisi harus dipilih!",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: screenWidth * 0.03,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: 6.w),
-                                      padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
-                                      decoration: BoxDecoration(
-                                        color: controller.selectedCondition.value == "Rusak"
-                                            ? AppColor.oren.withOpacity(0.08)
-                                            : Colors.white,
-                                        border: Border.all(
-                                          color: controller.showError.value && controller.selectedCondition.value.isEmpty
-                                              ? Colors.red
-                                              : (controller.selectedCondition.value == "Rusak"
-                                              ? AppColor.oren
-                                              : Colors.grey.shade300),
-                                          width: 1,
-                                        ),
-                                        borderRadius: BorderRadius.circular(10.r),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            blurRadius: 4,
-                                            offset: Offset(0, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Radio<String>(
-                                            value: "Rusak",
-                                            groupValue: controller.selectedCondition.value,
-                                            onChanged: controller.setCondition,
-                                            activeColor: AppColor.oren,
-                                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                            visualDensity: VisualDensity.compact,
-                                          ),
-                                          SizedBox(width: 4.w),
-                                          Text(
-                                            "Rusak",
-                                            style: TextStyle(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black87,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
                                 ],
-                              ),
-
-                              // Error message
-                              if (controller.showError.value && controller.selectedCondition.value.isEmpty)
-                                Padding(
-                                  padding: EdgeInsets.only(left: 8.w, top: 6.h),
-                                  child: Text(
-                                    "Kondisi harus dipilih!",
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          )),
-
-
-
-                          SizedBox(height: 15.h),
-
-
+                              )),
+                          SizedBox(height: screenHeight * 0.02),
                           Obx(() => CustomTextField(
-                            label: "Amount",
-                            isNumber: true,
-                            onChanged: controller.setAmount,
-                            errorMessage: controller.showError.value && controller.amount.value.isEmpty
-                                ? "Amount harus diisi!"
-                                : null,
-                          )),
-                          SizedBox(height: 15.h),
-
+                                label: "Amount",
+                                isNumber: true,
+                                onChanged: controller.setAmount,
+                                errorMessage: controller.showError.value &&
+                                        controller.amount.value.isEmpty
+                                    ? "Amount harus diisi!"
+                                    : null,
+                              )),
+                          SizedBox(height: screenHeight * 0.02),
                           Obx(() => CustomTextField(
-                            label: "Information",
-                            onChanged: controller.setInformation,
-                            errorMessage: controller.showError.value && controller.information.value.isEmpty
-                                ? "Information harus diisi!"
-                                : null,
-                          )),
-                          SizedBox(height: 15.h),
-
-
+                                label: "Information",
+                                onChanged: controller.setInformation,
+                                errorMessage: controller.showError.value &&
+                                        controller.information.value.isEmpty
+                                    ? "Information harus diisi!"
+                                    : null,
+                              )),
+                          SizedBox(height: screenHeight * 0.02),
                           ImageUpload(
                             imageFile: controller.imageFile,
                             imageError: controller.imageError,
+                            useBottomSheet: false,
                           ),
-                          SizedBox(height: 20.h),
-
+                          SizedBox(height: screenHeight * 0.06),
                           CustomButton(
                             text: "Save",
-                            backgroundColor:AppColor.btnijo,
+                            backgroundColor: AppColor.btnijo,
                             onPressed: controller.validateForm,
-                            fontSize: 16,
+                            fontSize: screenWidth * 0.04,
                           ),
-
-                          SizedBox(height: 50.h),
+                          SizedBox(height: screenHeight * 0.06),
                         ],
                       ),
                     ),

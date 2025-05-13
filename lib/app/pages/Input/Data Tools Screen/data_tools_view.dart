@@ -21,7 +21,7 @@ class DataToolsView extends StatelessWidget {
             CustomAppBar(
               title: "Name company",
               rightIcon: "",
-              rightOnTap: (){},
+              rightOnTap: () {},
               showBackButton: false,
             ),
             Expanded(
@@ -31,33 +31,36 @@ class DataToolsView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Obx(
-                            () => controller.tools.isEmpty
+                        () => controller.tools.isEmpty
                             ? Center(
-                          child: Text(
-                            "Belum ada alat yg terdaftar",
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black54,
-                            ),
-                          ),
-                        )
+                                child: Text(
+                                  "Belum ada alat yg terdaftar",
+                                  style: TextStyle(
+                                    fontSize: 18.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                              )
                             : ListView.builder(
-                          itemCount: controller.tools.length,
-                          itemBuilder: (context, index) {
-                            final tool = controller.tools[index];
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 20.h),
-                              child: ToolCard(
-                                imagePath: tool["image"]!,
-                                location: tool["location"]!,
-                                subLocation: tool["sub"]!, // << ini
-                                onTap: controller.goToHistoryTool,
+                                itemCount: controller.tools.length,
+                                itemBuilder: (context, index) {
+                                  final tool = controller.tools[index];
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 20.h),
+                                    child: ToolCard(
+                                      toolName: 'wawaannnnn',
+                                      imagePath: '',
+                                      location: 'Atas meja',
+                                      historyItems: [],
+                                      locationDetail: 'Meja pak aji',
+                                      kodeQR: '',
+                                      type: '',
+                                      kondisi: 'good',
+                                    ),
+                                  );
+                                },
                               ),
-
-                            );
-                          },
-                        ),
                       ),
                     ),
                   ],

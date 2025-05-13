@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void ImagePreview(BuildContext context, String imagePath) {
   showDialog(
@@ -12,7 +11,8 @@ void ImagePreview(BuildContext context, String imagePath) {
           minScale: 0.5,
           maxScale: 3.0,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(10.r),
+            borderRadius: BorderRadius.circular(
+                MediaQuery.of(context).size.width * 0.025),
             child: Image.asset(imagePath, fit: BoxFit.contain),
           ),
         ),

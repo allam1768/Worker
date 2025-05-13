@@ -9,7 +9,6 @@ import '../../../../values/app_color.dart';
 import '../../../global-component/CustomAppBar.dart';
 import '../../../global-component/ImageUpload.dart';
 
-
 class ReportInputView extends StatelessWidget {
   ReportInputView({super.key});
 
@@ -35,7 +34,6 @@ class ReportInputView extends StatelessWidget {
                 ),
               ],
             ),
-
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -48,31 +46,33 @@ class ReportInputView extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Obx(() => CustomTextField(
-                        label: "Area",
-                        onChanged: (value) => controller.amount.value = value,
-                        errorMessage: controller.showError.value && controller.amount.value.isEmpty
-                            ? "Area harus diisi!"
-                            : null,
-                      )),
+                            label: "Area",
+                            onChanged: (value) =>
+                                controller.amount.value = value,
+                            errorMessage: controller.showError.value &&
+                                    controller.amount.value.isEmpty
+                                ? "Area harus diisi!"
+                                : null,
+                          )),
                       SizedBox(height: 15.h),
-
                       Obx(() => CustomTextField(
-                        label: "Information",
-                        onChanged: (value) => controller.information.value = value,
-                        errorMessage: controller.showError.value && controller.information.value.isEmpty
-                            ? "Information harus diisi!"
-                            : null,
-                      )),
+                            label: "Information",
+                            onChanged: (value) =>
+                                controller.information.value = value,
+                            errorMessage: controller.showError.value &&
+                                    controller.information.value.isEmpty
+                                ? "Information harus diisi!"
+                                : null,
+                          )),
                       SizedBox(height: 15.h),
-
                       ImageUpload(
                         imageFile: controller.imageFile,
                         imageError: controller.imageError,
                       ),
                       SizedBox(height: 20.h),
-
                       CustomButton(
                         text: "Save",
+                        backgroundColor: AppColor.btnijo,
                         onPressed: () {
                           controller.validateForm();
                         },
@@ -90,5 +90,3 @@ class ReportInputView extends StatelessWidget {
     );
   }
 }
-
-

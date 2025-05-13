@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -32,83 +31,102 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = errorMessage == null ? const Color(0xFF275637) : Colors.red;
+    final borderColor =
+        errorMessage == null ? const Color(0xFF275637) : Colors.red;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null)
           Padding(
-            padding: EdgeInsets.only(bottom: 6.h),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).size.height * 0.008),
             child: Text(
               label!,
               style: TextStyle(
-                fontSize: 14.sp,
+                fontSize: MediaQuery.of(context).size.width * 0.035,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
         SizedBox(
-          height: 48.h,
+          height: MediaQuery.of(context).size.height * 0.06,
           child: TextField(
             controller: controller,
             obscureText: isPassword ? (isPasswordHidden ?? true) : false,
-            keyboardType: keyboardType ?? (isNumber ? TextInputType.number : TextInputType.text),
-            style: TextStyle(fontSize: 15.sp, color: Colors.black),
+            keyboardType: keyboardType ??
+                (isNumber ? TextInputType.number : TextInputType.text),
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * 0.037,
+                color: Colors.black),
             onChanged: onChanged,
             decoration: InputDecoration(
               hintText: hintText ?? '',
-              hintStyle: TextStyle(fontSize: 15.sp, color: Colors.grey),
+              hintStyle: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * 0.037,
+                  color: Colors.grey),
               filled: true,
               fillColor: Colors.white,
-              contentPadding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.height * 0.02,
+                  horizontal: MediaQuery.of(context).size.width * 0.03),
               prefixIcon: svgIcon != null
                   ? Padding(
-                padding: EdgeInsets.all(12.w),
-                child: SvgPicture.asset(
-                  svgIcon!,
-                  width: 24.w,
-                  height: 24.h,
-                ),
-              )
+                      padding: EdgeInsets.all(
+                          MediaQuery.of(context).size.width * 0.03),
+                      child: SvgPicture.asset(
+                        svgIcon!,
+                        width: MediaQuery.of(context).size.width * 0.06,
+                        height: MediaQuery.of(context).size.width * 0.06,
+                      ),
+                    )
                   : null,
               suffixIcon: isPassword
                   ? GestureDetector(
-                onTap: onSuffixTap,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  child: SvgPicture.asset(
-                    (isPasswordHidden ?? true)
-                        ? 'assets/icons/eye_closed.svg'
-                        : 'assets/icons/eye_open.svg',
-                    width: 20.w,
-                    height: 20.h,
-                  ),
-                ),
-              )
+                      onTap: onSuffixTap,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.03),
+                        child: SvgPicture.asset(
+                          (isPasswordHidden ?? true)
+                              ? 'assets/icons/eye_closed.svg'
+                              : 'assets/icons/eye_open.svg',
+                          width: MediaQuery.of(context).size.width * 0.05,
+                          height: MediaQuery.of(context).size.width * 0.05,
+                        ),
+                      ),
+                    )
                   : null,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.r),
-                borderSide: BorderSide(color: borderColor, width: 1.w),
+                borderRadius: BorderRadius.circular(
+                    MediaQuery.of(context).size.width * 0.02),
+                borderSide: BorderSide(color: borderColor, width: 1),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.r),
-                borderSide: BorderSide(color: borderColor, width: 1.w),
+                borderRadius: BorderRadius.circular(
+                    MediaQuery.of(context).size.width * 0.02),
+                borderSide: BorderSide(color: borderColor, width: 1),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.r),
-                borderSide: BorderSide(color: borderColor, width: 1.w),
+                borderRadius: BorderRadius.circular(
+                    MediaQuery.of(context).size.width * 0.02),
+                borderSide: BorderSide(color: borderColor, width: 1),
               ),
             ),
           ),
         ),
         if (errorMessage != null)
           Padding(
-            padding: EdgeInsets.only(top: 4.h, left: 4.w),
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.005,
+                left: MediaQuery.of(context).size.width * 0.01),
             child: Text(
               errorMessage!,
-              style: TextStyle(color: Colors.red, fontSize: 12.sp),
+              style: TextStyle(
+                  color: Colors.red,
+                  fontSize: MediaQuery.of(context).size.width * 0.03),
             ),
           ),
       ],

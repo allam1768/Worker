@@ -1,78 +1,169 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../../values/app_color.dart';
 
 class ToolCard extends StatelessWidget {
+  final String toolName;
   final String imagePath;
   final String location;
-  final String subLocation;
-  final VoidCallback? onTap;
+  final String locationDetail;
+  final String kondisi;
+  final String kodeQR;
+  final String type;
+  final List<Map<String, dynamic>> historyItems;
 
   const ToolCard({
     super.key,
+    required this.toolName,
     required this.imagePath,
     required this.location,
-    required this.subLocation,
-    this.onTap,
+    required this.locationDetail,
+    required this.historyItems,
+    required this.kondisi,
+    required this.kodeQR,
+    required this.type,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.r),
-        child: Column(
-          children: [
-            // Bagian atas: Gambar
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.r),
-                topRight: Radius.circular(20.r),
-              ),
-              child: Image.asset(
-                imagePath,
-                width: double.infinity,
-                height: 172.h,
-                fit: BoxFit.cover,
-              ),
-            ),
+    String normalized = kondisi.trim().toLowerCase();
+    Color statusColor = normalized == 'good' ? AppColor.btnijo : AppColor.oren;
 
-            // Bagian bawah: Teks lokasi dan sublokasi
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
-                color: Colors.white70,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20.r),
-                  bottomRight: Radius.circular(20.r),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16.r),
+          onTap: () => Get.toNamed('/HistoryTool'),
+          child: Padding(
+            padding: EdgeInsets.all(12.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12.r),
+                      child: Image.network(
+                        imagePath,
+                        width: double.infinity,
+                        height: 180.h,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/broken.png',
+                            width: double.infinity,
+                            height: 180.h,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
+                    ),
+                    // Status kondisi
+                    Positioned(
+                      top: 10.h,
+                      right: 10.w,
+                      child: Container(
+                        width: 10.w,
+                        height: 10.w,
+                        decoration: BoxDecoration(
+                          color: statusColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                    // Nama alat
+                    Positioned(
+                      top: 12.h,
+                      left: 12.w,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 6.h),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Text(
+                          toolName,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    location,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                SizedBox(height: 12.h),
+                // Lokasi dan detail
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            location,
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          SizedBox(height: 4.h),
+                          Text(
+                            locationDetail,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.grey.shade700,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    subLocation,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.black54,
+                    SizedBox(width: 12.w),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      decoration: BoxDecoration(
+                        color: statusColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Text(
+                        kondisi.toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: statusColor,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
