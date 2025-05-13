@@ -26,91 +26,126 @@ class DetailView extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            CustomAppBar(title: "Detail"),
-            const Spacer(),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColor.backgroundsetengah,
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Menampilkan judul berdasarkan nilai dari controller
-                  Obx(() => Text(
-                    controller.title.value,
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  )),
-                  SizedBox(height: 12.h),
-                  // Menampilkan informasi karyawan berdasarkan controller
-                  Obx(() => EmployeeCard(
-                    name: controller.namaKaryawan.value,
-                    employeeNumber: controller.nomorKaryawan.value,
-                    date: controller.tanggalJam.value,
-                  )),
-                  SizedBox(height: 12.h),
-                  // Menampilkan gambar berdasarkan path dari controller
-                  ImagePreviewCard(
-                    imageUrl: controller.imagePath.value, imageTitle: '',  // Mengambil path gambar dari controller
-                  ),
-                  SizedBox(height: 12.h),
-                  // Menampilkan informasi lainnya
-                  Obx(() => Row(
+            CustomAppBar(title: "Nama tools"),
+            Expanded(
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
                     children: [
-                      Expanded(
-                          child: InfoCard(title: "Condition", value: controller.kondisi.value)),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                          child: InfoCard(title: "Amount", value: controller.jumlah.value)),
-                    ],
-                  )),
-                  SizedBox(height: 12.h),
-                  // Menampilkan konten informasi lainnya
-                  Obx(() => InfoContainer(title: "Information", content: controller.informasi.value)),
-                  SizedBox(height: 20.h),
-                  Row(
-                    children: [
-                      // TOMBOL EDIT MUNCUL KALAU BOLEH EDIT
-                      Obx(() => controller.canEdit.value
-                          ? Expanded(
-                        child: CustomButtonDetail(
-                          icon: Icons.edit,
-                          color: AppColor.btnijo,
-                          text: 'Edit',
-                          onPressed: controller.editData,
+                      SizedBox(height: 20.h),
+                      Hero(
+                        tag: 'preview_image',
+                        child: Material(
+                          elevation: 8,
+                          borderRadius: BorderRadius.circular(15.r),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15.r),
+                            child: ImagePreviewCard(
+                              imageUrl: controller.imagePath.value,
+                              imageTitle: '',
+                            ),
+                          ),
                         ),
-                      )
-                          : const SizedBox()),
-                      Expanded(
-                        child: CustomButtonDetail(
-                          text: "Delete",
-                          icon: Icons.delete,
-                          color: Colors.red.shade700,
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (_) => ConfirmDeleteDialog(
-                                onCancelTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                onDeleteTap: () {
-                                  Navigator.of(context).pop();
-                                  controller.deleteData();
-                                },
+                      ),
+                      SizedBox(height: 20.h),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Obx(() => EmployeeCard(
+                                  name: controller.namaKaryawan.value,
+                                  employeeNumber:
+                                      controller.nomorKaryawan.value,
+                                  date: controller.tanggalJam.value,
+                                )),
+                            Divider(
+                                height: 1, color: Colors.grey.withOpacity(0.3)),
+                            Padding(
+                              padding: EdgeInsets.all(16.w),
+                              child: Column(
+                                children: [
+                                  Obx(() => InfoContainer(
+                                      title: "Information",
+                                      content: controller.informasi.value)),
+                                  SizedBox(height: 16.h),
+                                  Obx(() => Row(
+                                        children: [
+                                          Expanded(
+                                              child: InfoCard(
+                                                  title: "Condition",
+                                                  value: controller
+                                                      .kondisi.value)),
+                                          SizedBox(width: 16.w),
+                                          Expanded(
+                                              child: InfoCard(
+                                                  title: "Amount",
+                                                  value:
+                                                      controller.jumlah.value)),
+                                        ],
+                                      )),
+                                  SizedBox(height: 16.h),
+                                  Row(
+                                    children: [
+                                      Obx(() => controller.canEdit.value
+                                          ? Expanded(
+                                              child: Padding(
+                                                padding:
+                                                    EdgeInsets.only(right: 8.w),
+                                                child: CustomButtonDetail(
+                                                  icon: Icons.edit,
+                                                  color: AppColor.btnijo,
+                                                  text: 'Edit',
+                                                  onPressed:
+                                                      controller.editData,
+                                                ),
+                                              ),
+                                            )
+                                          : const SizedBox()),
+                                      Expanded(
+                                        child: CustomButtonDetail(
+                                          text: "Delete",
+                                          icon: Icons.delete,
+                                          color: Colors.red.shade700,
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (_) =>
+                                                  ConfirmDeleteDialog(
+                                                onCancelTap: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                onDeleteTap: () {
+                                                  Navigator.of(context).pop();
+                                                  controller.deleteData();
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            );
-                          },
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 30.h),
-                ],
+                ),
               ),
             ),
           ],

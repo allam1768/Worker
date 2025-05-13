@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ImagePreviewCard extends StatelessWidget {
@@ -20,10 +19,11 @@ class ImagePreviewCard extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        height: 204.h,
+        height: MediaQuery.of(context).size.height * 0.25,
         decoration: BoxDecoration(
           color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius:
+              BorderRadius.circular(MediaQuery.of(context).size.width * 0.025),
           image: DecorationImage(
             image: AssetImage(imageUrl),
             fit: BoxFit.cover,
@@ -37,9 +37,12 @@ class ImagePreviewCard extends StatelessWidget {
     Get.dialog(
       Dialog(
         backgroundColor: Colors.transparent, // Biar nggak ada background putih
-        insetPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
+        insetPadding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.05,
+            vertical: MediaQuery.of(context).size.height * 0.03),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(10.r),
+          borderRadius:
+              BorderRadius.circular(MediaQuery.of(context).size.width * 0.025),
           child: Image.asset(
             imageUrl,
             fit: BoxFit.cover,
@@ -49,5 +52,4 @@ class ImagePreviewCard extends StatelessWidget {
       barrierDismissible: true,
     );
   }
-
 }

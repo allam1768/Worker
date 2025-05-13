@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class ReportClient extends StatelessWidget {
@@ -28,38 +29,59 @@ class ReportClient extends StatelessWidget {
         child: Align(
           alignment: Alignment.centerLeft,
           child: FractionallySizedBox(
-            widthFactor: 0.9, // Lebar 90% dari layar
+            widthFactor: 0.9,
             child: Container(
-              padding: EdgeInsets.all(16.w),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
               decoration: BoxDecoration(
-                color: Color(0xFFAFC9AF),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.r),
-                  topRight: Radius.circular(15.r),
-                  bottomRight: Radius.circular(15.r),
-                ),
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: Offset(0, 2),
+                  ),
+                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/Client_icont.svg',
+                        height: 14.h,
+                        width: 14.w,
+                      ),
+                      SizedBox(width: 8.w),
+                      Text(
+                        name,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 5.h),
+                  SizedBox(height: 8.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        date,
-                        style: TextStyle(fontSize: 14.sp),
-                      ),
-                      Text(
-                        time,
-                        style: TextStyle(fontSize: 14.sp),
+                      Row(
+                        children: [
+                          Icon(Icons.access_time,
+                              size: 14.sp, color: Colors.grey[600]),
+                          SizedBox(width: 4.w),
+                          Text(
+                            time,
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

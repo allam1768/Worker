@@ -1,0 +1,2 @@
+D:/hamatechv2/Worker/android/app/.cxx/Debug/3b14k6x6/x86_64/CMakeFiles/edit_cache.dir
+D:/hamatechv2/Worker/android/app/.cxx/Debug/3b14k6x6/x86_64/CMakeFiles/rebuild_cache.dir

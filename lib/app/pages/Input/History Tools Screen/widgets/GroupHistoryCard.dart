@@ -20,14 +20,19 @@ class GroupedHistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-          () => Container(
-        // Menggunakan SizedBox.expand untuk membuat lebar infinity
+      () => Container(
         width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 8.h),  // Menghilangkan margin horizontal
+        margin: EdgeInsets.symmetric(vertical: 10.h),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: Colors.grey.shade200),
+          color: AppColor.backgroundsetengah,
+          borderRadius: BorderRadius.circular(15.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           children: [
@@ -39,31 +44,48 @@ class GroupedHistoryCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      controller.getMonthName(month),
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                      decoration: BoxDecoration(
+                        color: AppColor.ijomuda,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Text(
+                        controller.getMonthName(month),
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                    AnimatedRotation(
-                      turns: isExpanded.value ? 0.5 : 0,
-                      duration: Duration(milliseconds: 300),
-                      child: Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        size: 28.sp,
-                        color: Colors.grey.shade600,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColor.ijomuda.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: AnimatedRotation(
+                        turns: isExpanded.value ? 0.5 : 0,
+                        duration: Duration(milliseconds: 300),
+                        child: Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          size: 28.sp,
+                          color: AppColor.ijomuda,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            Divider(
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
               height: 1,
-              thickness: 1,
-              color: Colors.grey.shade200,
+              color: isExpanded.value
+                  ? AppColor.ijomuda.withOpacity(0.3)
+                  : Colors.transparent,
+              margin: EdgeInsets.symmetric(horizontal: 16.w),
             ),
             AnimatedCrossFade(
               firstChild: SizedBox.shrink(),
@@ -72,7 +94,7 @@ class GroupedHistoryCard extends StatelessWidget {
                 child: Column(
                   children: List.generate(
                     items.length,
-                        (index) => Padding(
+                    (index) => Padding(
                       padding: EdgeInsets.only(bottom: 10.h),
                       child: SingleHistoryCard(item: items[index]),
                     ),

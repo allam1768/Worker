@@ -13,21 +13,50 @@ class HistoryReportController extends GetxController {
     reports.addAll([
       {
         "name": "Wawan",
-        "date": "12.02.2024",
-        "time": "12.00",
-        "role": "worker", // Worker
+        "date": "14.02.2024",
+        "time": "09.30",
+        "role": "worker",
       },
       {
-        "name": "Wawan",
+        "name": "Budi",
+        "date": "14.02.2024",
+        "time": "10.15",
+        "role": "client",
+      },
+      {
+        "name": "Andi",
+        "date": "13.02.2024",
+        "time": "14.20",
+        "role": "worker",
+      },
+      {
+        "name": "Siti",
+        "date": "13.02.2024",
+        "time": "15.45",
+        "role": "client",
+      },
+      {
+        "name": "Deni",
         "date": "12.02.2024",
-        "time": "12.00",
-        "role": "client", // Client
+        "time": "08.00",
+        "role": "worker",
+      },
+      {
+        "name": "Rini",
+        "date": "12.02.2024",
+        "time": "11.30",
+        "role": "client",
       },
     ]);
   }
 
-
-  void addReport(String name, String date, String time) {
-    reports.add({"name": name, "date": date, "time": time});
+  // ✅ Sudah termasuk 'role' biar bisa ditampilkan
+  void addReport(String name, String date, String time, String role) {
+    reports.add({
+      "name": name,
+      "date": date,
+      "time": time,
+      "role": role,
+    });
   }
 }

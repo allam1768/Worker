@@ -4,7 +4,7 @@ class DetailController extends GetxController {
   var title = "Fly 01 Utara".obs;
   var namaKaryawan = "Budi".obs;
   var nomorKaryawan = "Nomor Karyawan".obs;
-  var tanggalJam = "22.04.2025   10.50".obs;
+  var tanggalJam = "13.05.2025   06.11".obs;
   var kondisi = "Baik".obs;
   var jumlah = "1000".obs;
   var informasi = "Lorem ipsum dolor sit amet.".obs;
@@ -22,7 +22,8 @@ class DetailController extends GetxController {
     try {
       var parts = tanggalJam.value.split('   ');
       if (parts.length == 2) {
-        String formatted = "${parts[0].split('.').reversed.join('-')} ${parts[1]}";
+        String formatted =
+            "${parts[0].split('.').reversed.join('-')} ${parts[1]}";
         DateTime inputTime = DateTime.parse(formatted);
         Duration difference = DateTime.now().difference(inputTime);
         canEdit.value = difference.inHours < 10000;
@@ -41,7 +42,8 @@ class DetailController extends GetxController {
     }
   }
 
-  void updateDetailData(String newCondition, String newAmount, String newInformation, String newImage) {
+  void updateDetailData(String newCondition, String newAmount,
+      String newInformation, String newImage) {
     kondisi.value = newCondition;
     jumlah.value = newAmount;
     informasi.value = newInformation;
