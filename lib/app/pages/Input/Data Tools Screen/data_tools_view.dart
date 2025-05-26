@@ -66,6 +66,7 @@ class DataToolsView extends StatelessWidget {
                                         pest_type: tool.pestType,
                                         kondisi: tool.kondisi,
                                         kode_qr: tool.kodeQr,
+                                        alatId: tool.id.toString(),
                                       ),
                                     );
                                   },
