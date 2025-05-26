@@ -26,7 +26,7 @@ class BottomNavView extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         tween: ColorTween(
           begin: Colors.grey[300]!,
-          end: isActive ? AppColor.btnoren : Colors.grey[400]!,
+          end: isActive ? AppColor.btnoren : Colors.transparent!,
         ),
         builder: (context, Color? color, child) {
           return Container(
@@ -51,7 +51,7 @@ class BottomNavView extends StatelessWidget {
                 scale: isActive ? 1.2 : 1.0,
                 child: SvgPicture.asset(
                   controller.icons[index],
-                  color: isActive ? Colors.black : Colors.grey,
+                  color: isActive ? Colors.white : Colors.grey,
                   width: screenWidth * 0.055,
                 ),
               ),

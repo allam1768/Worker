@@ -1,85 +1,160 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/material.dart';
+import 'package:worker/data/models/catch_model.dart';
+import 'package:worker/data/services/catch_service.dart';
 
 class InputDetailController extends GetxController {
-  // Field input
-  RxString selectedCondition = "".obs;
-  RxString amount = "".obs;
-  RxString information = "".obs;
+  final CatchService _catchService = CatchService();
+  final String alatId = Get.arguments['alat_id'] ?? '';
+  final String namaAlat = Get.arguments['nama_alat'] ?? 'Nama Tools';
 
-  // Error flags
-  RxBool showError = false.obs;
-  RxBool imageError = false.obs;
+  // Form values
+  final RxString selectedCondition = ''.obs;
+  final RxInt jumlah = 0.obs;
+  final RxString jenisHama = ''.obs;
+  final RxString catatan = ''.obs;
+  final Rx<File?> imageFile = Rx<File?>(null);
 
-  // Gambar
-  Rx<File?> imageFile = Rx<File?>(null);
+  // Error states
+  final RxString conditionError = ''.obs;
+  final RxString jumlahError = ''.obs;
+  final RxString jenisHamaError = ''.obs;
+  final RxString catatanError = ''.obs;
+  final RxBool imageError = false.obs;
 
-  // Setter
+  // Loading state
+  final RxBool isLoading = false.obs;
+
   void setCondition(String? value) {
-    selectedCondition.value = value ?? "";
-    // Update error state
-    showError.value = selectedCondition.value.isEmpty;
+    if (value != null) selectedCondition.value = value;
   }
 
-
-  void setAmount(String value) {
-    amount.value = value;
+  void setJumlah(String value) {
+    jumlah.value = value.isNotEmpty ? int.tryParse(value) ?? 0 : 0;
   }
 
-  void setInformation(String value) {
-    information.value = value;
-  }
+  void setJenisHama(String value) => jenisHama.value = value;
 
-  // Ambil gambar dari kamera
+  void setCatatan(String value) => catatan.value = value;
+
+  void setImageFile(File? file) => imageFile.value = file;
+
+  /// Fungsi untuk ambil gambar langsung dari kamera
   Future<void> takePicture() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    try {
+      final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
-    if (pickedFile != null) {
-      imageFile.value = File(pickedFile.path);
-      imageError.value = false;
+      if (pickedFile != null) {
+        imageFile.value = File(pickedFile.path);
+        imageError.value = false;
+      } else {
+        imageError.value = true;
+      }
+    } catch (e) {
+      imageError.value = true;
+      Get.snackbar('Error', 'Gagal membuka kamera');
     }
   }
 
+  bool validateInputs() {
+    bool isValid = true;
 
+    if (selectedCondition.isEmpty) {
+      conditionError.value = 'Kondisi harus dipilih!';
+      isValid = false;
+    } else {
+      conditionError.value = '';
+    }
 
-  // Getter untuk error message field
-  String? get conditionError =>
-      showError.value && selectedCondition.value.isEmpty ? 'Kondisi harus dipilih!' : null;
+    if (jumlah.value <= 0) {
+      jumlahError.value = 'Jumlah harus lebih dari 0!';
+      isValid = false;
+    } else {
+      jumlahError.value = '';
+    }
 
-  String? get amountError =>
-      showError.value && amount.value.isEmpty ? 'Jumlah tidak boleh kosong!' : null;
+    if (jenisHama.isEmpty) {
+      jenisHamaError.value = 'Jenis hama harus diisi!';
+      isValid = false;
+    } else {
+      jenisHamaError.value = '';
+    }
 
-  String? get informationError =>
-      showError.value && information.value.isEmpty ? 'Informasi harus diisi!' : null;
+    if (catatan.isEmpty) {
+      catatanError.value = 'Catatan harus diisi!';
+      isValid = false;
+    } else {
+      catatanError.value = '';
+    }
 
-  bool get isImageEmpty => imageFile.value == null;
+    if (imageFile.value == null) {
+      imageError.value = true;
+      isValid = false;
+    } else {
+      imageError.value = false;
+    }
 
-  // Validasi form
-  void validateForm() {
-    bool isInvalid = selectedCondition.value.isEmpty ||
-        amount.value.isEmpty ||
-        information.value.isEmpty ||
-        imageFile.value == null;
+    return isValid;
+  }
 
-    showError.value = isInvalid;
-    imageError.value = imageFile.value == null;
+  Future<void> saveCatch() async {
+    if (!validateInputs()) return;
 
-    if (!isInvalid) {
-      Get.snackbar(
-        "Success",
-        "Data berhasil disimpan",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
+    isLoading.value = true;
+
+    try {
+      final now = DateTime.now();
+      final formattedDate =
+          '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}';
+
+      final catchData = CatchModel(
+        alatId: alatId,
+        jenisHama: jenisHama.value,
+        jumlah: jumlah.value,
+        tanggal: formattedDate,
+        dicatatOleh: 'Kaka', // TODO: Ambil dari user session nanti
+        fotoDokumentasi: imageFile.value!.path,
+        kondisi: selectedCondition.value.toLowerCase(),
+        catatan: catatan.value,
       );
 
-      // TODO: Simpan data ke database atau API
+      await _catchService.createCatch(catchData);
 
-      Future.delayed(Duration(seconds: 1), () {
-        Get.offNamed('/HistoryTool'); // Pindah ke dashboard dan menghapus halaman ini dari stack
-      });
+      Get.offNamed("/HistoryTool");
+      Get.snackbar(
+        'Sukses',
+        'Data berhasil disimpan',
+        snackPosition: SnackPosition.TOP,
+      );
+      resetForm();
+    } catch (e) {
+      String errorMessage = e.toString();
+      if (errorMessage.contains('Error:')) {
+        errorMessage = errorMessage.split('Error:')[1].trim();
+      }
+      Get.snackbar(
+        'Error',
+        'Gagal menyimpan data: $errorMessage',
+        snackPosition: SnackPosition.TOP,
+      );
+    } finally {
+      isLoading.value = false;
     }
+  }
+
+  void resetForm() {
+    selectedCondition.value = '';
+    jumlah.value = 0;
+    jenisHama.value = '';
+    catatan.value = '';
+    imageFile.value = null;
+
+    conditionError.value = '';
+    jumlahError.value = '';
+    jenisHamaError.value = '';
+    catatanError.value = '';
+    imageError.value = false;
   }
 }

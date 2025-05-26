@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import '../../../../../data/models/alat_model.dart';
 import '../../../../../values/app_color.dart';
 
 class ToolCard extends StatelessWidget {
@@ -10,8 +10,8 @@ class ToolCard extends StatelessWidget {
   final String location;
   final String locationDetail;
   final String kondisi;
-  final String kodeQR;
-  final String type;
+  final String kode_qr;
+  final String pest_type;
   final List<Map<String, dynamic>> historyItems;
 
   const ToolCard({
@@ -22,8 +22,8 @@ class ToolCard extends StatelessWidget {
     required this.locationDetail,
     required this.historyItems,
     required this.kondisi,
-    required this.kodeQR,
-    required this.type,
+    required this.kode_qr,
+    required this.pest_type,
   });
 
   @override
@@ -63,7 +63,11 @@ class ToolCard extends StatelessWidget {
                         width: double.infinity,
                         height: 180.h,
                         fit: BoxFit.cover,
+                        headers: {
+                          'ngrok-skip-browser-warning': '1',
+                        },
                         errorBuilder: (context, error, stackTrace) {
+                          print('Error loading image: $error');
                           return Image.asset(
                             'assets/images/broken.png',
                             width: double.infinity,
@@ -73,7 +77,7 @@ class ToolCard extends StatelessWidget {
                         },
                       ),
                     ),
-                    // Status kondisi
+                    // Status kondisi (bulat)
                     Positioned(
                       top: 10.h,
                       right: 10.w,
@@ -110,9 +114,10 @@ class ToolCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 12.h),
-                // Lokasi dan detail
+                // Lokasi, detail & kondisi
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       flex: 3,
@@ -143,21 +148,25 @@ class ToolCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 12.w),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                      decoration: BoxDecoration(
-                        color: statusColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Text(
-                        kondisi.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w600,
-                          color: statusColor,
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: statusColor.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Text(
+                            kondisi.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
+                              color: statusColor,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),

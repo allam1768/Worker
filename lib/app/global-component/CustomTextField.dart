@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 class CustomTextField extends StatelessWidget {
   final String? label;
@@ -8,7 +10,7 @@ class CustomTextField extends StatelessWidget {
   final bool isPassword;
   final bool isNumber;
   final TextInputType? keyboardType;
-  final String? errorMessage;
+  final RxString? errorMessage;
   final String? svgIcon;
   final bool? isPasswordHidden;
   final VoidCallback? onSuffixTap;
@@ -31,8 +33,9 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor =
-        errorMessage == null ? const Color(0xFF275637) : Colors.red;
+    final borderColor = errorMessage == null || errorMessage!.value.isEmpty
+        ? const Color(0xFF275637)
+        : Colors.red;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,18 +120,21 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
         ),
-        if (errorMessage != null)
-          Padding(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * 0.005,
-                left: MediaQuery.of(context).size.width * 0.01),
-            child: Text(
-              errorMessage!,
-              style: TextStyle(
-                  color: Colors.red,
-                  fontSize: MediaQuery.of(context).size.width * 0.03),
-            ),
-          ),
+        Obx(() => errorMessage != null && errorMessage!.value.isNotEmpty
+            ? Padding(
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.02,
+                    top: MediaQuery.of(context).size.height * 0.008),
+                child: Text(
+                  errorMessage!.value,
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: MediaQuery.of(context).size.width * 0.03,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              )
+            : const SizedBox.shrink()),
       ],
     );
   }

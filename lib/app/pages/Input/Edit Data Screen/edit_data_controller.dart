@@ -8,7 +8,9 @@ class EditDataController extends GetxController {
   RxString selectedCondition = "".obs;
   RxString amount = "".obs;
   RxString information = "".obs;
-  RxBool showError = false.obs;
+  RxString conditionError = RxString("");
+  RxString amountError = RxString("");
+  RxString informationError = RxString("");
   RxBool imageError = false.obs;
   Rx<File?> imageFile = Rx<File?>(null);
 
@@ -36,19 +38,37 @@ class EditDataController extends GetxController {
   }
 
   void validateForm() {
-    bool isInvalid = selectedCondition.value.isEmpty ||
-        amount.value.isEmpty ||
-        information.value.isEmpty ||
-        imageFile.value == null;
+    // Reset error messages
+    conditionError.value = "";
+    amountError.value = "";
+    informationError.value = "";
+    imageError.value = false;
 
-    showError.value = isInvalid;
-    imageError.value = imageFile.value == null;
+    // Validate each field
+    if (selectedCondition.value.isEmpty) {
+      conditionError.value = "Condition harus dipilih!";
+    }
 
-    if (!isInvalid) {
-      
+    if (amount.value.isEmpty) {
+      amountError.value = "Amount harus diisi!";
+    }
 
+    if (information.value.isEmpty) {
+      informationError.value = "Information harus diisi!";
+    }
+
+    if (imageFile.value == null) {
+      imageError.value = true;
+    }
+
+    // Check if form is valid
+    bool isValid = selectedCondition.value.isNotEmpty &&
+        amount.value.isNotEmpty &&
+        information.value.isNotEmpty &&
+        imageFile.value != null;
+
+    if (isValid) {
       // TODO: Simpan data ke database atau API
-
       Future.delayed(Duration(seconds: 1), () {
         Get.offNamed('Detail'); // Kembali ke halaman sebelumnya
       });

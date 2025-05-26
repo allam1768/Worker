@@ -4,11 +4,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 
 class ReportInputController extends GetxController {
-  RxString selectedCondition = "".obs;
   RxString amount = "".obs;
   RxString information = "".obs;
-  RxBool showError = false.obs;
-
+  RxString areaError = RxString("");
+  RxString informationError = RxString("");
   Rx<File?> imageFile = Rx<File?>(null);
   RxBool imageError = false.obs;
 
@@ -23,16 +22,30 @@ class ReportInputController extends GetxController {
   }
 
   void validateForm() {
-    bool isFormEmpty = selectedCondition.value.isEmpty || amount.value.isEmpty || information.value.isEmpty;
-    bool isImageEmpty = imageFile.value == null;
+    // Reset error messages
+    areaError.value = "";
+    informationError.value = "";
+    imageError.value = false;
 
-    if (isFormEmpty || isImageEmpty) {
-      showError.value = isFormEmpty;
-      imageError.value = isImageEmpty;
-    } else {
-      showError.value = false;
-      imageError.value = false;
+    // Validate each field
+    if (amount.value.isEmpty) {
+      areaError.value = "Area harus diisi!";
+    }
 
+    if (information.value.isEmpty) {
+      informationError.value = "Information harus diisi!";
+    }
+
+    if (imageFile.value == null) {
+      imageError.value = true;
+    }
+
+    // Check if form is valid
+    bool isValid = amount.value.isNotEmpty &&
+        information.value.isNotEmpty &&
+        imageFile.value != null;
+
+    if (isValid) {
       Get.rawSnackbar(
         message: "Data berhasil disimpan",
         backgroundColor: Colors.green,
@@ -43,5 +56,4 @@ class ReportInputController extends GetxController {
       // TODO: Simpan data ke database atau API
     }
   }
-
 }

@@ -14,7 +14,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     this.backgroundColor = const Color(0xFF234E35), // default hijau
     this.textColor = Colors.black, // default putih
-    this.fontSize = 28, // default 16sp
+    this.fontSize = 30, // default 16sp
     this.height = 48, // default 48.h
   });
 
