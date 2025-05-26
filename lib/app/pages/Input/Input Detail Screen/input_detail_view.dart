@@ -67,7 +67,7 @@ class InputDetailView extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             color: controller.selectedCondition
                                                         .value ==
-                                                    "Baik"
+                                                    "Good"
                                                 ? AppColor.oren
                                                     .withOpacity(0.08)
                                                 : Colors.white,
@@ -78,7 +78,7 @@ class InputDetailView extends StatelessWidget {
                                                   : (controller
                                                               .selectedCondition
                                                               .value ==
-                                                          "Baik"
+                                                          "Good"
                                                       ? AppColor.oren
                                                       : Colors.grey.shade300),
                                               width: 1,
@@ -89,7 +89,7 @@ class InputDetailView extends StatelessWidget {
                                           child: Row(
                                             children: [
                                               Radio<String>(
-                                                value: "Baik",
+                                                value: "Good",
                                                 groupValue: controller
                                                     .selectedCondition.value,
                                                 onChanged:
@@ -125,7 +125,7 @@ class InputDetailView extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             color: controller.selectedCondition
                                                         .value ==
-                                                    "Rusak"
+                                                    "Broken"
                                                 ? AppColor.oren
                                                     .withOpacity(0.08)
                                                 : Colors.white,
@@ -136,7 +136,7 @@ class InputDetailView extends StatelessWidget {
                                                   : (controller
                                                               .selectedCondition
                                                               .value ==
-                                                          "Rusak"
+                                                          "Broken"
                                                       ? AppColor.oren
                                                       : Colors.grey.shade300),
                                               width: 1,
@@ -147,7 +147,7 @@ class InputDetailView extends StatelessWidget {
                                           child: Row(
                                             children: [
                                               Radio<String>(
-                                                value: "Rusak",
+                                                value: "Broken",
                                                 groupValue: controller
                                                     .selectedCondition.value,
                                                 onChanged:
