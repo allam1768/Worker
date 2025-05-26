@@ -27,29 +27,30 @@ class HistoryToolView extends StatelessWidget {
 
                 return controller.historyData.isEmpty
                     ? Center(
-                  child: Text(
-                    "Belum ada data",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                )
+                        child: Text(
+                          "Belum ada data",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      )
                     : ListView(
-                  padding: EdgeInsets.symmetric(horizontal: 30.w),
-                  children: sortedKeys.map((month) {
-                    var items = groupedHistory[month]!;
+                        padding: EdgeInsets.symmetric(horizontal: 30.w),
+                        children: sortedKeys.map((month) {
+                          var items = groupedHistory[month]!;
 
-                    return (items.length >= 4)
-                        ? GroupedHistoryCard(month: month, items: items)
-                        : Column(
-                      children: items
-                          .map((item) => SingleHistoryCard(item: item))
-                          .toList(),
-                    );
-                  }).toList(),
-                );
+                          return (items.length >= 4)
+                              ? GroupedHistoryCard(month: month, items: items)
+                              : Column(
+                                  children: items
+                                      .map((item) =>
+                                          SingleHistoryCard(item: item))
+                                      .toList(),
+                                );
+                        }).toList(),
+                      );
               }),
             ),
           ],

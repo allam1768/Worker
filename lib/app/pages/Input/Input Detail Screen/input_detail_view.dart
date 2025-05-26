@@ -29,15 +29,15 @@ class InputDetailView extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      height: screenHeight * 0.3,
+                      height: screenHeight * 0.2,
                       alignment: Alignment.center,
                       child: SvgPicture.asset(
-                        'assets/images/input_illustration.svg',
+                        'assets/images/input.svg',
                         width: screenWidth * 0.75,
                       ),
                     ),
+                    SizedBox(height: screenHeight * 0.01),
                     Container(
-                      color: AppColor.backgroundsetengah,
                       padding: EdgeInsets.symmetric(
                           horizontal: screenWidth * 0.05,
                           vertical: screenHeight * 0.02),
@@ -72,12 +72,8 @@ class InputDetailView extends StatelessWidget {
                                                     .withOpacity(0.08)
                                                 : Colors.white,
                                             border: Border.all(
-                                              color: controller
-                                                          .showError.value &&
-                                                      controller
-                                                          .selectedCondition
-                                                          .value
-                                                          .isEmpty
+                                              color: controller.conditionError
+                                                      .value.isNotEmpty
                                                   ? Colors.red
                                                   : (controller
                                                               .selectedCondition
@@ -134,12 +130,8 @@ class InputDetailView extends StatelessWidget {
                                                     .withOpacity(0.08)
                                                 : Colors.white,
                                             border: Border.all(
-                                              color: controller
-                                                          .showError.value &&
-                                                      controller
-                                                          .selectedCondition
-                                                          .value
-                                                          .isEmpty
+                                              color: controller.conditionError
+                                                      .value.isNotEmpty
                                                   ? Colors.red
                                                   : (controller
                                                               .selectedCondition
@@ -183,54 +175,53 @@ class InputDetailView extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  if (controller.showError.value &&
-                                      controller
-                                          .selectedCondition.value.isEmpty)
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: screenWidth * 0.02,
-                                          top: screenHeight * 0.008),
-                                      child: Text(
-                                        "Kondisi harus dipilih!",
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: screenWidth * 0.03,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
+                                  Obx(() =>
+                                      controller.conditionError.value.isNotEmpty
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: screenWidth * 0.02,
+                                                  top: screenHeight * 0.008),
+                                              child: Text(
+                                                controller.conditionError.value,
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: screenWidth * 0.03,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            )
+                                          : const SizedBox.shrink()),
                                 ],
                               )),
-                          SizedBox(height: screenHeight * 0.02),
-                          Obx(() => CustomTextField(
-                                label: "Amount",
-                                isNumber: true,
-                                onChanged: controller.setAmount,
-                                errorMessage: controller.showError.value &&
-                                        controller.amount.value.isEmpty
-                                    ? "Amount harus diisi!"
-                                    : null,
-                              )),
-                          SizedBox(height: screenHeight * 0.02),
-                          Obx(() => CustomTextField(
-                                label: "Information",
-                                onChanged: controller.setInformation,
-                                errorMessage: controller.showError.value &&
-                                        controller.information.value.isEmpty
-                                    ? "Information harus diisi!"
-                                    : null,
-                              )),
-                          SizedBox(height: screenHeight * 0.02),
+                          SizedBox(height: screenHeight * 0.01),
+                          CustomTextField(
+                            label: "Jumlah",
+                            onChanged: controller.setJumlah,
+                            errorMessage: controller.jumlahError,
+                            keyboardType: TextInputType.number,
+                          ),
+                          SizedBox(height: screenHeight * 0.01),
+                          CustomTextField(
+                            label: "Jenis Hama",
+                            onChanged: controller.setJenisHama,
+                            errorMessage: controller.jenisHamaError,
+                          ),
+                          SizedBox(height: screenHeight * 0.01),
+                          CustomTextField(
+                            label: "Catatan",
+                            onChanged: controller.setCatatan,
+                            errorMessage: controller.catatanError,
+                          ),
+                          SizedBox(height: screenHeight * 0.01),
                           ImageUpload(
                             imageFile: controller.imageFile,
                             imageError: controller.imageError,
-                            useBottomSheet: false,
                           ),
-                          SizedBox(height: screenHeight * 0.06),
+                          SizedBox(height: screenHeight * 0.03),
                           CustomButton(
-                            text: "Save",
-                            backgroundColor: AppColor.btnijo,
-                            onPressed: controller.validateForm,
+                            text: "Simpan",
+                            backgroundColor: AppColor.btnoren,
+                            onPressed: controller.saveCatch,
                             fontSize: screenWidth * 0.04,
                           ),
                           SizedBox(height: screenHeight * 0.06),

@@ -1,24 +1,35 @@
 import 'package:get/get.dart';
-import 'package:worker/app/pages/Input/History%20Tools%20Screen/history_tools_view.dart';
+import 'package:worker/data/models/alat_model.dart';
+import 'package:worker/data/services/alat_service.dart';
 
 class DataToolsController extends GetxController {
-  final tools = <Map<String, String>>[
-    {"image": "assets/images/example.png", "location": "Utara","sub": "sqwqweqwwqrwq"},
-    {"image": "assets/images/example.png", "location": "sd","sub": "s"},
-    {"image": "assets/images/example.png", "location": "asd","sub": "s"},
-    {"image": "assets/images/example.png", "location": "dfsa","sub": "s"},
-    {"image": "assets/images/example.png", "location": "fsa","sub": "s"},
-    {"image": "assets/images/example.png", "location": "fsd","sub": "s"},
-    {"image": "assets/images/example.png", "location": "vsd","sub": "s"},
-    {"image": "assets/images/example.png", "location": "sdgs","sub": "s"},
+  final RxList<AlatModel> tools = <AlatModel>[].obs;
+  final RxBool isLoading = false.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    fetchTools();
+  }
 
-
-  ].obs;
-
+  Future<void> fetchTools() async {
+    try {
+      isLoading.value = true;
+      final fetchedTools = await AlatService.fetchAlat();
+      tools.assignAll(fetchedTools);
+    } catch (e) {
+      print('Error fetching tools: $e');
+      Get.snackbar(
+        'Error',
+        'Gagal memuat data alat',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   void goToHistoryTool() {
     Get.toNamed('/HistoryTool');
-
   }
 }

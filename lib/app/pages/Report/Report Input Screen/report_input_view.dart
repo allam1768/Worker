@@ -45,25 +45,18 @@ class ReportInputView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Obx(() => CustomTextField(
-                            label: "Area",
-                            onChanged: (value) =>
-                                controller.amount.value = value,
-                            errorMessage: controller.showError.value &&
-                                    controller.amount.value.isEmpty
-                                ? "Area harus diisi!"
-                                : null,
-                          )),
+                      CustomTextField(
+                        label: "Area",
+                        onChanged: (value) => controller.amount.value = value,
+                        errorMessage: controller.areaError,
+                      ),
                       SizedBox(height: 15.h),
-                      Obx(() => CustomTextField(
-                            label: "Information",
-                            onChanged: (value) =>
-                                controller.information.value = value,
-                            errorMessage: controller.showError.value &&
-                                    controller.information.value.isEmpty
-                                ? "Information harus diisi!"
-                                : null,
-                          )),
+                      CustomTextField(
+                        label: "Information",
+                        onChanged: (value) =>
+                            controller.information.value = value,
+                        errorMessage: controller.informationError,
+                      ),
                       SizedBox(height: 15.h),
                       ImageUpload(
                         imageFile: controller.imageFile,

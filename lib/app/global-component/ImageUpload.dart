@@ -24,7 +24,12 @@ class ImageUpload extends StatelessWidget {
     final picker = ImagePicker();
 
     if (!useBottomSheet) {
-      final pickedFile = await picker.pickImage(source: defaultSource);
+      final pickedFile = await picker.pickImage(
+        source: defaultSource,
+        imageQuality: 70,
+        maxWidth: 1024,
+        maxHeight: 1024,
+      );
       if (pickedFile != null) {
         imageFile.value = File(pickedFile.path);
         imageError.value = false;
@@ -56,8 +61,12 @@ class ImageUpload extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildPickButton(Icons.camera_alt, "Camera", () async {
-                  final pickedFile =
-                      await picker.pickImage(source: ImageSource.camera);
+                  final pickedFile = await picker.pickImage(
+                    source: ImageSource.camera,
+                    imageQuality: 70,
+                    maxWidth: 1024,
+                    maxHeight: 1024,
+                  );
                   if (pickedFile != null) {
                     imageFile.value = File(pickedFile.path);
                     imageError.value = false;
@@ -65,8 +74,12 @@ class ImageUpload extends StatelessWidget {
                   }
                 }),
                 _buildPickButton(Icons.image, "Gallery", () async {
-                  final pickedFile =
-                      await picker.pickImage(source: ImageSource.gallery);
+                  final pickedFile = await picker.pickImage(
+                    source: ImageSource.gallery,
+                    imageQuality: 70,
+                    maxWidth: 1024,
+                    maxHeight: 1024,
+                  );
                   if (pickedFile != null) {
                     imageFile.value = File(pickedFile.path);
                     imageError.value = false;

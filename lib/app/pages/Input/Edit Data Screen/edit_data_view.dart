@@ -68,12 +68,8 @@ class EditDataView extends StatelessWidget {
                                                     .withOpacity(0.08)
                                                 : Colors.white,
                                             border: Border.all(
-                                              color: controller
-                                                          .showError.value &&
-                                                      controller
-                                                          .selectedCondition
-                                                          .value
-                                                          .isEmpty
+                                              color: controller.conditionError
+                                                      .value.isNotEmpty
                                                   ? Colors.red
                                                   : (controller
                                                               .selectedCondition
@@ -134,12 +130,8 @@ class EditDataView extends StatelessWidget {
                                                     .withOpacity(0.08)
                                                 : Colors.white,
                                             border: Border.all(
-                                              color: controller
-                                                          .showError.value &&
-                                                      controller
-                                                          .selectedCondition
-                                                          .value
-                                                          .isEmpty
+                                              color: controller.conditionError
+                                                      .value.isNotEmpty
                                                   ? Colors.red
                                                   : (controller
                                                               .selectedCondition
@@ -191,9 +183,8 @@ class EditDataView extends StatelessWidget {
                                   ),
 
                                   // Error message
-                                  if (controller.showError.value &&
-                                      controller
-                                          .selectedCondition.value.isEmpty)
+                                  if (controller
+                                      .conditionError.value.isNotEmpty)
                                     Padding(
                                       padding:
                                           EdgeInsets.only(left: 8.w, top: 6.h),
@@ -209,24 +200,18 @@ class EditDataView extends StatelessWidget {
                                 ],
                               )),
                           SizedBox(height: 15.h),
-                          Obx(() => CustomTextField(
-                                label: "Amount",
-                                isNumber: true,
-                                onChanged: controller.setAmount,
-                                errorMessage: controller.showError.value &&
-                                        controller.amount.value.isEmpty
-                                    ? "Amount harus diisi!"
-                                    : null,
-                              )),
+                          CustomTextField(
+                            label: "Amount",
+                            isNumber: true,
+                            onChanged: controller.setAmount,
+                            errorMessage: controller.amountError,
+                          ),
                           SizedBox(height: 15.h),
-                          Obx(() => CustomTextField(
-                                label: "Information",
-                                onChanged: controller.setInformation,
-                                errorMessage: controller.showError.value &&
-                                        controller.information.value.isEmpty
-                                    ? "Information harus diisi!"
-                                    : null,
-                              )),
+                          CustomTextField(
+                            label: "Information",
+                            onChanged: controller.setInformation,
+                            errorMessage: controller.informationError,
+                          ),
                           SizedBox(height: 15.h),
                           ImageUpload(
                             imageFile: controller.imageFile,
