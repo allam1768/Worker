@@ -45,12 +45,6 @@ class ScanToolsController extends GetxController {
 
         if (matchedTool != null) {
           print('Scan berhasil! ID Alat: ${matchedTool.id}, Nama Alat: ${matchedTool.namaAlat}');
-          Get.snackbar(
-            "Scan Berhasil",
-            "ID Alat: ${matchedTool.id}\nNama Alat: ${matchedTool.namaAlat}",
-            snackPosition: SnackPosition.TOP,
-            duration: Duration(seconds: 2),
-          );
           Get.offNamed('/InputDetail', arguments: {
             'alat_id': matchedTool.id.toString(),
             'nama_alat': matchedTool.namaAlat

@@ -24,9 +24,7 @@ class DetailView extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Obx(() => CustomAppBar(title: controller.title.value.isEmpty
-                ? "Detail Catch"
-                : controller.title.value)),
+            Obx(() => CustomAppBar(title:controller.title.value)),
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
@@ -164,9 +162,10 @@ class DetailView extends StatelessWidget {
                                       SizedBox(height: 16.h),
 
                                       // Action Buttons
+                                      // Ganti bagian Row dengan action buttons:
                                       Row(
                                         children: [
-                                          Obx(() => controller.canEdit.value
+                                          Obx(() => !controller.editTimeExpired.value && controller.canEdit.value
                                               ? Expanded(
                                             child: Padding(
                                               padding: EdgeInsets.only(right: 8.w),

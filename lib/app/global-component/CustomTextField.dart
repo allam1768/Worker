@@ -3,9 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final String? label;
   final String? hintText;
+  final String? initialValue;
   final TextEditingController? controller;
   final bool isPassword;
   final bool isNumber;
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget {
     super.key,
     this.label,
     this.hintText,
+    this.initialValue,
     this.controller,
     this.isPassword = false,
     this.isNumber = false,
@@ -32,20 +34,47 @@ class CustomTextField extends StatelessWidget {
   });
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? TextEditingController();
+
+    // Set initial value if provided and controller doesn't have text
+    if (widget.initialValue != null && _controller.text.isEmpty) {
+      _controller.text = widget.initialValue!;
+    }
+  }
+
+  @override
+  void dispose() {
+    // Only dispose if we created the controller internally
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final borderColor = errorMessage == null || errorMessage!.value.isEmpty
+    final borderColor = widget.errorMessage == null || widget.errorMessage!.value.isEmpty
         ? const Color(0xFF275637)
         : Colors.red;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null)
+        if (widget.label != null)
           Padding(
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).size.height * 0.008),
             child: Text(
-              label!,
+              widget.label!,
               style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width * 0.035,
                 color: Colors.black,
@@ -56,16 +85,16 @@ class CustomTextField extends StatelessWidget {
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.06,
           child: TextField(
-            controller: controller,
-            obscureText: isPassword ? (isPasswordHidden ?? true) : false,
-            keyboardType: keyboardType ??
-                (isNumber ? TextInputType.number : TextInputType.text),
+            controller: _controller,
+            obscureText: widget.isPassword ? (widget.isPasswordHidden ?? true) : false,
+            keyboardType: widget.keyboardType ??
+                (widget.isNumber ? TextInputType.number : TextInputType.text),
             style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width * 0.037,
                 color: Colors.black),
-            onChanged: onChanged,
+            onChanged: widget.onChanged,
             decoration: InputDecoration(
-              hintText: hintText ?? '',
+              hintText: widget.hintText ?? '',
               hintStyle: TextStyle(
                   fontSize: MediaQuery.of(context).size.width * 0.037,
                   color: Colors.grey),
@@ -74,33 +103,33 @@ class CustomTextField extends StatelessWidget {
               contentPadding: EdgeInsets.symmetric(
                   vertical: MediaQuery.of(context).size.height * 0.02,
                   horizontal: MediaQuery.of(context).size.width * 0.03),
-              prefixIcon: svgIcon != null
+              prefixIcon: widget.svgIcon != null
                   ? Padding(
-                      padding: EdgeInsets.all(
-                          MediaQuery.of(context).size.width * 0.03),
-                      child: SvgPicture.asset(
-                        svgIcon!,
-                        width: MediaQuery.of(context).size.width * 0.06,
-                        height: MediaQuery.of(context).size.width * 0.06,
-                      ),
-                    )
+                padding: EdgeInsets.all(
+                    MediaQuery.of(context).size.width * 0.03),
+                child: SvgPicture.asset(
+                  widget.svgIcon!,
+                  width: MediaQuery.of(context).size.width * 0.06,
+                  height: MediaQuery.of(context).size.width * 0.06,
+                ),
+              )
                   : null,
-              suffixIcon: isPassword
+              suffixIcon: widget.isPassword
                   ? GestureDetector(
-                      onTap: onSuffixTap,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width * 0.03),
-                        child: SvgPicture.asset(
-                          (isPasswordHidden ?? true)
-                              ? 'assets/icons/eye_closed.svg'
-                              : 'assets/icons/eye_open.svg',
-                          width: MediaQuery.of(context).size.width * 0.05,
-                          height: MediaQuery.of(context).size.width * 0.05,
-                        ),
-                      ),
-                    )
+                onTap: widget.onSuffixTap,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal:
+                      MediaQuery.of(context).size.width * 0.03),
+                  child: SvgPicture.asset(
+                    (widget.isPasswordHidden ?? true)
+                        ? 'assets/icons/eye_closed.svg'
+                        : 'assets/icons/eye_open.svg',
+                    width: MediaQuery.of(context).size.width * 0.05,
+                    height: MediaQuery.of(context).size.width * 0.05,
+                  ),
+                ),
+              )
                   : null,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(
@@ -120,20 +149,20 @@ class CustomTextField extends StatelessWidget {
             ),
           ),
         ),
-        Obx(() => errorMessage != null && errorMessage!.value.isNotEmpty
+        Obx(() => widget.errorMessage != null && widget.errorMessage!.value.isNotEmpty
             ? Padding(
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.02,
-                    top: MediaQuery.of(context).size.height * 0.008),
-                child: Text(
-                  errorMessage!.value,
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: MediaQuery.of(context).size.width * 0.03,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              )
+          padding: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width * 0.02,
+              top: MediaQuery.of(context).size.height * 0.008),
+          child: Text(
+            widget.errorMessage!.value,
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: MediaQuery.of(context).size.width * 0.03,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        )
             : const SizedBox.shrink()),
       ],
     );

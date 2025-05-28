@@ -40,22 +40,42 @@ class InputDetailController extends GetxController {
 
   void setImageFile(File? file) => imageFile.value = file;
 
-  /// Fungsi untuk ambil gambar langsung dari kamera
+  /// Fungsi untuk ambil gambar HANYA dari kamera
   Future<void> takePicture() async {
     final picker = ImagePicker();
     try {
-      final pickedFile = await picker.pickImage(source: ImageSource.camera);
+      final pickedFile = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 80, // Kompres gambar untuk menghemat storage
+        maxWidth: 1200,
+        maxHeight: 1200,
+      );
 
       if (pickedFile != null) {
         imageFile.value = File(pickedFile.path);
         imageError.value = false;
       } else {
-        imageError.value = true;
+        // User membatalkan pengambilan foto
+        Get.snackbar(
+          'Info',
+          'Pengambilan foto dibatalkan',
+          snackPosition: SnackPosition.TOP,
+        );
       }
     } catch (e) {
       imageError.value = true;
-      Get.snackbar('Error', 'Gagal membuka kamera');
+      Get.snackbar(
+        'Error',
+        'Gagal membuka kamera: ${e.toString()}',
+        snackPosition: SnackPosition.TOP,
+      );
     }
+  }
+
+  /// Fungsi untuk menghapus gambar yang sudah diambil
+  void removeImage() {
+    imageFile.value = null;
+    imageError.value = false;
   }
 
   bool validateInputs() {
