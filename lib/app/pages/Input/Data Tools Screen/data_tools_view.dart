@@ -36,13 +36,12 @@ class DataToolsView extends StatelessWidget {
                           child: controller.tools.isEmpty
                               ? ListView( // supaya bisa di-pull walau kosong
                                   children: [
-                                    SizedBox(height: 150.h),
+                                    SizedBox(height: 50.h),
                                     Center(
                                       child: Text(
                                         "Belum ada alat yg terdaftar",
                                         style: TextStyle(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.sp,
                                           color: Colors.black54,
                                         ),
                                       ),

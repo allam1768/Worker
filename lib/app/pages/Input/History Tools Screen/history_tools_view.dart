@@ -83,13 +83,8 @@ class HistoryToolView extends StatelessWidget {
                 if (controller.filteredHistoryData.isEmpty) {
                   return Center(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.history,
-                          size: 48.sp,
-                          color: Colors.black26,
-                        ),
                         SizedBox(height: 16.h),
                         Text(
                           controller.isFiltered

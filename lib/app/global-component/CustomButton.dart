@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed; // Ubah ke nullable
   final Color backgroundColor;
   final Color textColor;
   final double fontSize;
@@ -11,7 +11,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    required this.onPressed, // Tetap required tapi nullable
     this.backgroundColor = const Color(0xFF234E35), // default hijau
     this.textColor = Colors.black, // default putih
     this.fontSize = 30, // default 16sp
@@ -28,10 +28,10 @@ class CustomButton extends StatelessWidget {
           backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius:
-                BorderRadius.circular(MediaQuery.of(context).size.width * 0.02),
+            BorderRadius.circular(MediaQuery.of(context).size.width * 0.02),
           ),
         ),
-        onPressed: onPressed,
+        onPressed: onPressed, // ElevatedButton sudah support nullable
         child: Text(
           text,
           style: TextStyle(

@@ -55,45 +55,6 @@ class ScanToolsView extends StatelessWidget {
                           ),
                           onPressed: controller.toggleFlash,
                         )),
-                    const SizedBox(width: 24),
-                    Obx(() => Stack(
-                          children: [
-                            AnimatedOpacity(
-                              opacity:
-                                  controller.isFrontCamera.value ? 0.0 : 1.0,
-                              duration: const Duration(milliseconds: 300),
-                              child: AnimatedRotation(
-                                turns: controller.isFrontCamera.value ? 0.5 : 0,
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeInOutCubic,
-                                child: IconButton(
-                                  icon: SvgPicture.asset(
-                                    "assets/icons/rotate_off.svg",
-                                    width: 36,
-                                  ),
-                                  onPressed: controller.switchCamera,
-                                ),
-                              ),
-                            ),
-                            AnimatedOpacity(
-                              opacity:
-                                  controller.isFrontCamera.value ? 1.0 : 0.0,
-                              duration: const Duration(milliseconds: 300),
-                              child: AnimatedRotation(
-                                turns: controller.isFrontCamera.value ? 0.5 : 0,
-                                duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeInOutCubic,
-                                child: IconButton(
-                                  icon: SvgPicture.asset(
-                                    "assets/icons/rotate_on.svg",
-                                    width: 36,
-                                  ),
-                                  onPressed: controller.switchCamera,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
                   ],
                 ),
                 const SizedBox(height: 32),
