@@ -56,7 +56,7 @@ class LoginController extends GetxController {
 
       Get.snackbar("Login Berhasil", result.message,
           snackPosition: SnackPosition.TOP);
-      Get.offNamed(Routes.bottomnav);
+      Get.offNamed(Routes.scanCompany);
     } else {
       loginError.value = result.message;
     }
