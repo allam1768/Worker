@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/services/login_service.dart';
+import '../../../routes/routes.dart';
 
 class LoginController extends GetxController {
   var isPasswordHidden = true.obs;
@@ -10,34 +11,13 @@ class LoginController extends GetxController {
   var passwordController = TextEditingController();
   var isLoading = false.obs;
   var loginError = ''.obs;
-  var loadingDots = "".obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    ever(isLoading, (_) {
-      if (isLoading.value) {
-        _startLoadingAnimation();
-      }
-    });
-  }
-
-  void _startLoadingAnimation() {
-    var dotCount = 0;
-    Future.doWhile(() async {
-      await Future.delayed(Duration(milliseconds: 500));
-      if (!isLoading.value) return false;
-      dotCount = (dotCount + 1) % 4;
-      loadingDots.value = '.' * dotCount;
-      return true;
-    });
-  }
 
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
 
   void login() async {
+    isLoading.value = true;
     String name = nameController.text.trim();
     String password = passwordController.text.trim();
 
@@ -45,10 +25,9 @@ class LoginController extends GetxController {
 
     if (name.isEmpty || password.isEmpty) {
       loginError.value = "Username atau password tidak boleh kosong";
+      isLoading.value = false;
       return;
     }
-
-    isLoading.value = true;
 
     final result = await LoginService.login(
       name: name,
@@ -72,11 +51,20 @@ class LoginController extends GetxController {
       await prefs.setBool('isLoggedIn', true);
       await prefs.setString('userData', jsonEncode(result.user!.toJson()));
 
+      // Simpan username secara terpisah untuk akses mudah
+      await prefs.setString('username', result.user!.name ?? name);
+
       Get.snackbar("Login Berhasil", result.message,
           snackPosition: SnackPosition.TOP);
-      Get.offNamed('/Bottomnav');
+      Get.offNamed(Routes.scanCompany);
     } else {
       loginError.value = result.message;
     }
+  }
+
+  // Method untuk mendapatkan username dari SharedPreferences
+  static Future<String> getCurrentUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('username') ?? 'Unknown User';
   }
 }

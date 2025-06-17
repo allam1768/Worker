@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             textTheme: GoogleFonts.nunitoTextTheme(),
           ),
-          initialRoute: Routes.bottomnav,
+          initialRoute: Routes.splash,
           getPages: Routes.pages,
         );
       },

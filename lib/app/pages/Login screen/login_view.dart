@@ -60,18 +60,18 @@ class LoginView extends StatelessWidget {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                 // Password
-                Obx(() => CustomTextField(
+                 CustomTextField(
                       hintText: 'Password',
                       svgIcon: 'assets/icons/password.svg',
                       isPassword: true,
                       isPasswordHidden: controller.isPasswordHidden.value,
                       onSuffixTap: controller.togglePasswordVisibility,
                       controller: controller.passwordController,
-                    )),
+                    ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.015),
 
                 // Error Login - tetep ada tapi transparan kalau ga ada error
-                Obx(() => Padding(
+                Padding(
                       padding: EdgeInsets.only(
                           bottom: MediaQuery.of(context).size.height * 0.015),
                       child: Center(
@@ -87,7 +87,7 @@ class LoginView extends StatelessWidget {
                           ),
                         ),
                       ),
-                    )),
+                    ),
 
                 // Button Login
                 CustomButton(

@@ -62,7 +62,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = widget.errorMessage == null || widget.errorMessage!.value.isEmpty
+    // Perbaikan: Cek null terlebih dahulu sebelum mengakses value
+    final borderColor = widget.errorMessage?.value.isEmpty ?? true
         ? const Color(0xFF275637)
         : Colors.red;
 
@@ -149,7 +150,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ),
           ),
         ),
-        Obx(() => widget.errorMessage != null && widget.errorMessage!.value.isNotEmpty
+        // Perbaikan: Hanya gunakan Obx jika errorMessage tidak null
+        widget.errorMessage != null
+            ? Obx(() => widget.errorMessage!.value.isNotEmpty
             ? Padding(
           padding: EdgeInsets.only(
               left: MediaQuery.of(context).size.width * 0.02,
@@ -163,7 +166,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ),
           ),
         )
-            : const SizedBox.shrink()),
+            : const SizedBox.shrink())
+            : const SizedBox.shrink(),
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worker/data/models/catch_model.dart';
 import 'package:worker/data/services/catch_service.dart';
 
@@ -16,6 +17,9 @@ class InputDetailController extends GetxController {
   final RxString catatan = ''.obs;
   final Rx<File?> imageFile = Rx<File?>(null);
 
+  // User info
+  final RxString currentUsername = 'Unknown User'.obs;
+
   // Error states
   final RxString conditionError = ''.obs;
   final RxString jumlahError = ''.obs;
@@ -25,6 +29,24 @@ class InputDetailController extends GetxController {
 
   // Loading state
   final RxBool isLoading = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    loadCurrentUser();
+  }
+
+  // Load username dari SharedPreferences
+  Future<void> loadCurrentUser() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final username = prefs.getString('username') ?? 'Unknown User';
+      currentUsername.value = username;
+    } catch (e) {
+      print('Error loading username: $e');
+      currentUsername.value = 'Unknown User';
+    }
+  }
 
   void setCondition(String? value) {
     if (value != null) selectedCondition.value = value;
@@ -134,7 +156,7 @@ class InputDetailController extends GetxController {
         jenisHama: jenisHama.value,
         jumlah: jumlah.value,
         tanggal: formattedDate,
-        dicatatOleh: 'Kaka', // TODO: Ambil dari user session nanti
+        dicatatOleh: currentUsername.value, // Menggunakan username yang sudah login
         fotoDokumentasi: imageFile.value!.path,
         kondisi: selectedCondition.value.toLowerCase(),
         catatan: catatan.value,
