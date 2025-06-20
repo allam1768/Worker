@@ -13,6 +13,8 @@ class DataToolsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DataToolsController controller = Get.put(DataToolsController());
+    // Ambil nama perusahaan dari argumen, dengan fallback jika null
+    final String companyName = Get.arguments['company_name'] ?? 'Name company';
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -20,7 +22,7 @@ class DataToolsView extends StatelessWidget {
         child: Column(
           children: [
             CustomAppBar(
-              title: "Name company",
+              title: companyName, // Gunakan nama perusahaan dari argumen
               rightIcon: "",
               rightOnTap: () {},
               showBackButton: false,
@@ -29,48 +31,49 @@ class DataToolsView extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Obx(
-                  () => controller.isLoading.value && controller.tools.isEmpty
+                      () => controller.isLoading.value && controller.tools.isEmpty
                       ? const Center(child: CircularProgressIndicator())
                       : RefreshIndicator(
-                          onRefresh: controller.fetchTools,
-                          child: controller.tools.isEmpty
-                              ? ListView( // supaya bisa di-pull walau kosong
-                                  children: [
-                                    SizedBox(height: 50.h),
-                                    Center(
-                                      child: Text(
-                                        "Belum ada alat yg terdaftar",
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                          color: Colors.black54,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : ListView.builder(
-                                  physics: const AlwaysScrollableScrollPhysics(),
-                                  itemCount: controller.tools.length,
-                                  itemBuilder: (context, index) {
-                                    final AlatModel tool =
-                                        controller.tools[index];
-                                    return Padding(
-                                      padding: EdgeInsets.only(bottom: 20.h),
-                                      child: ToolCard(
-                                        toolName: tool.namaAlat,
-                                        imagePath: tool.imagePath ?? '',
-                                        location: tool.lokasi,
-                                        historyItems: [],
-                                        locationDetail: tool.detailLokasi,
-                                        pest_type: tool.pestType,
-                                        kondisi: tool.kondisi,
-                                        kode_qr: tool.kodeQr,
-                                        alatId: tool.id.toString(),
-                                      ),
-                                    );
-                                  },
-                                ),
+                    onRefresh: controller.fetchTools,
+                    child: controller.tools.isEmpty
+                        ? ListView(
+                      // Supaya bisa di-pull walau kosong
+                      children: [
+                        SizedBox(height: 50.h),
+                        Center(
+                          child: Text(
+                            "Belum ada alat yg terdaftar",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: Colors.black54,
+                            ),
+                          ),
                         ),
+                      ],
+                    )
+                        : ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: controller.tools.length,
+                      itemBuilder: (context, index) {
+                        final AlatModel tool =
+                        controller.tools[index];
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 20.h),
+                          child: ToolCard(
+                            toolName: tool.namaAlat,
+                            imagePath: tool.imagePath ?? '',
+                            location: tool.lokasi,
+                            historyItems: [],
+                            locationDetail: tool.detailLokasi,
+                            pest_type: tool.pestType,
+                            kondisi: tool.kondisi,
+                            kode_qr: tool.kodeQr,
+                            alatId: tool.id.toString(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),

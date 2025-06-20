@@ -5,10 +5,22 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:mime/mime.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/alat_model.dart';
 
 class AlatService {
   static const String baseUrl = 'https://hamatech.rplrus.com/api';
+
+  // Function to get scanned company ID from SharedPreferences
+  static Future<String?> getScannedCompanyId() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString('scanned_company_id');
+    } catch (e) {
+      print('Error getting scanned company ID: $e');
+      return null;
+    }
+  }
 
   static Future<http.Response?> createAlat(
       AlatModel alat, File imageFile) async {
@@ -45,20 +57,40 @@ class AlatService {
   }
 
   static Future<List<AlatModel>> fetchAlat() async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/alat'),
-      headers: {
-        'ngrok-skip-browser-warning': '1',
-      },
-    );
+    try {
+      // Get scanned company ID
+      final scannedCompanyId = await getScannedCompanyId();
 
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final List dataList = jsonData['data'];
+      String apiUrl = '$baseUrl/alat';
 
-      return dataList.map((json) => AlatModel.fromJson(json)).toList();
-    } else {
-      throw Exception('Gagal mengambil data alat (${response.statusCode})');
+      // Add company_id filter if available
+      if (scannedCompanyId != null && scannedCompanyId.isNotEmpty) {
+        apiUrl += '?company_id=$scannedCompanyId';
+        print('Fetching alat with company_id: $scannedCompanyId');
+      } else {
+        print('No scanned company ID found, fetching all alat');
+      }
+
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'ngrok-skip-browser-warning': '1',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        final List dataList = jsonData['data'];
+
+        return dataList.map((json) => AlatModel.fromJson(json)).toList();
+      } else {
+        throw Exception('Gagal mengambil data alat (${response.statusCode})');
+      }
+    } catch (e) {
+      print('Error fetching alat: $e');
+      throw Exception('Gagal mengambil data alat: $e');
     }
   }
 

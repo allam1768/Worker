@@ -1,10 +1,41 @@
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:worker/data/services/company_service.dart';
+import 'package:worker/data/models/company_model.dart';
 
 class ScanCompanyController extends GetxController {
   final MobileScannerController scannerController = MobileScannerController();
   RxBool isFlashOn = false.obs;
   RxBool isFrontCamera = false.obs;
+  RxList<CompanyModel> companies = <CompanyModel>[].obs;
+  RxBool isProcessing = false.obs; // Flag to prevent multiple scans
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchCompanies();
+  }
+
+  @override
+  void onClose() {
+    scannerController.dispose();
+    super.onClose();
+  }
+
+  Future<void> fetchCompanies() async {
+    try {
+      final fetchedCompanies = await CompanyService.fetchCompanies();
+      companies.assignAll(fetchedCompanies);
+    } catch (e) {
+      print('Error fetching companies: $e');
+      Get.snackbar(
+        "Error",
+        "Gagal mengambil data perusahaan.",
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
 
   void toggleFlash() {
     isFlashOn.value = !isFlashOn.value;
@@ -16,27 +47,76 @@ class ScanCompanyController extends GetxController {
     scannerController.switchCamera();
   }
 
-  void handleScanResult(BarcodeCapture capture) {
+  void handleScanResult(BarcodeCapture capture) async {
+    if (isProcessing.value) return; // Prevent multiple scans
+    isProcessing.value = true;
+
     final List<Barcode> barcodes = capture.barcodes;
     if (barcodes.isNotEmpty) {
-      String scanResult = barcodes.first.rawValue ?? "Tidak terbaca";
-
-      if (isValidHamatechQR(scanResult)) {
-        showScanResult(scanResult);
-      } else {
-        Get.snackbar("Invalid QR", "QR Code ini bukan dari Hamatech.",
-            snackPosition: SnackPosition.TOP);
+      String? qrCode = barcodes.first.rawValue;
+      if (qrCode == null || qrCode.isEmpty) {
+        Get.snackbar(
+          "Error",
+          "QR Code tidak dapat dibaca.",
+          snackPosition: SnackPosition.TOP,
+        );
+        isProcessing.value = false;
+        return;
       }
+
+      try {
+        final CompanyModel? matchedCompany =
+        companies.firstWhereOrNull((company) => company.companyQr == qrCode);
+
+        if (matchedCompany != null) {
+          print('Scan berhasil! ID Perusahaan: ${matchedCompany.id}, Nama Perusahaan: ${matchedCompany.name}');
+
+          // Save company ID to SharedPreferences immediately
+          try {
+            final prefs = await SharedPreferences.getInstance();
+            bool saveSuccess = await prefs.setString('scanned_company_id', matchedCompany.id.toString());
+            if (!saveSuccess) {
+              throw Exception('Gagal menyimpan company ID ke SharedPreferences');
+            }
+            print('Company ID ${matchedCompany.id} saved to SharedPreferences');
+          } catch (e) {
+            print('Error saving to SharedPreferences: $e');
+            Get.snackbar(
+              "Error",
+              "Gagal menyimpan ID perusahaan: $e",
+              snackPosition: SnackPosition.TOP,
+            );
+            isProcessing.value = false;
+            return;
+          }
+
+          // Pause scanner to prevent further scans
+          await scannerController.stop();
+
+          // Navigate to the next screen
+          Get.offNamed('/Bottomnav', arguments: {
+            'company_id': matchedCompany.id.toString(),
+            'company_name': matchedCompany.name ?? 'Unknown',
+          });
+        } else {
+          Get.snackbar(
+            "QR Code Tidak Valid",
+            "QR Code tidak terdaftar dalam sistem.",
+            snackPosition: SnackPosition.TOP,
+          );
+        }
+      } catch (e) {
+        print('Error validating QR code: $e');
+        Get.snackbar(
+          "Error",
+          "Terjadi kesalahan saat memvalidasi QR Code: $e",
+          snackPosition: SnackPosition.TOP,
+        );
+      } finally {
+        isProcessing.value = false;
+      }
+    } else {
+      isProcessing.value = false;
     }
-  }
-
-  bool isValidHamatechQR(String data) {
-    return data.startsWith("Hmt-Tool"); // Sesuaikan formatnya jika berbeda
-  }
-
-  void showScanResult(String result) {
-    Future.delayed(const Duration(seconds: 0), () {
-      Get.offNamed("/Bottomnav");
-    });
   }
 }
