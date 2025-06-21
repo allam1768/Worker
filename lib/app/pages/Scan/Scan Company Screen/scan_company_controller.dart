@@ -71,19 +71,28 @@ class ScanCompanyController extends GetxController {
         if (matchedCompany != null) {
           print('Scan berhasil! ID Perusahaan: ${matchedCompany.id}, Nama Perusahaan: ${matchedCompany.name}');
 
-          // Save company ID to SharedPreferences immediately
+          // Save company ID and company name to SharedPreferences immediately
           try {
             final prefs = await SharedPreferences.getInstance();
-            bool saveSuccess = await prefs.setString('scanned_company_id', matchedCompany.id.toString());
-            if (!saveSuccess) {
+
+            // Save company ID
+            bool saveIdSuccess = await prefs.setString('scanned_company_id', matchedCompany.id.toString());
+            if (!saveIdSuccess) {
               throw Exception('Gagal menyimpan company ID ke SharedPreferences');
             }
-            print('Company ID ${matchedCompany.id} saved to SharedPreferences');
+
+            // Save company name
+            bool saveNameSuccess = await prefs.setString('scanned_company_name', matchedCompany.name ?? 'Unknown');
+            if (!saveNameSuccess) {
+              throw Exception('Gagal menyimpan company name ke SharedPreferences');
+            }
+
+            print('Company ID ${matchedCompany.id} and name ${matchedCompany.name} saved to SharedPreferences');
           } catch (e) {
             print('Error saving to SharedPreferences: $e');
             Get.snackbar(
               "Error",
-              "Gagal menyimpan ID perusahaan: $e",
+              "Gagal menyimpan data perusahaan: $e",
               snackPosition: SnackPosition.TOP,
             );
             isProcessing.value = false;
