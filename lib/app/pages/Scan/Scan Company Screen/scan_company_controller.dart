@@ -103,10 +103,7 @@ class ScanCompanyController extends GetxController {
           await scannerController.stop();
 
           // Navigate to the next screen
-          Get.offNamed('/Bottomnav', arguments: {
-            'company_id': matchedCompany.id.toString(),
-            'company_name': matchedCompany.name ?? 'Unknown',
-          });
+          Get.offNamed('/Bottomnav');
         } else {
           Get.snackbar(
             "QR Code Tidak Valid",

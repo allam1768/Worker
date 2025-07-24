@@ -12,20 +12,29 @@ class DataToolsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadScannedCompanyId();
-    fetchTools();
+    loadScannedCompanyData(); // Panggil fungsi baru
   }
 
-  Future<void> loadScannedCompanyId() async {
+  /// Ambil company ID dan nama dari SharedPreferences
+  Future<void> loadScannedCompanyData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final companyId = prefs.getString('scanned_company_id');
+      final companyNamePref = prefs.getString('scanned_company_name');
+
       if (companyId != null) {
         scannedCompanyId.value = companyId;
         print('Loaded scanned company ID: $companyId');
       }
+
+      if (companyNamePref != null) {
+        companyName.value = companyNamePref;
+        print('Loaded scanned company name: $companyNamePref');
+      }
+
+      await fetchTools(); // Panggil fetch setelah data dimuat
     } catch (e) {
-      print('Error loading scanned company ID: $e');
+      print('Error loading scanned company data: $e');
     }
   }
 
@@ -35,13 +44,10 @@ class DataToolsController extends GetxController {
       final fetchedTools = await AlatService.fetchAlat();
       tools.assignAll(fetchedTools);
 
-      // Update company name from the first tool if available
-      if (fetchedTools.isNotEmpty && fetchedTools.first.company != null) {
-        companyName.value = fetchedTools.first.company!.name;
-      } else if (scannedCompanyId.value.isNotEmpty) {
-        companyName.value = 'Company ID: ${scannedCompanyId.value}';
-      } else {
-        companyName.value = 'All Companies';
+      if (fetchedTools.isEmpty && companyName.value == 'Loading...') {
+        companyName.value = scannedCompanyId.value.isNotEmpty
+            ? 'Company ID: ${scannedCompanyId.value}'
+            : 'All Companies';
       }
 
       print('Fetched ${fetchedTools.length} tools');
@@ -61,6 +67,7 @@ class DataToolsController extends GetxController {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('scanned_company_id');
+      await prefs.remove('scanned_company_name');
       scannedCompanyId.value = '';
       companyName.value = 'All Companies';
       await fetchTools(); // Refresh data to show all tools

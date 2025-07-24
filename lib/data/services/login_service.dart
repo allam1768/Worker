@@ -31,6 +31,7 @@ class LoginService {
           'success': true,
           'message': data['message'],
           'user': data['user'],
+          'token': data['token'],
         });
       } else {
         return LoginResponseModel.fromJson({
