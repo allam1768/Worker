@@ -116,18 +116,25 @@ class _CustomTextFieldState extends State<CustomTextField> {
               )
                   : null,
               suffixIcon: widget.isPassword
-                  ? GestureDetector(
-                onTap: widget.onSuffixTap,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal:
-                      MediaQuery.of(context).size.width * 0.03),
-                  child: SvgPicture.asset(
-                    (widget.isPasswordHidden ?? true)
-                        ? 'assets/icons/eye_closed.svg'
-                        : 'assets/icons/eye_open.svg',
-                    width: MediaQuery.of(context).size.width * 0.05,
-                    height: MediaQuery.of(context).size.width * 0.05,
+                  ? Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: widget.onSuffixTap,
+                  child: Container(
+                    padding: EdgeInsets.all(
+                        MediaQuery.of(context).size.width * 0.03),
+                    child: SvgPicture.asset(
+                      (widget.isPasswordHidden ?? true)
+                          ? 'assets/icons/eye_closed.svg'
+                          : 'assets/icons/eye_open.svg',
+                      width: MediaQuery.of(context).size.width * 0.05,
+                      height: MediaQuery.of(context).size.width * 0.05,
+                      colorFilter: ColorFilter.mode(
+                        Colors.grey.shade600,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
                 ),
               )

@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/services/login_service.dart';
 import '../../../routes/routes.dart';
 
+final isLoading = false.obs;
+
 class LoginController extends GetxController {
   var isPasswordHidden = true.obs;
   var nameController = TextEditingController();
@@ -29,6 +31,8 @@ class LoginController extends GetxController {
       return;
     }
 
+    isLoading.value = true;
+
     final result = await LoginService.login(
       name: name,
       password: password,
@@ -51,8 +55,16 @@ class LoginController extends GetxController {
       await prefs.setBool('isLoggedIn', true);
       await prefs.setString('userData', jsonEncode(result.user!.toJson()));
 
-      // Simpan username secara terpisah untuk akses mudah
-      await prefs.setString('username', result.user!.name ?? name);
+      // Simpan token ke SharedPreferences
+      if (result.token != null && result.token!.isNotEmpty) {
+        await prefs.setString('token', result.token!);
+        print('✅ Login berhasil!');
+        print('📱 Token berhasil disimpan: ${result.token!}');
+        print('👤 User: ${result.user!.name}');
+        print('🔑 Role: ${result.user!.role}');
+      } else {
+        print('⚠️ Login berhasil tapi token tidak ditemukan atau kosong');
+      }
 
       Get.snackbar("Login Berhasil", result.message,
           snackPosition: SnackPosition.TOP);
@@ -62,9 +74,22 @@ class LoginController extends GetxController {
     }
   }
 
-  // Method untuk mendapatkan username dari SharedPreferences
-  static Future<String> getCurrentUsername() async {
+  // Method untuk mengambil token dari SharedPreferences
+  static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('username') ?? 'Unknown User';
+    return prefs.getString('token');
+  }
+
+  // Method untuk menghapus token saat logout
+  static Future<void> removeToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+  }
+
+  // Method untuk mengecek apakah token masih ada
+  static Future<bool> hasToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    return token != null && token.isNotEmpty;
   }
 }
