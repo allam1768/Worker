@@ -11,6 +11,17 @@ import '../models/alat_model.dart';
 class AlatService {
   static const String baseUrl = 'https://hamatech.rplrus.com/api';
 
+  // Function to get token from SharedPreferences
+  static Future<String?> getToken() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString('token');
+    } catch (e) {
+      print('Error getting token: $e');
+      return null;
+    }
+  }
+
   // Function to get scanned company ID from SharedPreferences
   static Future<String?> getScannedCompanyId() async {
     try {
@@ -22,6 +33,27 @@ class AlatService {
     }
   }
 
+  // Function to get headers with token
+  static Future<Map<String, String>> getHeaders() async {
+    final token = await getToken();
+    return {
+      'ngrok-skip-browser-warning': '1',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
+    };
+  }
+
+  // Function to get headers for multipart requests
+  static Future<Map<String, String>> getMultipartHeaders() async {
+    final token = await getToken();
+    return {
+      'ngrok-skip-browser-warning': '1',
+      'Accept': 'application/json',
+      if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
+    };
+  }
+
   static Future<http.Response?> createAlat(
       AlatModel alat, File imageFile) async {
     try {
@@ -29,6 +61,10 @@ class AlatService {
         'POST',
         Uri.parse('$baseUrl/alat'),
       );
+
+      // Add headers with token
+      final headers = await getMultipartHeaders();
+      request.headers.addAll(headers);
 
       request.fields['nama_alat'] = alat.namaAlat;
       request.fields['lokasi'] = alat.lokasi;
@@ -48,6 +84,12 @@ class AlatService {
 
       print('Status: ${response.statusCode}');
       print('Body: ${response.body}');
+
+      // Check if unauthorized
+      if (response.statusCode == 401) {
+        print('❌ Token tidak valid atau sudah expired');
+        throw Exception('Token tidak valid atau sudah expired');
+      }
 
       return response;
     } catch (e) {
@@ -71,13 +113,12 @@ class AlatService {
         print('No scanned company ID found, fetching all alat');
       }
 
+      // Get headers with token
+      final headers = await getHeaders();
+
       final response = await http.get(
         Uri.parse(apiUrl),
-        headers: {
-          'ngrok-skip-browser-warning': '1',
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+        headers: headers,
       );
 
       if (response.statusCode == 200) {
@@ -85,6 +126,9 @@ class AlatService {
         final List dataList = jsonData['data'];
 
         return dataList.map((json) => AlatModel.fromJson(json)).toList();
+      } else if (response.statusCode == 401) {
+        print('❌ Token tidak valid atau sudah expired');
+        throw Exception('Token tidak valid atau sudah expired');
       } else {
         throw Exception('Gagal mengambil data alat (${response.statusCode})');
       }
@@ -96,15 +140,22 @@ class AlatService {
 
   static Future<http.Response?> deleteAlat(int id) async {
     try {
+      // Get headers with token
+      final headers = await getHeaders();
+
       final response = await http.delete(
         Uri.parse('$baseUrl/alat/$id'),
-        headers: {
-          'ngrok-skip-browser-warning': '1',
-        },
+        headers: headers,
       );
 
       print('Status: ${response.statusCode}');
       print('Body: ${response.body}');
+
+      // Check if unauthorized
+      if (response.statusCode == 401) {
+        print('❌ Token tidak valid atau sudah expired');
+        throw Exception('Token tidak valid atau sudah expired');
+      }
 
       return response;
     } catch (e) {
@@ -120,6 +171,10 @@ class AlatService {
         'POST',
         Uri.parse('$baseUrl/alat/$id'),
       );
+
+      // Add headers with token
+      final headers = await getMultipartHeaders();
+      request.headers.addAll(headers);
 
       request.fields['nama_alat'] = alat.namaAlat;
       request.fields['lokasi'] = alat.lokasi;
@@ -141,10 +196,32 @@ class AlatService {
       print('Status: ${response.statusCode}');
       print('Body: ${response.body}');
 
+      // Check if unauthorized
+      if (response.statusCode == 401) {
+        print('❌ Token tidak valid atau sudah expired');
+        throw Exception('Token tidak valid atau sudah expired');
+      }
+
       return response;
     } catch (e) {
       print('Error update ke API: $e');
       return null;
+    }
+  }
+
+  // Method untuk mengecek apakah token masih valid
+  static Future<bool> isTokenValid() async {
+    try {
+      final headers = await getHeaders();
+      final response = await http.get(
+        Uri.parse('$baseUrl/user'), // endpoint untuk validasi token
+        headers: headers,
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error checking token validity: $e');
+      return false;
     }
   }
 }

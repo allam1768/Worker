@@ -55,6 +55,9 @@ class LoginController extends GetxController {
       await prefs.setBool('isLoggedIn', true);
       await prefs.setString('userData', jsonEncode(result.user!.toJson()));
 
+      // Simpan username secara terpisah untuk kemudahan akses
+      await prefs.setString('username', result.user!.name);
+
       // Simpan token ke SharedPreferences
       if (result.token != null && result.token!.isNotEmpty) {
         await prefs.setString('token', result.token!);
@@ -62,6 +65,7 @@ class LoginController extends GetxController {
         print('📱 Token berhasil disimpan: ${result.token!}');
         print('👤 User: ${result.user!.name}');
         print('🔑 Role: ${result.user!.role}');
+        print('💾 Username tersimpan: ${result.user!.name}');
       } else {
         print('⚠️ Login berhasil tapi token tidak ditemukan atau kosong');
       }
@@ -80,10 +84,25 @@ class LoginController extends GetxController {
     return prefs.getString('token');
   }
 
+  // Method untuk mengambil username dari SharedPreferences
+  static Future<String?> getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('username');
+  }
+
   // Method untuk menghapus token saat logout
   static Future<void> removeToken() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+  }
+
+  // Method untuk menghapus semua data user saat logout
+  static Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    await prefs.remove('username');
+    await prefs.remove('userData');
+    await prefs.setBool('isLoggedIn', false);
   }
 
   // Method untuk mengecek apakah token masih ada
@@ -91,5 +110,11 @@ class LoginController extends GetxController {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     return token != null && token.isNotEmpty;
+  }
+
+  // Method untuk mengecek apakah user sudah login
+  static Future<bool> isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLoggedIn') ?? false;
   }
 }
