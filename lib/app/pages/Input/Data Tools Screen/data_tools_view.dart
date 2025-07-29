@@ -74,7 +74,9 @@ class _DataToolsViewState extends State<DataToolsView> {
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Obx(
                       () => controller.isLoading.value && controller.tools.isEmpty
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const Center(child: CircularProgressIndicator(
+                        color: AppColor.btnijo,
+                      ))
                       : RefreshIndicator(
                     onRefresh: controller.fetchTools,
                     child: controller.tools.isEmpty
