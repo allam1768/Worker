@@ -29,11 +29,14 @@ class ScanCompanyController extends GetxController {
       companies.assignAll(fetchedCompanies);
     } catch (e) {
       print('Error fetching companies: $e');
-      Get.snackbar(
-        "Error",
-        "Gagal mengambil data perusahaan.",
-        snackPosition: SnackPosition.TOP,
-      );
+      // Only show snackbar once for fetch error
+      if (!Get.isSnackbarOpen) {
+        Get.snackbar(
+          "Error",
+          "Gagal mengambil data perusahaan.",
+          snackPosition: SnackPosition.TOP,
+        );
+      }
     }
   }
 
@@ -55,11 +58,13 @@ class ScanCompanyController extends GetxController {
     if (barcodes.isNotEmpty) {
       String? qrCode = barcodes.first.rawValue;
       if (qrCode == null || qrCode.isEmpty) {
-        Get.snackbar(
-          "Error",
-          "QR Code tidak dapat dibaca.",
-          snackPosition: SnackPosition.TOP,
-        );
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar(
+            "Error",
+            "QR Code tidak dapat dibaca.",
+            snackPosition: SnackPosition.TOP,
+          );
+        }
         isProcessing.value = false;
         return;
       }
@@ -90,11 +95,13 @@ class ScanCompanyController extends GetxController {
             print('Company ID ${matchedCompany.id} and name ${matchedCompany.name} saved to SharedPreferences');
           } catch (e) {
             print('Error saving to SharedPreferences: $e');
-            Get.snackbar(
-              "Error",
-              "Gagal menyimpan data perusahaan: $e",
-              snackPosition: SnackPosition.TOP,
-            );
+            if (!Get.isSnackbarOpen) {
+              Get.snackbar(
+                "Error",
+                "Gagal menyimpan data perusahaan: $e",
+                snackPosition: SnackPosition.TOP,
+              );
+            }
             isProcessing.value = false;
             return;
           }
@@ -105,19 +112,23 @@ class ScanCompanyController extends GetxController {
           // Navigate to the next screen
           Get.offNamed('/Bottomnav');
         } else {
-          Get.snackbar(
-            "QR Code Tidak Valid",
-            "QR Code tidak terdaftar dalam sistem.",
-            snackPosition: SnackPosition.TOP,
-          );
+          if (!Get.isSnackbarOpen) {
+            Get.snackbar(
+              "QR Code Tidak Valid",
+              "QR Code tidak terdaftar dalam sistem.",
+              snackPosition: SnackPosition.TOP,
+            );
+          }
         }
       } catch (e) {
         print('Error validating QR code: $e');
-        Get.snackbar(
-          "Error",
-          "Terjadi kesalahan saat memvalidasi QR Code: $e",
-          snackPosition: SnackPosition.TOP,
-        );
+        if (!Get.isSnackbarOpen) {
+          Get.snackbar(
+            "Error",
+            "Terjadi kesalahan saat memvalidasi QR Code: $e",
+            snackPosition: SnackPosition.TOP,
+          );
+        }
       } finally {
         isProcessing.value = false;
       }

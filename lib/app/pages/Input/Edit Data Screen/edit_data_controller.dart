@@ -30,6 +30,22 @@ class EditDataController extends GetxController {
   final catchData = <String, dynamic>{}.obs;
   final catchId = 0.obs;
 
+  // --- UPDATED FOR DROPDOWN ---
+  final pestOptions = <String>[
+    'Kecoa',
+    'Tikus',
+    'Nyamuk',
+    'Lalat',
+    'Phorids',
+    'Ngengat',
+    'Capung',
+    'Kupu-Kupu',
+  ].obs;
+  final selectedPest = ''.obs;
+  final customPestText = ''.obs; // Separate variable for custom input
+  final showCustomPestField = false.obs;
+  // --- END UPDATED FOR DROPDOWN ---
+
   // API constants
   static const String baseUrl = 'https://hamatech.rplrus.com';
   late final http.Client _httpClient;
@@ -91,6 +107,20 @@ class EditDataController extends GetxController {
     jenisHama.value = data['jenis_hama']?.toString() ?? '';
     catatan.value = data['catatan']?.toString() ?? '';
 
+    // --- UPDATED POPULATE FOR DROPDOWN ---
+    // Check if the existing jenisHama is in the predefined list
+    if (jenisHama.value.isNotEmpty) {
+      if (pestOptions.contains(jenisHama.value)) {
+        selectedPest.value = jenisHama.value;
+        showCustomPestField.value = false;
+      } else {
+        selectedPest.value = 'Other';
+        customPestText.value = jenisHama.value;
+        showCustomPestField.value = true;
+      }
+    }
+    // --- END UPDATED POPULATE FOR DROPDOWN ---
+
     // Set current image URL - handle multiple possible keys
     String? imageUrl;
 
@@ -126,7 +156,32 @@ class EditDataController extends GetxController {
     jumlahError.value = ""; // Clear error when user types
   }
 
-  /// Set jenis hama value
+  /// Method for dropdown selection
+  void setSelectedPest(String value) {
+    selectedPest.value = value;
+    if (!showCustomPestField.value) {
+      jenisHama.value = value;
+    }
+    jenisHamaError.value = ""; // Clear error when user selects
+  }
+
+  /// Method for custom pest input
+  void setCustomPestText(String value) {
+    customPestText.value = value;
+    jenisHama.value = value;
+    jenisHamaError.value = ""; // Clear error when user types
+  }
+
+  /// Get the final pest value (either from dropdown or custom input)
+  String get finalPestValue {
+    if (showCustomPestField.value) {
+      return customPestText.value;
+    } else {
+      return selectedPest.value;
+    }
+  }
+
+  /// Set jenis hama value (keeping for backward compatibility)
   void setJenisHama(String value) {
     jenisHama.value = value;
     jenisHamaError.value = ""; // Clear error when user types
@@ -210,8 +265,8 @@ class EditDataController extends GetxController {
       }
     }
 
-    // Validate jenis hama
-    if (jenisHama.value.isEmpty) {
+    // Validate jenis hama using finalPestValue
+    if (finalPestValue.isEmpty) {
       jenisHamaError.value = "Jenis hama harus diisi!";
       isValid = false;
     }
@@ -222,9 +277,6 @@ class EditDataController extends GetxController {
       isValid = false;
     }
 
-    // Image is optional for editing (can keep existing image)
-    // No need to validate image since user can keep the existing one
-
     return isValid;
   }
 
@@ -232,7 +284,7 @@ class EditDataController extends GetxController {
   String _getConditionForAPI(String condition) {
     switch (condition.toLowerCase()) {
       case 'good':
-        return 'good'; // API might expect English
+        return 'good';
       case 'broken':
         return 'broken';
       case 'maintenance':
@@ -261,7 +313,7 @@ class EditDataController extends GetxController {
       Map<String, String> fields = {
         'kondisi': _getConditionForAPI(selectedCondition.value),
         'jumlah': jumlah.value,
-        'jenis_hama': jenisHama.value,
+        'jenis_hama': finalPestValue, // Use finalPestValue instead of jenisHama.value
         'catatan': catatan.value,
       };
 
@@ -280,10 +332,8 @@ class EditDataController extends GetxController {
 
         _showSuccessSnackbar('Data berhasil diperbarui!');
 
-        // Wait a bit for user to see the success message
         await Future.delayed(const Duration(seconds: 1));
 
-        // Return to detail page with updated data
         Get.back(result: {
           'updated': true,
           'data': responseData['data'],
@@ -308,11 +358,9 @@ class EditDataController extends GetxController {
       Uri.parse('$baseUrl/api/catches/${catchId.value}'),
     );
 
-    // Add method override for PUT
     request.fields['_method'] = 'PUT';
     request.fields.addAll(fields);
 
-    // Add image file
     var imageFile = await http.MultipartFile.fromPath(
       'foto_dokumentasi',
       imagePath,
@@ -340,12 +388,12 @@ class EditDataController extends GetxController {
   /// Get current image to display
   String getCurrentImageUrl() {
     if (imageFile.value != null) {
-      return imageFile.value!.path; // Local file path for new image
+      return imageFile.value!.path;
     }
     if (currentImageUrl.value.isNotEmpty) {
-      return currentImageUrl.value; // Existing image URL
+      return currentImageUrl.value;
     }
-    return ''; // No image
+    return '';
   }
 
   /// Check if there's a new image selected

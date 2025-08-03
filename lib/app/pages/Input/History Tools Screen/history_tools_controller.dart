@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../data/services/catch_service.dart';
 
 class HistoryController extends GetxController {
@@ -30,9 +31,23 @@ class HistoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _initializeData();
+  }
+
+  // Method untuk mengambil alat ID dari shared preferences
+  Future<String> _getAlatIdFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('selected_alat_id') ?? '';
+  }
+
+  Future<void> _initializeData() async {
+    // Ambil alat ID dari shared preferences
+    final alatIdFromPrefs = await _getAlatIdFromPrefs();
+    selectedAlatId.value = alatIdFromPrefs;
+
+    // Ambil arguments untuk data lainnya (kecuali alatId)
     var arguments = Get.arguments;
     if (arguments != null && arguments is Map<String, dynamic>) {
-      selectedAlatId.value = arguments['alatId'] ?? '';
       selectedToolName.value = arguments['toolName'] ?? '';
       selectedLocation.value = arguments['location'] ?? '';
       selectedLocationDetail.value = arguments['locationDetail'] ?? '';
@@ -102,4 +117,13 @@ class HistoryController extends GetxController {
   String getDisplayTitle() => selectedToolName.value.isNotEmpty ? selectedToolName.value : "History";
 
   bool get isFiltered => selectedAlatId.value.isNotEmpty;
+
+  // Method untuk memperbarui alat ID dari shared preferences
+  Future<void> updateAlatIdFromPrefs() async {
+    final alatIdFromPrefs = await _getAlatIdFromPrefs();
+    if (alatIdFromPrefs != selectedAlatId.value) {
+      selectedAlatId.value = alatIdFromPrefs;
+      filterDataByAlatId();
+    }
+  }
 }

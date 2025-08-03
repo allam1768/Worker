@@ -308,9 +308,9 @@ class DetailController extends GetxController {
 
     switch (condition.toLowerCase()) {
       case 'good':
-        return 'Baik';
+        return 'Aktif';
       case 'broken':
-        return 'Rusak';
+        return 'Tidak Aktif';
       case 'maintenance':
         return 'Maintenance';
       default:

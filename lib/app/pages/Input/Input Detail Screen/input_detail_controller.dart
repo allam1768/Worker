@@ -13,12 +13,26 @@ class InputDetailController extends GetxController {
   // Form values
   final RxString selectedCondition = ''.obs;
   final RxInt jumlah = 0.obs;
-  final RxString jenisHama = ''.obs;
   final RxString catatan = ''.obs;
   final Rx<File?> imageFile = Rx<File?>(null);
 
   // User info
   final RxString currentUsername = 'Unknown User'.obs;
+
+  // New variables for pest type dropdown
+  final RxList<String> pestOptions = <String>[
+    'Kecoa',
+    'Tikus',
+    'Nyamuk',
+    'Lalat',
+    'Phorids',
+    'Ngengat',
+    'Capung',
+    'Kupu-Kupu',
+  ].obs;
+  final RxString selectedPest = ''.obs;
+  final RxString customPestText = ''.obs; // Separate variable for custom input
+  final RxBool showCustomPestField = false.obs;
 
   // Error states
   final RxString conditionError = ''.obs;
@@ -56,7 +70,24 @@ class InputDetailController extends GetxController {
     jumlah.value = value.isNotEmpty ? int.tryParse(value) ?? 0 : 0;
   }
 
-  void setJenisHama(String value) => jenisHama.value = value;
+  // Method for dropdown selection
+  void setSelectedPest(String value) {
+    selectedPest.value = value;
+  }
+
+  // Method for custom pest input
+  void setCustomPestText(String value) {
+    customPestText.value = value;
+  }
+
+  // Get the final pest value (either from dropdown or custom input)
+  String get finalPestValue {
+    if (showCustomPestField.value) {
+      return customPestText.value;
+    } else {
+      return selectedPest.value;
+    }
+  }
 
   void setCatatan(String value) => catatan.value = value;
 
@@ -117,7 +148,8 @@ class InputDetailController extends GetxController {
       jumlahError.value = '';
     }
 
-    if (jenisHama.isEmpty) {
+    // Validation for pest type (check final value)
+    if (finalPestValue.isEmpty) {
       jenisHamaError.value = 'Jenis hama harus diisi!';
       isValid = false;
     } else {
@@ -153,7 +185,7 @@ class InputDetailController extends GetxController {
 
       final catchData = CatchModel(
         alatId: alatId,
-        jenisHama: jenisHama.value,
+        jenisHama: finalPestValue, // Use finalPestValue getter
         jumlah: jumlah.value,
         tanggal: formattedDate,
         dicatatOleh: currentUsername.value, // Menggunakan username yang sudah login
@@ -189,7 +221,9 @@ class InputDetailController extends GetxController {
   void resetForm() {
     selectedCondition.value = '';
     jumlah.value = 0;
-    jenisHama.value = '';
+    selectedPest.value = '';
+    customPestText.value = '';
+    showCustomPestField.value = false;
     catatan.value = '';
     imageFile.value = null;
 
