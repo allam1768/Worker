@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../../../../data/models/alat_model.dart';
 import '../../../../../values/app_color.dart';
 
-class ToolCard extends StatelessWidget {
+class ToolCard extends StatefulWidget {
   final String toolName;
   final String imagePath;
   final String location;
@@ -12,7 +11,7 @@ class ToolCard extends StatelessWidget {
   final String kondisi;
   final String kode_qr;
   final String pest_type;
-  final String alatId; // Add alatId parameter
+  final String alatId;
   final List<Map<String, dynamic>> historyItems;
 
   const ToolCard({
@@ -25,13 +24,69 @@ class ToolCard extends StatelessWidget {
     required this.kondisi,
     required this.kode_qr,
     required this.pest_type,
-    required this.alatId, // Add alatId to constructor
+    required this.alatId,
   });
 
   @override
+  State<ToolCard> createState() => _ToolCardState();
+}
+
+class _ToolCardState extends State<ToolCard> {
+  bool _showImage = false;
+
+  String _getStatusFromCondition(String condition) {
+    String normalized = condition.trim().toLowerCase();
+    switch (normalized) {
+      case 'good':
+      case 'baik':
+        return 'Aktif';
+      case 'broken':
+      case 'rusak':
+        return 'Tidak Aktif';
+      case 'maintenance':
+        return 'Maintenance';
+      default:
+        return 'Tidak Diketahui';
+    }
+  }
+
+  Color _getStatusColor(String condition) {
+    String normalized = condition.trim().toLowerCase();
+    switch (normalized) {
+      case 'good':
+      case 'baik':
+        return AppColor.btnijo;
+      case 'broken':
+      case 'rusak':
+        return Colors.red;
+      case 'maintenance':
+        return AppColor.oren;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  IconData _getStatusIcon(String condition) {
+    String normalized = condition.trim().toLowerCase();
+    switch (normalized) {
+      case 'good':
+      case 'baik':
+        return Icons.check_circle;
+      case 'broken':
+      case 'rusak':
+        return Icons.cancel;
+      case 'maintenance':
+        return Icons.build_circle;
+      default:
+        return Icons.help_outline;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String normalized = kondisi.trim().toLowerCase();
-    Color statusColor = normalized == 'good' ? AppColor.btnijo : AppColor.oren;
+    String displayStatus = _getStatusFromCondition(widget.kondisi);
+    Color statusColor = _getStatusColor(widget.kondisi);
+    IconData statusIcon = _getStatusIcon(widget.kondisi);
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8.h),
@@ -51,77 +106,84 @@ class ToolCard extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(16.r),
           onTap: () => Get.toNamed('/HistoryTool', arguments: {
-            'alatId': alatId,
-            'toolName': toolName,
-            'location': location,
-            'locationDetail': locationDetail,
+            'alatId': widget.alatId,
+            'toolName': widget.toolName,
+            'location': widget.location,
+            'locationDetail': widget.locationDetail,
           }),
           child: Padding(
             padding: EdgeInsets.all(12.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r),
-                      child: Image.network(
-                        imagePath,
-                        width: double.infinity,
-                        height: 180.h,
-                        fit: BoxFit.cover,
-                        headers: {
-                          'ngrok-skip-browser-warning': '1',
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          print('Error loading image: $error');
-                          return Image.asset(
-                            'assets/images/broken.png',
-                            width: double.infinity,
-                            height: 180.h,
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      ),
-                    ),
-                    // Status kondisi (bulat)
-                    Positioned(
-                      top: 10.h,
-                      right: 10.w,
-                      child: Container(
-                        width: 10.w,
-                        height: 10.w,
-                        decoration: BoxDecoration(
-                          color: statusColor,
-                          shape: BoxShape.circle,
+                // Gambar (jika _showImage true)
+                if (_showImage)
+                  Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12.r),
+                        child: Image.network(
+                          widget.imagePath,
+                          width: double.infinity,
+                          height: 180.h,
+                          fit: BoxFit.cover,
+                          headers: {
+                            'ngrok-skip-browser-warning': '1',
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/broken.png',
+                              width: double.infinity,
+                              height: 180.h,
+                              fit: BoxFit.cover,
+                            );
+                          },
                         ),
                       ),
-                    ),
-                    // Nama alat
-                    Positioned(
-                      top: 12.h,
-                      left: 12.w,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10.w, vertical: 6.h),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Text(
-                          toolName,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                      Positioned(
+                        top: 10.h,
+                        right: 10.w,
+                        child: Container(
+                          width: 10.w,
+                          height: 10.w,
+                          decoration: BoxDecoration(
+                            color: statusColor,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                      Positioned(
+                        top: 12.h,
+                        left: 12.w,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Text(
+                            widget.toolName,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
                 SizedBox(height: 12.h),
-                // Lokasi, detail & kondisi
+
+                // Informasi lokasi dan status
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +194,7 @@ class ToolCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            location,
+                            widget.location,
                             style: TextStyle(
                               fontSize: 18.sp,
                               fontWeight: FontWeight.w600,
@@ -143,7 +205,7 @@ class ToolCard extends StatelessWidget {
                           ),
                           SizedBox(height: 4.h),
                           Text(
-                            locationDetail,
+                            widget.locationDetail,
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.grey.shade700,
@@ -155,22 +217,58 @@ class ToolCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 12.w),
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 8.w, vertical: 4.h),
+                          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                           decoration: BoxDecoration(
                             color: statusColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: Text(
-                            kondisi.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w600,
-                              color: statusColor,
+                            borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(
+                              color: statusColor.withOpacity(0.3),
+                              width: 1,
                             ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                statusIcon,
+                                size: 14.sp,
+                                color: statusColor,
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                displayStatus,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: statusColor,
+                                ),
+                              ),
+                              SizedBox(width: 4.w),
+                              // Tombol up/down pindah ke sini
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _showImage = !_showImage;
+                                  });
+                                },
+                                icon: Icon(
+                                  _showImage
+                                      ? Icons.keyboard_arrow_up
+                                      : Icons.keyboard_arrow_down,
+                                  color: Colors.grey.shade700,
+                                  size: 18.sp,
+                                ),
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                tooltip: _showImage
+                                    ? 'Sembunyikan Gambar'
+                                    : 'Tampilkan Gambar',
+                              ),
+                            ],
                           ),
                         ),
                       ],

@@ -16,6 +16,9 @@ class ReportInputView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("🏗️ ReportInputView building...");
+    print("📱 Screen size: ${MediaQuery.of(context).size}");
+
     return Scaffold(
       backgroundColor: AppColor.background,
       body: SafeArea(
@@ -45,38 +48,116 @@ class ReportInputView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CustomTextField(
-                        label: "Area",
-                        onChanged: (value) => controller.amount.value = value,
-                        errorMessage: controller.areaError,
-                      ),
+                      // Area TextField with debugging
+                      Obx(() {
+                        print("🔄 Area field rebuilding - Value: '${controller.amount.value}', Error: '${controller.areaError.value}'");
+                        return CustomTextField(
+                          label: "Area",
+                          onChanged: (value) {
+                            print("📝 Area field changed: '$value'");
+                            controller.amount.value = value;
+                            print("✅ Area value set to: '${controller.amount.value}'");
+                          },
+                          errorMessage: controller.areaError,
+                        );
+                      }),
                       SizedBox(height: 15.h),
-                      CustomTextField(
-                        label: "Information",
-                        onChanged: (value) =>
-                            controller.information.value = value,
-                        errorMessage: controller.informationError,
-                      ),
+
+                      // Information TextField with debugging
+                      Obx(() {
+                        print("🔄 Information field rebuilding - Value: '${controller.information.value}', Error: '${controller.informationError.value}'");
+                        return CustomTextField(
+                          label: "Information",
+                          onChanged: (value) {
+                            print("📝 Information field changed: '$value'");
+                            controller.information.value = value;
+                            print("✅ Information value set to: '${controller.information.value}'");
+                          },
+                          errorMessage: controller.informationError,
+                        );
+                      }),
                       SizedBox(height: 15.h),
-                      ImageUpload(
-                        imageFile: controller.imageFile,
-                        imageError: controller.imageError,
-                      ),
+
+                      // Image Upload with debugging
+                      Obx(() {
+                        print("🔄 ImageUpload rebuilding - Has image: ${controller.imageFile.value != null}, Error: ${controller.imageError.value}");
+                        return ImageUpload(
+                          imageFile: controller.imageFile,
+                          imageError: controller.imageError,
+                        );
+                      }),
                       SizedBox(height: 20.h),
-                      CustomButton(
-                        text: "Save",
-                        backgroundColor: AppColor.btnijo,
-                        onPressed: () {
-                          controller.validateForm();
-                        },
-                        fontSize: 16,
-                      ),
+
+                      // Submit Button with debugging
+                      Obx(() {
+                        bool isLoading = controller.isLoading.value;
+                        print("🔄 Submit button rebuilding - Loading: $isLoading");
+
+                        return CustomButton(
+                          text: isLoading ? "Menyimpan..." : "Save",
+                          backgroundColor: isLoading
+                              ? AppColor.btnijo.withOpacity(0.6)
+                              : AppColor.btnijo,
+                          onPressed: isLoading
+                              ? null
+                              : () {
+                            print("🔘 Save button pressed");
+                            print("📋 Current form state:");
+                            print("  - Area: '${controller.amount.value}'");
+                            print("  - Information: '${controller.information.value}'");
+                            print("  - Image: ${controller.imageFile.value != null ? 'Selected' : 'Not selected'}");
+                            print("  - Loading: ${controller.isLoading.value}");
+
+                            controller.validateForm();
+                          },
+                          fontSize: 16,
+                        );
+                      }),
                       SizedBox(height: 10.h),
                     ],
                   ),
                 ),
               ),
             ),
+
+            // Loading overlay with debugging
+            Obx(() {
+              bool showLoading = controller.isLoading.value;
+              print("🔄 Loading overlay rebuilding - Show: $showLoading");
+
+              return showLoading
+                  ? Container(
+                color: Colors.black.withOpacity(0.3),
+                child: Center(
+                  child: Container(
+                    padding: EdgeInsets.all(20.w),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            AppColor.btnijo,
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          "Mengirim laporan...",
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+                  : SizedBox.shrink();
+            }),
           ],
         ),
       ),

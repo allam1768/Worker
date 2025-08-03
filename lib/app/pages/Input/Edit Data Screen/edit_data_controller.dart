@@ -30,6 +30,21 @@ class EditDataController extends GetxController {
   final catchData = <String, dynamic>{}.obs;
   final catchId = 0.obs;
 
+  // --- START - ADDED FOR DROPDOWN ---
+  final pestOptions = <String>[
+    'Kecoa',
+    'Tikus',
+    'Nyamuk',
+    'Lalat',
+    'Phorids',
+    'Ngengat',
+    'Capung',
+    'Kupu-Kupu',
+  ].obs;
+  final selectedPest = ''.obs;
+  final showCustomPestField = false.obs;
+  // --- END - ADDED FOR DROPDOWN ---
+
   // API constants
   static const String baseUrl = 'https://hamatech.rplrus.com';
   late final http.Client _httpClient;
@@ -91,6 +106,16 @@ class EditDataController extends GetxController {
     jenisHama.value = data['jenis_hama']?.toString() ?? '';
     catatan.value = data['catatan']?.toString() ?? '';
 
+    // --- START - UPDATED POPULATE FOR DROPDOWN ---
+    // Check if the existing jenisHama is in the predefined list
+    if (jenisHama.value.isNotEmpty && !pestOptions.contains(jenisHama.value)) {
+      selectedPest.value = 'Lainnya (ketik manual)';
+      showCustomPestField.value = true;
+    } else {
+      selectedPest.value = jenisHama.value;
+    }
+    // --- END - UPDATED POPULATE FOR DROPDOWN ---
+
     // Set current image URL - handle multiple possible keys
     String? imageUrl;
 
@@ -129,6 +154,7 @@ class EditDataController extends GetxController {
   /// Set jenis hama value
   void setJenisHama(String value) {
     jenisHama.value = value;
+    selectedPest.value = value; // Update selectedPest as well
     jenisHamaError.value = ""; // Clear error when user types
   }
 
@@ -222,9 +248,6 @@ class EditDataController extends GetxController {
       isValid = false;
     }
 
-    // Image is optional for editing (can keep existing image)
-    // No need to validate image since user can keep the existing one
-
     return isValid;
   }
 
@@ -232,7 +255,7 @@ class EditDataController extends GetxController {
   String _getConditionForAPI(String condition) {
     switch (condition.toLowerCase()) {
       case 'good':
-        return 'good'; // API might expect English
+        return 'good';
       case 'broken':
         return 'broken';
       case 'maintenance':
@@ -261,7 +284,7 @@ class EditDataController extends GetxController {
       Map<String, String> fields = {
         'kondisi': _getConditionForAPI(selectedCondition.value),
         'jumlah': jumlah.value,
-        'jenis_hama': jenisHama.value,
+        'jenis_hama': jenisHama.value, // Now uses the updated jenisHama value
         'catatan': catatan.value,
       };
 
@@ -280,10 +303,8 @@ class EditDataController extends GetxController {
 
         _showSuccessSnackbar('Data berhasil diperbarui!');
 
-        // Wait a bit for user to see the success message
         await Future.delayed(const Duration(seconds: 1));
 
-        // Return to detail page with updated data
         Get.back(result: {
           'updated': true,
           'data': responseData['data'],
@@ -308,11 +329,9 @@ class EditDataController extends GetxController {
       Uri.parse('$baseUrl/api/catches/${catchId.value}'),
     );
 
-    // Add method override for PUT
     request.fields['_method'] = 'PUT';
     request.fields.addAll(fields);
 
-    // Add image file
     var imageFile = await http.MultipartFile.fromPath(
       'foto_dokumentasi',
       imagePath,
@@ -340,12 +359,12 @@ class EditDataController extends GetxController {
   /// Get current image to display
   String getCurrentImageUrl() {
     if (imageFile.value != null) {
-      return imageFile.value!.path; // Local file path for new image
+      return imageFile.value!.path;
     }
     if (currentImageUrl.value.isNotEmpty) {
-      return currentImageUrl.value; // Existing image URL
+      return currentImageUrl.value;
     }
-    return ''; // No image
+    return '';
   }
 
   /// Check if there's a new image selected

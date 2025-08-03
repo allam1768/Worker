@@ -13,12 +13,25 @@ class InputDetailController extends GetxController {
   // Form values
   final RxString selectedCondition = ''.obs;
   final RxInt jumlah = 0.obs;
-  final RxString jenisHama = ''.obs;
   final RxString catatan = ''.obs;
   final Rx<File?> imageFile = Rx<File?>(null);
 
   // User info
   final RxString currentUsername = 'Unknown User'.obs;
+
+  // New variables for pest type dropdown
+  final RxList<String> pestOptions = <String>[
+    'Kecoa',
+    'Tikus',
+    'Nyamuk',
+    'Lalat',
+    'Phorids',
+    'Ngengat',
+    'Capung',
+    'Kupu-Kupu',
+  ].obs;
+  final RxString selectedPest = ''.obs;
+  final RxBool showCustomPestField = false.obs;
 
   // Error states
   final RxString conditionError = ''.obs;
@@ -56,7 +69,14 @@ class InputDetailController extends GetxController {
     jumlah.value = value.isNotEmpty ? int.tryParse(value) ?? 0 : 0;
   }
 
-  void setJenisHama(String value) => jenisHama.value = value;
+  // Updated method to handle pest type
+  void setJenisHama(String value) {
+    if (showCustomPestField.value) {
+      selectedPest.value = value;
+    } else {
+      selectedPest.value = value;
+    }
+  }
 
   void setCatatan(String value) => catatan.value = value;
 
@@ -117,7 +137,8 @@ class InputDetailController extends GetxController {
       jumlahError.value = '';
     }
 
-    if (jenisHama.isEmpty) {
+    // Validation for new pest type dropdown
+    if (selectedPest.value.isEmpty) {
       jenisHamaError.value = 'Jenis hama harus diisi!';
       isValid = false;
     } else {
@@ -153,7 +174,7 @@ class InputDetailController extends GetxController {
 
       final catchData = CatchModel(
         alatId: alatId,
-        jenisHama: jenisHama.value,
+        jenisHama: selectedPest.value, // Use selectedPest.value
         jumlah: jumlah.value,
         tanggal: formattedDate,
         dicatatOleh: currentUsername.value, // Menggunakan username yang sudah login
@@ -189,7 +210,8 @@ class InputDetailController extends GetxController {
   void resetForm() {
     selectedCondition.value = '';
     jumlah.value = 0;
-    jenisHama.value = '';
+    selectedPest.value = ''; // Reset the new pest variable
+    showCustomPestField.value = false;
     catatan.value = '';
     imageFile.value = null;
 

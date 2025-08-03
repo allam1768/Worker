@@ -172,7 +172,7 @@ class SingleHistoryCard extends StatelessWidget {
       case 'good':
         return Colors.green;
       case 'broken':
-        return Colors.red;
+        return Colors.grey;
       case 'maintenance':
         return Colors.orange;
       default:
