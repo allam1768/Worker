@@ -205,6 +205,8 @@ class EditDataView extends StatelessWidget {
                             ],
                           )),
                           SizedBox(height: screenHeight * 0.01),
+
+                          // Jumlah Field
                           Obx(() => CustomTextField(
                             label: "Jumlah",
                             initialValue: controller.jumlah.value,
@@ -234,17 +236,18 @@ class EditDataView extends StatelessWidget {
                                 );
                               }).toList(),
                               DropdownMenuItem<String>(
-                                value: "Lainnya (ketik manual)", // Value for custom input
+                                value: "Other", // Value for custom input
                                 child: Text("Lainnya (ketik manual)"),
                               ),
                             ],
                             onChanged: (String? newValue) {
-                              if (newValue != "Lainnya (ketik manual)") {
-                                controller.setJenisHama(newValue!);
+                              if (newValue != "Other") {
+                                controller.setSelectedPest(newValue!);
                                 controller.showCustomPestField.value = false;
                               } else {
                                 controller.showCustomPestField.value = true;
-                                controller.setJenisHama('');
+                                controller.setSelectedPest('');
+                                controller.setCustomPestText(''); // Clear custom text when switching
                               }
                             },
                             decoration: InputDecoration(
@@ -282,8 +285,8 @@ class EditDataView extends StatelessWidget {
                             padding: EdgeInsets.only(top: screenHeight * 0.01),
                             child: CustomTextField(
                               label: "Jenis Hama Lainnya",
-                              initialValue: controller.jenisHama.value,
-                              onChanged: controller.setJenisHama,
+                              initialValue: controller.customPestText.value,
+                              onChanged: controller.setCustomPestText, // Use setCustomPestText instead
                               errorMessage: controller.jenisHamaError,
                             ),
                           )

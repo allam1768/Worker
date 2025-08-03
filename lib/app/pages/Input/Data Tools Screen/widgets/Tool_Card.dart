@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../values/app_color.dart';
 
 class ToolCard extends StatefulWidget {
@@ -82,6 +83,12 @@ class _ToolCardState extends State<ToolCard> {
     }
   }
 
+  // Method untuk menyimpan alat ID ke shared preferences
+  Future<void> _saveAlatIdToPrefs(String alatId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selected_alat_id', alatId);
+  }
+
   @override
   Widget build(BuildContext context) {
     String displayStatus = _getStatusFromCondition(widget.kondisi);
@@ -105,12 +112,17 @@ class _ToolCardState extends State<ToolCard> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(16.r),
-          onTap: () => Get.toNamed('/HistoryTool', arguments: {
-            'alatId': widget.alatId,
-            'toolName': widget.toolName,
-            'location': widget.location,
-            'locationDetail': widget.locationDetail,
-          }),
+          onTap: () async {
+            // Simpan alat ID ke shared preferences sebelum navigasi
+            await _saveAlatIdToPrefs(widget.alatId);
+
+            // Navigasi dengan arguments (tanpa alatId)
+            Get.toNamed('/HistoryTool', arguments: {
+              'toolName': widget.toolName,
+              'location': widget.location,
+              'locationDetail': widget.locationDetail,
+            });
+          },
           child: Padding(
             padding: EdgeInsets.all(12.w),
             child: Column(

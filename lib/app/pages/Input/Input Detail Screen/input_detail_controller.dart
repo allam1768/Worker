@@ -31,6 +31,7 @@ class InputDetailController extends GetxController {
     'Kupu-Kupu',
   ].obs;
   final RxString selectedPest = ''.obs;
+  final RxString customPestText = ''.obs; // Separate variable for custom input
   final RxBool showCustomPestField = false.obs;
 
   // Error states
@@ -69,12 +70,22 @@ class InputDetailController extends GetxController {
     jumlah.value = value.isNotEmpty ? int.tryParse(value) ?? 0 : 0;
   }
 
-  // Updated method to handle pest type
-  void setJenisHama(String value) {
+  // Method for dropdown selection
+  void setSelectedPest(String value) {
+    selectedPest.value = value;
+  }
+
+  // Method for custom pest input
+  void setCustomPestText(String value) {
+    customPestText.value = value;
+  }
+
+  // Get the final pest value (either from dropdown or custom input)
+  String get finalPestValue {
     if (showCustomPestField.value) {
-      selectedPest.value = value;
+      return customPestText.value;
     } else {
-      selectedPest.value = value;
+      return selectedPest.value;
     }
   }
 
@@ -137,8 +148,8 @@ class InputDetailController extends GetxController {
       jumlahError.value = '';
     }
 
-    // Validation for new pest type dropdown
-    if (selectedPest.value.isEmpty) {
+    // Validation for pest type (check final value)
+    if (finalPestValue.isEmpty) {
       jenisHamaError.value = 'Jenis hama harus diisi!';
       isValid = false;
     } else {
@@ -174,7 +185,7 @@ class InputDetailController extends GetxController {
 
       final catchData = CatchModel(
         alatId: alatId,
-        jenisHama: selectedPest.value, // Use selectedPest.value
+        jenisHama: finalPestValue, // Use finalPestValue getter
         jumlah: jumlah.value,
         tanggal: formattedDate,
         dicatatOleh: currentUsername.value, // Menggunakan username yang sudah login
@@ -210,7 +221,8 @@ class InputDetailController extends GetxController {
   void resetForm() {
     selectedCondition.value = '';
     jumlah.value = 0;
-    selectedPest.value = ''; // Reset the new pest variable
+    selectedPest.value = '';
+    customPestText.value = '';
     showCustomPestField.value = false;
     catatan.value = '';
     imageFile.value = null;

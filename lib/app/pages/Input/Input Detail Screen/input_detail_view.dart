@@ -224,11 +224,12 @@ class InputDetailView extends StatelessWidget {
                             ],
                             onChanged: (String? newValue) {
                               if (newValue != "Other") {
-                                controller.setJenisHama(newValue!);
+                                controller.setSelectedPest(newValue!);
                                 controller.showCustomPestField.value = false;
                               } else {
                                 controller.showCustomPestField.value = true;
-                                controller.setJenisHama('');
+                                controller.setSelectedPest('');
+                                controller.setCustomPestText(''); // Clear custom text when switching
                               }
                             },
                             decoration: InputDecoration(
@@ -266,7 +267,7 @@ class InputDetailView extends StatelessWidget {
                             padding: EdgeInsets.only(top: screenHeight * 0.01),
                             child: CustomTextField(
                               label: "Jenis Hama Lainnya",
-                              onChanged: controller.setJenisHama,
+                              onChanged: controller.setCustomPestText, // Use setCustomPestText instead
                               errorMessage: controller.jenisHamaError,
                             ),
                           )

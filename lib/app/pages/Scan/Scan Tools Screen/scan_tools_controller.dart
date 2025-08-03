@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worker/data/services/alat_service.dart';
 import 'package:worker/data/models/alat_model.dart';
 
@@ -49,6 +50,12 @@ class ScanToolsController extends GetxController {
     scannerController.switchCamera();
   }
 
+  // Method untuk menyimpan alat ID ke shared preferences
+  Future<void> _saveAlatIdToPrefs(String alatId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('selected_alat_id', alatId);
+  }
+
   void handleScanResult(BarcodeCapture capture) async {
     if (isProcessing.value) return; // Prevent multiple scans
     isProcessing.value = true;
@@ -75,6 +82,9 @@ class ScanToolsController extends GetxController {
 
         if (matchedTool != null) {
           print('Scan berhasil! ID Alat: ${matchedTool.id}, Nama Alat: ${matchedTool.namaAlat}');
+
+          // Simpan alat ID ke shared preferences
+          await _saveAlatIdToPrefs(matchedTool.id.toString());
 
           // Pause scanner to prevent further scans
           await scannerController.stop();
