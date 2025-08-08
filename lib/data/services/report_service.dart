@@ -1,247 +1,356 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import '../models/report_model.dart';
 
 class ReportService {
-  static const String baseUrl = "https://hamatech.rplrus.com/api";
-  static const String reportEndpoint = "/reports";
+  static const String baseUrl = 'https://hamatech.rplrus.com/api';
 
-  static Future<Map<String, dynamic>> submitReport({
-    required String namaPengirim,
+  // Get token dari SharedPreferences
+  Future<String?> get token async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  // Get headers
+  Future<Map<String, String>> get headers async {
+    final tokenValue = await token;
+    return {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      if (tokenValue != null) 'Authorization': 'Bearer $tokenValue',
+    };
+  }
+
+  // Get data user dari SharedPreferences (kecuali role yang di-hardcode)
+  Future<Map<String, dynamic>> get userData async {
+    final prefs = await SharedPreferences.getInstance();
+    return {
+      'company_id': prefs.getInt('companyid'),
+      'role': 'worker', // ⛔ Hardcoded role
+      'nama_pengirim': prefs.getString('nama') ?? prefs.getString('username') ?? 'User',
+    };
+  }
+
+  // GET laporan - WAJIB filter berdasarkan company_id
+  Future<ReportsResponse> getReports({int page = 1}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final companyId = prefs.getInt('companyid');
+
+      // WAJIB ada company_id
+      if (companyId == null) {
+        throw Exception('Company ID not found in SharedPreferences. Please re-login.');
+      }
+
+      // Selalu sertakan company_id dalam query parameter
+      String endpoint = '$baseUrl/reports?page=$page&company_id=$companyId';
+
+      print('🌐 Making request to: $endpoint');
+
+      final url = Uri.parse(endpoint);
+      final requestHeaders = await headers;
+
+      print('📋 Headers: $requestHeaders');
+      print('🏢 Filtering by Company ID: $companyId');
+
+      final response = await http.get(url, headers: requestHeaders);
+
+      print('📡 Response status: ${response.statusCode}');
+      print('📄 Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        if (response.body.isEmpty) throw Exception('Empty response from server');
+        final jsonData = json.decode(response.body);
+        if (jsonData == null) throw Exception('Invalid JSON response');
+
+        final reportsResponse = ReportsResponse.fromJson(jsonData);
+
+        // Double check: Filter lagi di client side untuk keamanan tambahan
+        final filteredReports = reportsResponse.data.data
+            .where((report) => report.companyId == companyId)
+            .toList();
+
+        // Create new ReportsData with filtered reports
+        final filteredData = ReportsData(
+          currentPage: reportsResponse.data.currentPage,
+          data: filteredReports,
+          firstPageUrl: reportsResponse.data.firstPageUrl,
+          from: reportsResponse.data.from,
+          lastPage: reportsResponse.data.lastPage,
+          lastPageUrl: reportsResponse.data.lastPageUrl,
+          nextPageUrl: reportsResponse.data.nextPageUrl,
+          path: reportsResponse.data.path,
+          perPage: reportsResponse.data.perPage,
+          prevPageUrl: reportsResponse.data.prevPageUrl,
+          to: reportsResponse.data.to,
+          total: filteredReports.length,
+        );
+
+        print('✅ Filtered reports count: ${filteredReports.length}');
+
+        return ReportsResponse(
+          success: reportsResponse.success,
+          data: filteredData,
+          message: reportsResponse.message,
+        );
+      } else if (response.statusCode == 401) {
+        throw Exception('Unauthorized - Token invalid or expired');
+      } else {
+        print('❌ Error response body: ${response.body}');
+        throw Exception('Failed to load reports: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      print('❌ Exception in getReports: $e');
+      throw Exception('Unexpected error: $e');
+    }
+  }
+
+  // GET laporan by company ID - Metode utama untuk filter berdasarkan company
+  Future<ReportsResponse> getReportsByCompany(int companyId, {int page = 1}) async {
+    try {
+      final url = Uri.parse('$baseUrl/reports?page=$page&company_id=$companyId');
+      final requestHeaders = await headers;
+
+      print('🌐 Making company-filtered request to: $url');
+      print('🏢 Company ID filter: $companyId');
+
+      final response = await http.get(url, headers: requestHeaders);
+
+      print('📡 Response status: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        if (response.body.isEmpty) throw Exception('Empty response from server');
+        final jsonData = json.decode(response.body);
+        if (jsonData == null) throw Exception('Invalid JSON response');
+
+        final reportsResponse = ReportsResponse.fromJson(jsonData);
+
+        // Double check: Filter lagi di client side untuk keamanan tambahan
+        final filteredReports = reportsResponse.data.data
+            .where((report) => report.companyId == companyId)
+            .toList();
+
+        print('✅ Company filtered reports count: ${filteredReports.length}');
+
+        // Create new ReportsData with filtered reports
+        final filteredData = ReportsData(
+          currentPage: reportsResponse.data.currentPage,
+          data: filteredReports,
+          firstPageUrl: reportsResponse.data.firstPageUrl,
+          from: reportsResponse.data.from,
+          lastPage: reportsResponse.data.lastPage,
+          lastPageUrl: reportsResponse.data.lastPageUrl,
+          nextPageUrl: reportsResponse.data.nextPageUrl,
+          path: reportsResponse.data.path,
+          perPage: reportsResponse.data.perPage,
+          prevPageUrl: reportsResponse.data.prevPageUrl,
+          to: reportsResponse.data.to,
+          total: filteredReports.length,
+        );
+
+        return ReportsResponse(
+          success: reportsResponse.success,
+          data: filteredData,
+          message: reportsResponse.message,
+        );
+      } else if (response.statusCode == 401) {
+        throw Exception('Unauthorized - Token invalid or expired');
+      } else {
+        throw Exception('Failed to load reports: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      print('❌ Exception in getReportsByCompany: $e');
+      throw Exception('Unexpected error: $e');
+    }
+  }
+
+  // GET laporan by ID - dengan validasi company_id
+  Future<ReportModel> getReportById(int id) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userCompanyId = prefs.getInt('companyid');
+
+      final url = Uri.parse('$baseUrl/reports/$id');
+      final requestHeaders = await headers;
+
+      final response = await http.get(url, headers: requestHeaders);
+
+      if (response.statusCode == 200) {
+        if (response.body.isEmpty) throw Exception('Empty response from server');
+        final jsonData = json.decode(response.body);
+        if (jsonData == null || jsonData['data'] == null) throw Exception('Invalid response structure');
+
+        final report = ReportModel.fromJson(jsonData['data']);
+
+        // Validasi company_id untuk keamanan
+        if (userCompanyId != null && report.companyId != userCompanyId) {
+          throw Exception('Access denied: Report does not belong to your company');
+        }
+
+        return report;
+      } else if (response.statusCode == 401) {
+        throw Exception('Unauthorized - Token invalid or expired');
+      } else {
+        throw Exception('Failed to load report detail: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Unexpected error: $e');
+    }
+  }
+
+  // POST laporan dengan gambar (Multipart) - WAJIB validasi company_id
+  Future<ReportModel> createReportWithImage({
     required String area,
     required String informasi,
-    required String companyId,
     File? imageFile,
-    String? authToken,
+    String? namaPengirim,
+    int? companyId,
+    String? role,
   }) async {
-    print("🚀 ReportService.submitReport called");
-    print("📋 Parameters:");
-    print("  - namaPengirim: $namaPengirim");
-    print("  - area: $area");
-    print("  - informasi: $informasi");
-    print("  - companyId: $companyId");
-    print("  - imageFile: ${imageFile != null ? 'Present (${imageFile.path})' : 'Not provided'}");
-    print("  - authToken: ${authToken != null ? 'Present (${authToken.length} chars)' : 'Not provided'}");
-
     try {
-      print("🌐 Creating multipart request...");
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse('$baseUrl$reportEndpoint'),
-      );
-      print("✅ Request created for: $baseUrl$reportEndpoint");
+      final url = Uri.parse('$baseUrl/reports');
+      final tokenValue = await token;
+      final user = await userData;
 
-      // Add text fields
-      print("📝 Adding text fields to request...");
-      request.fields['nama_pengirim'] = namaPengirim;
+      final finalNamaPengirim = namaPengirim ?? user['nama_pengirim'] ?? 'Unknown';
+      final finalCompanyId = companyId ?? user['company_id'];
+      final finalRole = 'worker'; // ⛔ Hardcoded role
+
+      if (finalCompanyId == null) {
+        throw Exception('Company ID is required. Please ensure you have selected a company.');
+      }
+
+      var request = http.MultipartRequest('POST', url);
+
+      if (tokenValue != null) {
+        request.headers['Authorization'] = 'Bearer $tokenValue';
+      }
+      request.headers['Accept'] = 'application/json';
+
+      request.fields['nama_pengirim'] = finalNamaPengirim;
       request.fields['area'] = area;
       request.fields['informasi'] = informasi;
-      request.fields['company_id'] = companyId;
+      request.fields['company_id'] = finalCompanyId.toString();
+      request.fields['role'] = finalRole;
 
-      print("✅ Text fields added:");
-      request.fields.forEach((key, value) {
-        print("  - $key: $value");
-      });
+      print('📤 Creating report for Company ID: $finalCompanyId');
 
-      // Add image file if exists
-      if (imageFile != null) {
-        print("🖼️ Processing image file...");
-        print("📁 Image path: ${imageFile.path}");
+      if (imageFile != null && await imageFile.exists()) {
+        var imageStream = http.ByteStream(imageFile.openRead());
+        var imageLength = await imageFile.length();
+        var multipartFile = http.MultipartFile(
+          'dokumentasi',
+          imageStream,
+          imageLength,
+          filename: 'report_image.jpg',
+        );
+        request.files.add(multipartFile);
+      }
 
-        // Check if file exists
-        bool fileExists = await imageFile.exists();
-        print("📋 File exists: $fileExists");
+      var streamedResponse = await request.send();
+      var response = await http.Response.fromStream(streamedResponse);
 
-        if (fileExists) {
-          var imageLength = await imageFile.length();
-          print("📊 Image file size: $imageLength bytes");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.body.isEmpty) throw Exception('Empty response from server');
+        final jsonData = json.decode(response.body);
+        if (jsonData['success'] == true && jsonData['data'] != null) {
+          final createdReport = ReportModel.fromJson(jsonData['data']);
 
-          var imageStream = http.ByteStream(imageFile.openRead());
-          var filename = 'report_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+          // Validasi company_id response
+          if (createdReport.companyId != finalCompanyId) {
+            throw Exception('Report created with wrong company ID');
+          }
 
-          var multipartFile = http.MultipartFile(
-            'image', // Make sure this matches your API field name
-            imageStream,
-            imageLength,
-            filename: filename,
-          );
-
-          request.files.add(multipartFile);
-          print("✅ Image file added to request:");
-          print("  - Field name: image");
-          print("  - Filename: $filename");
-          print("  - Size: $imageLength bytes");
+          print('✅ Report created successfully for Company ID: ${createdReport.companyId}');
+          return createdReport;
         } else {
-          print("❌ Image file does not exist at path: ${imageFile.path}");
-          throw Exception("Image file not found");
+          throw Exception(jsonData['message'] ?? 'Failed to create report');
         }
+      } else if (response.statusCode == 401) {
+        throw Exception('Unauthorized - Token invalid or expired');
       } else {
-        print("ℹ️ No image file provided");
+        throw Exception('Failed to create report: HTTP ${response.statusCode} - ${response.body}');
       }
-
-      // Add headers
-      print("📋 Setting up headers...");
-      Map<String, String> headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'multipart/form-data',
-      };
-
-      if (authToken != null && authToken.isNotEmpty) {
-        headers['Authorization'] = 'Bearer $authToken';
-        print("🔐 Authorization header added");
-      }
-
-      request.headers.addAll(headers);
-      print("✅ Headers added:");
-      request.headers.forEach((key, value) {
-        // Don't print full auth token for security
-        if (key == 'Authorization') {
-          print("  - $key: Bearer [TOKEN]");
-        } else {
-          print("  - $key: $value");
-        }
-      });
-
-      // Send request
-      print("🌐 Sending HTTP request...");
-      var response = await request.send();
-      print("📨 Response received:");
-      print("  - Status Code: ${response.statusCode}");
-      print("  - Content Length: ${response.contentLength}");
-      print("  - Headers: ${response.headers}");
-
-      var responseBody = await response.stream.bytesToString();
-      print("📄 Response body length: ${responseBody.length} characters");
-      print("📄 Response body: $responseBody");
-
-      Map<String, dynamic> jsonResponse;
-      try {
-        jsonResponse = json.decode(responseBody);
-        print("✅ JSON decoded successfully");
-        print("📊 Parsed response: $jsonResponse");
-      } catch (e) {
-        print("❌ Failed to decode JSON response: $e");
-        print("📄 Raw response that failed to decode: $responseBody");
-        throw Exception("Invalid JSON response: $e");
-      }
-
-      Map<String, dynamic> result = {
-        'statusCode': response.statusCode,
-        'data': jsonResponse,
-      };
-
-      print("📤 Returning result:");
-      print("  - Status Code: ${result['statusCode']}");
-      print("  - Data keys: ${jsonResponse.keys.toList()}");
-
-      return result;
     } catch (e) {
-      print("💥 Exception in submitReport: $e");
-      print("📍 Exception type: ${e.runtimeType}");
-      print("🔍 Stack trace: ${StackTrace.current}");
-      throw Exception('Network error: ${e.toString()}');
+      throw Exception('Unexpected error: $e');
     }
   }
 
-  // Method to get all reports (if needed)
-  static Future<Map<String, dynamic>> getReports({
-    String? authToken,
-    int? page,
-    int? limit,
+  // POST laporan tanpa gambar - WAJIB validasi company_id
+  Future<ReportModel> createReport({
+    String? namaPengirim,
+    required String area,
+    required String informasi,
+    String? dokumentasi,
+    int? companyId,
+    String? role,
   }) async {
-    print("📥 ReportService.getReports called");
-    print("📋 Parameters:");
-    print("  - authToken: ${authToken != null ? 'Present' : 'Not provided'}");
-    print("  - page: $page");
-    print("  - limit: $limit");
-
     try {
-      Map<String, String> queryParams = {};
-      if (page != null) queryParams['page'] = page.toString();
-      if (limit != null) queryParams['limit'] = limit.toString();
+      final url = Uri.parse('$baseUrl/reports');
+      final requestHeaders = await headers;
+      final user = await userData;
 
-      Uri uri = Uri.parse('$baseUrl$reportEndpoint');
-      if (queryParams.isNotEmpty) {
-        uri = uri.replace(queryParameters: queryParams);
-        print("🔗 URL with query params: $uri");
-      } else {
-        print("🔗 URL: $uri");
+      final finalNamaPengirim = namaPengirim ?? user['nama_pengirim'] ?? 'Unknown';
+      final finalCompanyId = companyId ?? user['company_id'];
+      final finalRole = 'worker'; // ⛔ Hardcoded role
+
+      if (finalCompanyId == null) {
+        throw Exception('Company ID is required. Please ensure you have selected a company.');
       }
 
-      Map<String, String> headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      };
-
-      if (authToken != null && authToken.isNotEmpty) {
-        headers['Authorization'] = 'Bearer $authToken';
-        print("🔐 Authorization header added");
-      }
-
-      print("📋 Request headers:");
-      headers.forEach((key, value) {
-        if (key == 'Authorization') {
-          print("  - $key: Bearer [TOKEN]");
-        } else {
-          print("  - $key: $value");
-        }
+      final body = json.encode({
+        'nama_pengirim': finalNamaPengirim,
+        'area': area,
+        'informasi': informasi,
+        'dokumentasi': dokumentasi,
+        'company_id': finalCompanyId,
+        'role': finalRole,
       });
 
-      print("🌐 Sending GET request...");
-      var response = await http.get(uri, headers: headers);
-      print("📨 Response received - Status: ${response.statusCode}");
+      print('📤 Creating report for Company ID: $finalCompanyId');
 
-      var jsonResponse = json.decode(response.body);
-      print("📊 Response parsed successfully");
+      final response = await http.post(url, headers: requestHeaders, body: body);
 
-      return {
-        'statusCode': response.statusCode,
-        'data': jsonResponse,
-      };
+      if (response.statusCode == 201) {
+        if (response.body.isEmpty) throw Exception('Empty response from server');
+        final jsonData = json.decode(response.body);
+        if (jsonData['data'] != null) {
+          final createdReport = ReportModel.fromJson(jsonData['data']);
+
+          // Validasi company_id response
+          if (createdReport.companyId != finalCompanyId) {
+            throw Exception('Report created with wrong company ID');
+          }
+
+          print('✅ Report created successfully for Company ID: ${createdReport.companyId}');
+          return createdReport;
+        } else {
+          throw Exception('Invalid response structure');
+        }
+      } else if (response.statusCode == 401) {
+        throw Exception('Unauthorized - Token invalid or expired');
+      } else {
+        throw Exception('Failed to create report: ${response.statusCode} - ${response.body}');
+      }
     } catch (e) {
-      print("💥 Exception in getReports: $e");
-      throw Exception('Network error: ${e.toString()}');
+      throw Exception('Unexpected error: $e');
     }
   }
 
-  // Method to get report by ID (if needed)
-  static Future<Map<String, dynamic>> getReportById({
-    required String reportId,
-    String? authToken,
-  }) async {
-    print("🔍 ReportService.getReportById called");
-    print("📋 Parameters:");
-    print("  - reportId: $reportId");
-    print("  - authToken: ${authToken != null ? 'Present' : 'Not provided'}");
-
+  // Method untuk debug company_id dari SharedPreferences
+  Future<void> debugCompanyId() async {
     try {
-      Uri uri = Uri.parse('$baseUrl$reportEndpoint/$reportId');
-      print("🔗 URL: $uri");
-
-      Map<String, String> headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      };
-
-      if (authToken != null && authToken.isNotEmpty) {
-        headers['Authorization'] = 'Bearer $authToken';
-        print("🔐 Authorization header added");
-      }
-
-      print("🌐 Sending GET request...");
-      var response = await http.get(uri, headers: headers);
-      print("📨 Response received - Status: ${response.statusCode}");
-
-      var jsonResponse = json.decode(response.body);
-      print("📊 Response parsed successfully");
-
-      return {
-        'statusCode': response.statusCode,
-        'data': jsonResponse,
-      };
+      final prefs = await SharedPreferences.getInstance();
+      final companyId = prefs.getInt('companyid');
+      print('🐛 === COMPANY ID DEBUG ===');
+      print('🏢 Current Company ID: $companyId');
+      print('🔍 Type: ${companyId.runtimeType}');
+      print('✅ Is Valid: ${companyId != null && companyId > 0}');
+      print('========================');
     } catch (e) {
-      print("💥 Exception in getReportById: $e");
-      throw Exception('Network error: ${e.toString()}');
+      print('❌ Error debugging company ID: $e');
     }
   }
 }

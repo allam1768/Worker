@@ -69,6 +69,7 @@ class LoginController extends GetxController {
       } else {
         print('⚠️ Login berhasil tapi token tidak ditemukan atau kosong');
       }
+      await prefs.setString('nama', result.user!.name);
 
       Get.snackbar("Login Berhasil", result.message,
           snackPosition: SnackPosition.TOP);

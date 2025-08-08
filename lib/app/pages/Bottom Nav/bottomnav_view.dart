@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../values/app_color.dart';
+import '../Input/Data Tools Screen/data_tools_view.dart';
+import '../Report/History Report Screen/history_report_view.dart';
 import 'bottomnav_controller.dart';
 import '../Input/Data%20Tools%20Screen/data_tools_controller.dart';
 import '../Scan/Scan%20Tools%20Screen/scan_tools_view.dart';
@@ -37,12 +39,12 @@ class BottomNavView extends StatelessWidget {
               shape: BoxShape.circle,
               boxShadow: isActive
                   ? [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: Offset(0, 2),
-                      ),
-                    ]
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ]
                   : [],
             ),
             child: Center(
@@ -72,10 +74,32 @@ class BottomNavView extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.background,
       resizeToAvoidBottomInset: true,
-      body: Obx(() => IndexedStack(
-            index: controller.currentIndex.value,
-            children: controller.screens,
-          )),
+      // Menggunakan logic navigasi dari dokumen pertama dengan AnimatedSwitcher
+      body: Obx(
+            () => AnimatedSwitcher(
+          duration: const Duration(milliseconds: 400),
+          switchInCurve: Curves.easeInOut,
+          switchOutCurve: Curves.easeInOut,
+          transitionBuilder: (child, animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: ScaleTransition(
+                scale: Tween<double>(begin: 0.95, end: 1.0).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOutBack,
+                  ),
+                ),
+                child: child,
+              ),
+            );
+          },
+          child: KeyedSubtree(
+            key: ValueKey<int>(controller.currentIndex.value),
+            child: _getScreenForIndex(controller.currentIndex.value),
+          ),
+        ),
+      ),
       bottomNavigationBar: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
@@ -134,31 +158,31 @@ class BottomNavView extends StatelessWidget {
                       onTapCancel: () =>
                           controller.updateCenterButtonScale(1.0),
                       child: Obx(() => AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            height: screenWidth * 0.17,
-                            width: screenWidth * 0.17,
-                            decoration: BoxDecoration(
-                              color: AppColor.btnoren,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColor.btnoren.withOpacity(0.25),
-                                  blurRadius: 12,
-                                  offset: Offset(0, 4),
-                                  spreadRadius: 0,
-                                ),
-                              ],
+                        duration: const Duration(milliseconds: 200),
+                        height: screenWidth * 0.17,
+                        width: screenWidth * 0.17,
+                        decoration: BoxDecoration(
+                          color: AppColor.btnoren,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColor.btnoren.withOpacity(0.25),
+                              blurRadius: 12,
+                              offset: Offset(0, 4),
+                              spreadRadius: 0,
                             ),
-                            transform: Matrix4.identity()
-                              ..scale(controller.centerButtonScale.value),
-                            child: Center(
-                              child: SvgPicture.asset(
-                                controller.icons[1],
-                                color: Colors.white,
-                                width: screenWidth * 0.07,
-                              ),
-                            ),
-                          )),
+                          ],
+                        ),
+                        transform: Matrix4.identity()
+                          ..scale(controller.centerButtonScale.value),
+                        child: Center(
+                          child: SvgPicture.asset(
+                            controller.icons[1],
+                            color: Colors.white,
+                            width: screenWidth * 0.07,
+                          ),
+                        ),
+                      )),
                     ),
                   );
                 },
@@ -168,5 +192,17 @@ class BottomNavView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Helper method untuk mapping index ke screen yang benar
+  Widget _getScreenForIndex(int index) {
+    switch (index) {
+      case 0:
+        return DataToolsView();
+      case 2:
+        return HistoryReportView();
+      default:
+        return DataToolsView();
+    }
   }
 }

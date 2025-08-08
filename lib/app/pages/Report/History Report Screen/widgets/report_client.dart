@@ -7,23 +7,27 @@ class ReportClient extends StatelessWidget {
   final String name;
   final String date;
   final String time;
+  final String area;
+  final String informasi;
+  final int reportId;
 
   const ReportClient({
     Key? key,
     required this.name,
     required this.date,
     required this.time,
+    required this.area,
+    required this.informasi,
+    required this.reportId,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.toNamed('/ReportDetail', arguments: {
-        "name": name,
-        "date": date,
-        "time": time,
-        "role": "client"
-      }),
+      onTap: () {
+        print('🔍 Navigating to ReportDetail with reportId: $reportId'); // Debug log
+        Get.toNamed('/ReportDetail', arguments: {'reportId': reportId});
+      },
       child: Padding(
         padding: EdgeInsets.only(bottom: 12.h),
         child: Align(
@@ -54,34 +58,50 @@ class ReportClient extends StatelessWidget {
                         width: 14.w,
                       ),
                       SizedBox(width: 8.w),
-                      Text(
-                        name,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
+                      Expanded(
+                        child: Text(
+                          name,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    area,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    informasi,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.grey[600],
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   SizedBox(height: 8.h),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Icon(Icons.access_time,
-                              size: 14.sp, color: Colors.grey[600]),
-                          SizedBox(width: 4.w),
-                          Text(
-                            time,
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
+                      Icon(Icons.access_time,
+                          size: 14.sp, color: Colors.grey[600]),
+                      SizedBox(width: 4.w),
+                      Text(
+                        time,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ],
                   ),
