@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:worker/app/global-component/CustomButton.dart';
-import 'package:worker/app/global-component/CustomTextField.dart';
 import 'package:worker/app/pages/Report/Report%20Input%20Screen/report_input_controller.dart';
-import '../../../../values/app_color.dart';
+import 'package:worker/app/pages/Report/Report%20Input%20Screen/widgets/CustomButtonEdit.dart';
+import 'package:worker/app/pages/Report/Report%20Input%20Screen/widgets/CustomTextFieldEdit.dart';
+import '../../../../../values/app_color.dart';
 import '../../../global-component/CustomAppBar.dart';
 import '../../../global-component/ImageUpload.dart';
+
 
 class ReportInputView extends StatelessWidget {
   ReportInputView({super.key});
@@ -16,8 +17,6 @@ class ReportInputView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("🏗️ ReportInputView building...");
-    print("📱 Screen size: ${MediaQuery.of(context).size}");
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -26,7 +25,7 @@ class ReportInputView extends StatelessWidget {
           children: [
             Column(
               children: [
-                CustomAppBar(title: "Report"),
+                CustomAppBar(title: "Report",),
                 SizedBox(height: 22.h),
                 Center(
                   child: SvgPicture.asset(
@@ -51,12 +50,10 @@ class ReportInputView extends StatelessWidget {
                       // Area TextField with debugging
                       Obx(() {
                         print("🔄 Area field rebuilding - Value: '${controller.amount.value}', Error: '${controller.areaError.value}'");
-                        return CustomTextField(
+                        return CustomTextFieldEdit(
                           label: "Area",
                           onChanged: (value) {
-                            print("📝 Area field changed: '$value'");
                             controller.amount.value = value;
-                            print("✅ Area value set to: '${controller.amount.value}'");
                           },
                           errorMessage: controller.areaError,
                         );
@@ -66,12 +63,10 @@ class ReportInputView extends StatelessWidget {
                       // Information TextField with debugging
                       Obx(() {
                         print("🔄 Information field rebuilding - Value: '${controller.information.value}', Error: '${controller.informationError.value}'");
-                        return CustomTextField(
+                        return CustomTextFieldEdit(
                           label: "Information",
                           onChanged: (value) {
-                            print("📝 Information field changed: '$value'");
                             controller.information.value = value;
-                            print("✅ Information value set to: '${controller.information.value}'");
                           },
                           errorMessage: controller.informationError,
                         );
@@ -93,7 +88,7 @@ class ReportInputView extends StatelessWidget {
                         bool isLoading = controller.isLoading.value;
                         print("🔄 Submit button rebuilding - Loading: $isLoading");
 
-                        return CustomButton(
+                        return CustomButtonEdit(
                           text: isLoading ? "Menyimpan..." : "Save",
                           backgroundColor: isLoading
                               ? AppColor.btnijo.withOpacity(0.6)
@@ -101,12 +96,6 @@ class ReportInputView extends StatelessWidget {
                           onPressed: isLoading
                               ? null
                               : () {
-                            print("🔘 Save button pressed");
-                            print("📋 Current form state:");
-                            print("  - Area: '${controller.amount.value}'");
-                            print("  - Information: '${controller.information.value}'");
-                            print("  - Image: ${controller.imageFile.value != null ? 'Selected' : 'Not selected'}");
-                            print("  - Loading: ${controller.isLoading.value}");
 
                             controller.validateForm();
                           },

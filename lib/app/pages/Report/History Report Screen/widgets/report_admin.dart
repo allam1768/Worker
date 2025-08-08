@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-class ReportWorker extends StatelessWidget {
+import '../../../../../values/app_color.dart';
+
+class ReportAdmin extends StatelessWidget {
   final String name;
   final String date;
   final String time;
@@ -11,7 +12,7 @@ class ReportWorker extends StatelessWidget {
   final String informasi;
   final int reportId;
 
-  const ReportWorker({
+  const ReportAdmin({
     Key? key,
     required this.name,
     required this.date,
@@ -31,13 +32,13 @@ class ReportWorker extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(bottom: 12.h),
         child: Align(
-          alignment: Alignment.centerRight,
+          alignment: Alignment.centerLeft,
           child: FractionallySizedBox(
             widthFactor: 0.9,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: AppColor.btomnav,
                 borderRadius: BorderRadius.circular(12.r),
                 boxShadow: [
                   BoxShadow(
@@ -48,11 +49,16 @@ class ReportWorker extends StatelessWidget {
                 ],
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Icon(
+                        Icons.account_circle_outlined,
+                        size: 14.sp,
+                        color: Colors.black,
+                      ),
+                      SizedBox(width: 8.w),
                       Expanded(
                         child: Text(
                           name,
@@ -62,14 +68,7 @@ class ReportWorker extends StatelessWidget {
                             color: Colors.black87,
                           ),
                           overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.right,
                         ),
-                      ),
-                      SizedBox(width: 8.w),
-                      SvgPicture.asset(
-                        'assets/icons/Client_icont.svg',
-                        height: 14.h,
-                        width: 14.w,
                       ),
                     ],
                   ),
@@ -81,7 +80,6 @@ class ReportWorker extends StatelessWidget {
                       color: Colors.grey[600],
                       fontWeight: FontWeight.w500,
                     ),
-                    textAlign: TextAlign.right,
                   ),
                   SizedBox(height: 4.h),
                   Text(
@@ -92,25 +90,19 @@ class ReportWorker extends StatelessWidget {
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.right,
                   ),
                   SizedBox(height: 8.h),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Icon(Icons.access_time,
-                              size: 14.sp, color: Colors.grey[600]),
-                          SizedBox(width: 4.w),
-                          Text(
-                            time,
-                            style: TextStyle(
-                              fontSize: 13.sp,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
+                      Icon(Icons.access_time,
+                          size: 14.sp, color: Colors.grey[600]),
+                      SizedBox(width: 4.w),
+                      Text(
+                        time,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ],
                   ),

@@ -42,6 +42,8 @@ class Routes {
   static const reportDetail = '/ReportDetail';
   static const reportInput = '/ReportInput';
 
+  static const String bottomNav = '/BottomNav';
+
   static final pages = [
     GetPage(
       name: Routes.splash,
@@ -107,6 +109,20 @@ class Routes {
       name: Routes.reportInput,
       page: () => ReportInputView(),
       binding: ReportInputBinding(),
+    ),
+
+
+    GetPage(
+      name: Routes.bottomNav,
+      page: () => BottomNavView(),
+    ),
+    GetPage(
+      name: Routes.historyReport,
+      page: () => HistoryReportView(),
+    ),
+    GetPage(
+      name: Routes.reportInput,
+      page: () => ReportInputView(),
     ),
   ];
 }
