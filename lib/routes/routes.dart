@@ -26,7 +26,6 @@ import '../app/pages/Scan/Scan Company Screen/scan_company_view.dart';
 import '../app/pages/Scan/Scan Tools Screen/scan_tools_binding.dart';
 import '../app/pages/Scan/Scan Tools Screen/scan_tools_view.dart';
 
-
 class Routes {
   static const splash = '/splash';
   static const login = '/login';
@@ -41,8 +40,6 @@ class Routes {
   static const historyReport = '/HistoryReport';
   static const reportDetail = '/ReportDetail';
   static const reportInput = '/ReportInput';
-
-  static const String bottomNav = '/BottomNav';
 
   static final pages = [
     GetPage(
@@ -109,20 +106,6 @@ class Routes {
       name: Routes.reportInput,
       page: () => ReportInputView(),
       binding: ReportInputBinding(),
-    ),
-
-
-    GetPage(
-      name: Routes.bottomNav,
-      page: () => BottomNavView(),
-    ),
-    GetPage(
-      name: Routes.historyReport,
-      page: () => HistoryReportView(),
-    ),
-    GetPage(
-      name: Routes.reportInput,
-      page: () => ReportInputView(),
     ),
   ];
 }

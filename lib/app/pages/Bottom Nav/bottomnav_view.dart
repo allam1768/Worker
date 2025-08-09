@@ -5,18 +5,10 @@ import '../../../values/app_color.dart';
 import '../Input/Data Tools Screen/data_tools_view.dart';
 import '../Report/History Report Screen/history_report_view.dart';
 import 'bottomnav_controller.dart';
-import '../Input/Data%20Tools%20Screen/data_tools_controller.dart';
 import '../Scan/Scan%20Tools%20Screen/scan_tools_view.dart';
-import '../Scan/Scan%20Tools%20Screen/scan_tools_controller.dart';
-import '../Report/History%20Report%20Screen/history_report_controller.dart';
 
 class BottomNavView extends StatelessWidget {
   const BottomNavView({super.key});
-
-  void injectTabControllers() {
-    Get.lazyPut(() => DataToolsController());
-    Get.lazyPut(() => HistoryReportController());
-  }
 
   // Animasi untuk tombol bottom nav
   Widget _buildNavItem(BuildContext context, int index,
@@ -66,15 +58,14 @@ class BottomNavView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BottomNavController controller = Get.put(BottomNavController());
+    final BottomNavController controller = Get.find<BottomNavController>();
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-    injectTabControllers();
 
     return Scaffold(
       backgroundColor: AppColor.background,
       resizeToAvoidBottomInset: true,
-      // Menggunakan logic navigasi dari dokumen pertama dengan AnimatedSwitcher
+      // Menggunakan logic navigasi dengan AnimatedSwitcher
       body: Obx(
             () => AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),

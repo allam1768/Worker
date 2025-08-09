@@ -12,10 +12,13 @@ import 'history_report_controller.dart';
 class HistoryReportView extends StatelessWidget {
   HistoryReportView({Key? key}) : super(key: key);
 
-  final HistoryReportController controller = Get.find();
-
   @override
   Widget build(BuildContext context) {
+    // Use Get.find() with fallback to Get.put() for safety
+    final HistoryReportController controller = Get.isRegistered<HistoryReportController>()
+        ? Get.find<HistoryReportController>()
+        : Get.put(HistoryReportController());
+
     Widget buildDateHeader(String date) {
       return Container(
         margin: EdgeInsets.only(bottom: 8.h),
@@ -82,7 +85,7 @@ class HistoryReportView extends StatelessWidget {
               title: "Report",
               showBackButton: false,
               rightIcon: "assets/icons/add_btn.svg",
-              rightOnTap: () => Get.toNamed('ReportInput'),
+              rightOnTap: () => Get.toNamed('/ReportInput'), // Fixed route name
             ),
             SizedBox(height: 10.h),
             Expanded(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -7,10 +8,12 @@ class CustomAppBar extends StatelessWidget {
   final String? rightIcon;
   final VoidCallback? rightOnTap;
   final bool showBackButton;
+  final VoidCallback? onBackTap;
 
   const CustomAppBar({
     super.key,
     required this.title,
+    this.onBackTap,
     this.rightIcon,
     this.rightOnTap,
     this.showBackButton = true,
@@ -20,43 +23,42 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.05,
-          vertical: MediaQuery.of(context).size.height * 0.015),
+        horizontal: 20.w,
+        vertical: 12.h,
+      ),
       child: Row(
         children: [
           if (showBackButton)
             GestureDetector(
-              onTap: () => Get.back(),
+              onTap: onBackTap ?? () => Get.back(),
               child: Padding(
-                padding:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.025),
+                padding: EdgeInsets.all(8.w),
                 child: SvgPicture.asset(
                   "assets/icons/back_btn.svg",
-                  width: MediaQuery.of(context).size.width * 0.09,
-                  height: MediaQuery.of(context).size.width * 0.09,
+                  width: 32.w,
+                  height: 32.h,
                 ),
               ),
             ),
-          if (showBackButton)
-            SizedBox(width: MediaQuery.of(context).size.width * 0.025),
+          if (showBackButton) SizedBox(width: 10.w),
           Expanded(
             child: Text(
               title,
               style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width * 0.07,
-                  fontWeight: FontWeight.bold),
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           if (rightIcon != null && rightOnTap != null)
             GestureDetector(
               onTap: rightOnTap,
               child: Padding(
-                padding:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.025),
+                padding: EdgeInsets.all(8.w),
                 child: SvgPicture.asset(
                   rightIcon!,
-                  width: MediaQuery.of(context).size.width * 0.09,
-                  height: MediaQuery.of(context).size.width * 0.09,
+                  width: 32.w,
+                  height: 32.h,
                 ),
               ),
             ),
