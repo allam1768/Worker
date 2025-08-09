@@ -27,7 +27,7 @@ class InputDetailView extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            CustomAppBar(title: namaAlat), // Menampilkan nama alat di AppBar
+            CustomAppBar(title: namaAlat),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
