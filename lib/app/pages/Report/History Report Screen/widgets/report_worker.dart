@@ -77,7 +77,7 @@ class ReportWorker extends StatelessWidget {
                   Text(
                     area,
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 15.sp,
                       color: Colors.grey[600],
                       fontWeight: FontWeight.w500,
                     ),
@@ -87,7 +87,7 @@ class ReportWorker extends StatelessWidget {
                   Text(
                     informasi,
                     style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 15.sp,
                       color: Colors.grey[600],
                     ),
                     maxLines: 2,

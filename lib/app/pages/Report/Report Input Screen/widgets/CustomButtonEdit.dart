@@ -35,7 +35,7 @@ class CustomButtonEdit extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            fontSize: fontSize * MediaQuery.of(context).textScaleFactor,
+            fontSize: fontSize,
             fontWeight: FontWeight.bold,
             color: textColor,
           ),

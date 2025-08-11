@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:worker/data/models/catch_model.dart';
 import 'package:worker/data/services/catch_service.dart';
@@ -93,22 +94,31 @@ class InputDetailController extends GetxController {
 
   void setImageFile(File? file) => imageFile.value = file;
 
-  /// Fungsi untuk ambil gambar HANYA dari kamera
   Future<void> takePicture() async {
     final picker = ImagePicker();
+
     try {
+      // Delay kecil untuk Android 14 supaya kamera siap
+      await Future.delayed(const Duration(milliseconds: 300));
+
       final pickedFile = await picker.pickImage(
         source: ImageSource.camera,
-        imageQuality: 80, // Kompres gambar untuk menghemat storage
+        preferredCameraDevice: CameraDevice.rear, // langsung kamera belakang
+        imageQuality: 70, // kompres biar ringan
         maxWidth: 1200,
         maxHeight: 1200,
       );
 
       if (pickedFile != null) {
-        imageFile.value = File(pickedFile.path);
+        // Simpan ke folder temporary app supaya path aman
+        final tempDir = await getTemporaryDirectory();
+        final savedImage = await File(pickedFile.path).copy(
+          '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg',
+        );
+
+        imageFile.value = savedImage;
         imageError.value = false;
       } else {
-        // User membatalkan pengambilan foto
         Get.snackbar(
           'Info',
           'Pengambilan foto dibatalkan',
@@ -124,6 +134,7 @@ class InputDetailController extends GetxController {
       );
     }
   }
+
 
   /// Fungsi untuk menghapus gambar yang sudah diambil
   void removeImage() {
