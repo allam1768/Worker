@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -60,12 +59,15 @@ class LoginView extends StatelessWidget {
                 ),
                 SizedBox(height: 16.h),
 
-                CustomTextField(
+                // Password dengan Obx untuk reactive UI
+                Obx(() => CustomTextField(
                   hintText: "Password",
                   svgIcon: 'assets/icons/password.svg',
                   controller: controller.passwordController,
                   isPassword: true,
-                ),
+                  isPasswordHidden: controller.isPasswordHidden.value,
+                  onSuffixTap: controller.togglePasswordVisibility,
+                )),
                 SizedBox(height: 12.h),
 
                 Obx(() => Padding(
