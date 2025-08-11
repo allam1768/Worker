@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:worker/values/app_color.dart';
+import '../../../../../../values/app_color.dart';
 
 class SingleHistoryCard extends StatelessWidget {
   final Map<String, dynamic> item;
@@ -49,7 +49,7 @@ class SingleHistoryCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Tool name and pest type
+                        // Tool name
                         Row(
                           children: [
                             Expanded(
@@ -66,44 +66,7 @@ class SingleHistoryCard extends StatelessWidget {
                         ),
                         SizedBox(height: 6.h),
 
-                        // Pest info
-                        // Row(
-                        //   children: [
-                        //     Icon(
-                        //       Icons.bug_report_outlined,
-                        //       size: 14.sp,
-                        //       color: Colors.black54,
-                        //     ),
-                        //     SizedBox(width: 4.w),
-                        //     Text(
-                        //       "${item['jenis_hama']} (${item['jumlah']})",
-                        //       style: TextStyle(
-                        //         fontSize: 13.sp,
-                        //         color: Colors.black87,
-                        //         fontWeight: FontWeight.w500,
-                        //       ),
-                        //     ),
-                        //     SizedBox(width: 8.w),
-                        //     Container(
-                        //       padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                        //       decoration: BoxDecoration(
-                        //         color: _getStatusColor(item["kondisi"]).withOpacity(0.1),
-                        //         borderRadius: BorderRadius.circular(4.r),
-                        //       ),
-                        //       child: Text(
-                        //         item["kondisi"].toString().toUpperCase(),
-                        //         style: TextStyle(
-                        //           fontSize: 10.sp,
-                        //           color: _getStatusColor(item["kondisi"]),
-                        //           fontWeight: FontWeight.w600,
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // SizedBox(height: 6.h),
-
-                        // Date, time and recorded by
+                        // Date, time (converted) and recorded by
                         Row(
                           children: [
                             Icon(
@@ -113,7 +76,7 @@ class SingleHistoryCard extends StatelessWidget {
                             ),
                             SizedBox(width: 4.w),
                             Text(
-                              "${item["date"]} at ${item["time"]}",
+                              convertGmtToWib(item["created_at"]),
                               style: TextStyle(
                                 fontSize: 11.sp,
                                 color: Colors.black54,
@@ -167,14 +130,26 @@ class SingleHistoryCard extends StatelessWidget {
     );
   }
 
+  /// Convert dari GMT/UTC ke WIB
+  String convertGmtToWib(String gmtDateTime) {
+    try {
+      DateTime utcTime = DateTime.parse(gmtDateTime).toUtc();
+      DateTime wibTime = utcTime.add(const Duration(hours: 7));
+      return "${wibTime.day.toString().padLeft(2, '0')}-"
+          "${wibTime.month.toString().padLeft(2, '0')}-"
+          "${wibTime.year} ${wibTime.hour.toString().padLeft(2, '0')}:"
+          "${wibTime.minute.toString().padLeft(2, '0')}";
+    } catch (e) {
+      return gmtDateTime; // fallback kalau format tidak sesuai
+    }
+  }
+
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'good':
         return Colors.green;
       case 'broken':
         return Colors.grey;
-      case 'maintenance':
-        return Colors.orange;
       default:
         return AppColor.ijomuda;
     }

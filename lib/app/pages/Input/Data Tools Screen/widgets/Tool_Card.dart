@@ -233,55 +233,59 @@ class _ToolCardState extends State<ToolCard> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-                          decoration: BoxDecoration(
-                            color: statusColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12.r),
-                            border: Border.all(
-                              color: statusColor.withOpacity(0.3),
-                              width: 1,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                statusIcon,
-                                size: 14.sp,
-                                color: statusColor,
-                              ),
-                              SizedBox(width: 4.w),
-                              Text(
-                                displayStatus,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: statusColor,
+                            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Kotak Status
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                                  decoration: BoxDecoration(
+                                    color: statusColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    border: Border.all(
+                                      color: statusColor.withOpacity(0.3),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        statusIcon,
+                                        size: 14.sp,
+                                        color: statusColor,
+                                      ),
+                                      SizedBox(width: 4.w),
+                                      Text(
+                                        displayStatus,
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: statusColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(width: 4.w),
-                              // Tombol up/down pindah ke sini
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _showImage = !_showImage;
-                                  });
-                                },
-                                icon: Icon(
-                                  _showImage
-                                      ? Icons.keyboard_arrow_up
-                                      : Icons.keyboard_arrow_down,
-                                  color: Colors.grey.shade700,
-                                  size: 18.sp,
+                                SizedBox(width: 6.w),
+                                // Tombol panah di luar kotak
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _showImage = !_showImage;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    _showImage ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                    color: Colors.grey.shade700,
+                                    size: 20.sp,
+                                  ),
+                                  tooltip: _showImage ? 'Sembunyikan Gambar' : 'Tampilkan Gambar',
                                 ),
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                tooltip: _showImage
-                                    ? 'Sembunyikan Gambar'
-                                    : 'Tampilkan Gambar',
-                              ),
-                            ],
-                          ),
+                              ],
+                            )
+
                         ),
                       ],
                     ),

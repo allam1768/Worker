@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:worker/app/global-component/CustomButton.dart';
 import 'package:worker/app/global-component/CustomTextField.dart';
 import 'package:worker/app/pages/Input/Input%20Detail%20Screen/input_detail_controller.dart';
+import 'package:worker/app/pages/Input/Input%20Detail%20Screen/widgets/ImageUploadData.dart';
 import '../../../../values/app_color.dart';
 import '../../../global-component/CustomAppBar.dart';
-import '../../../global-component/ImageUpload.dart';
 
 class InputDetailView extends StatelessWidget {
   InputDetailView({super.key});
@@ -287,18 +287,18 @@ class InputDetailView extends StatelessWidget {
                             errorMessage: controller.catatanError,
                           ),
                           SizedBox(height: screenHeight * 0.01),
-                          ImageUpload(
+                          ImageUploadData(
                             imageFile: controller.imageFile,
                             imageError: controller.imageError,
                             directCamera: true,
                           ),
                           SizedBox(height: screenHeight * 0.03),
-                          CustomButton(
-                            text: "Simpan",
+                          Obx(() => CustomButton(
+                            text: controller.isLoading.value ? 'Loading...' : 'Simpan',
                             backgroundColor: AppColor.btnoren,
-                            onPressed: controller.saveCatch,
+                            onPressed: controller.isLoading.value ? null : controller.saveCatch,
                             fontSize: screenWidth * 0.04,
-                          ),
+                          )),
                           SizedBox(height: screenHeight * 0.06),
                         ],
                       ),

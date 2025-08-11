@@ -27,7 +27,7 @@ dependencies:
   image: ^4.1.7
   path_provider: ^2.1.2
   cached_network_image: ^3.4.1
-
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
